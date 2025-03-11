@@ -35,21 +35,10 @@ public class GameLoop extends SurfaceView implements Runnable {
 
     //Other
     private Context context;
-
-    public GameLoop(Context context) {
+    public GameLoop(Context context,  SurfaceHolder surfaceHolder, Point size){
         super(context);
-
         this.context = context;
-        //Stuff happens Here
-
-        fps = 1000/60;
-
-        surfaceHolder = getHolder();
-        paint = new Paint();
-
-    }
-    public GameLoop(Context context,  Point size){
-        this(context);
+        this.surfaceHolder = surfaceHolder;
 
         fps = 1000/60;
 
@@ -61,9 +50,6 @@ public class GameLoop extends SurfaceView implements Runnable {
 
     public void initalizeRest(){
         //Other initalizations that need to happen after on create
-//        surfaceHolder = viewToDrawOn.getHolder();
-
-        surfaceHolder = getHolder();
 
         System.out.println(surfaceHolder.getSurface().isValid());
     }

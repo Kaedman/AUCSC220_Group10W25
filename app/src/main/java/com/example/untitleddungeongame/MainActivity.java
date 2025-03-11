@@ -17,11 +17,9 @@ import androidx.core.view.WindowInsetsCompat;
 public class MainActivity extends AppCompatActivity {
 
     //Declarations
-
-
     SurfaceView gameView;
-    Thread gameThread;
-    GameLoop game;
+
+    MyCallBack myCallBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,35 +31,12 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-
     }
 
 
     //https://stackoverflow.com/questions/11490711/android-holder-getsurface-always-return-null
     //Need to make sure surface is initated
-    public class MyCallBack implements SurfaceHolder.Callback {
 
-        @Override
-        public void surfaceCreated(@NonNull SurfaceHolder holder) {
-            //start code
-            game.setSurfaceHolder(gameView.getHolder());
-            gameThread = new Thread(game);
-            gameThread.start();
-
-
-        }
-
-        @Override
-        public void surfaceChanged(@NonNull SurfaceHolder holder, int format, int width, int height) {
-
-        }
-
-        @Override
-        public void surfaceDestroyed(@NonNull SurfaceHolder holder) {
-            //end code
-
-        }
-    }
 
     @Override
     protected void onStart(){
@@ -71,23 +46,17 @@ public class MainActivity extends AppCompatActivity {
         Point size = new Point();
         display.getSize(size); //Instead of returning a value, we need to specify a point variable to change
 
-
         //Initializations Work Goes here
         gameView = findViewById(R.id.gameView);
 
-        //Need the apps context, as for drawing, the gameLoop is our target display
-        game = new GameLoop(this, size);
-
-        game.setDoGameLoop(true);
-
-
-
+        myCallBack = new MyCallBack(this, gameView);
+        gameView.getHolder().addCallback(myCallBack);
     }
 
     @Override
     protected void onDestroy(){
         super.onDestroy();
-        game.setDoGameLoop(false);
+//        game.setDoGameLoop(false);
 
     }
 
