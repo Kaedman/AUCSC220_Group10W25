@@ -20,7 +20,7 @@ public class GameLoop extends SurfaceView implements Runnable {
     //Game Control
     private boolean doGameLoop;
     private boolean isPaused;
-
+    private int fps;
 
     //Graphics
     private Canvas canvas; //drawing happens here
@@ -42,21 +42,21 @@ public class GameLoop extends SurfaceView implements Runnable {
         this.context = context;
         //Stuff happens Here
 
+        fps = 1000/60;
+
         surfaceHolder = getHolder();
         paint = new Paint();
 
     }
-    public GameLoop(Context context, SurfaceView surfaceView, Point size){
+    public GameLoop(Context context,  Point size){
         this(context);
+
+        fps = 1000/60;
 
         screenX = size.x;
         screenY = size.y;
 
-        viewToDrawOn = surfaceView;
-        bitmap = Bitmap.createBitmap(size.x, size.y, Bitmap.Config.ARGB_8888);
-        canvas = new Canvas(bitmap);
-
-
+        paint = new Paint();
     }
 
     public void initalizeRest(){
@@ -72,17 +72,36 @@ public class GameLoop extends SurfaceView implements Runnable {
     public void run() {
         initalizeRest();
         //GameLoop happens Here
+        while (doGameLoop){
+//            System.out.println("Running loop");
+            draw();
 
-        System.out.println("Running loop");
-//        draw();
-        draw2();
+            try {
+                Thread.sleep(fps);
+            }
+            catch (InterruptedException e){
+                //error
+            }
+        }
+
+    }
+
+
+
+    public void setDoGameLoop(boolean state){
+        doGameLoop = state;
+    }
+
+
+    public void setSurfaceHolder(SurfaceHolder holder){
+        surfaceHolder = holder;
     }
 
     /*
     Draw instructions for all visuals relevant to the game
      */
     public void draw(){
-
+//        System.out.println(surfaceHolder.getSurface().isValid());
         if (!surfaceHolder.getSurface().isValid()) return;//check surface is correct
         //currently we are stopping at this check, as our surface is not valid
         //TODO: Get a proper working surface
@@ -99,15 +118,6 @@ public class GameLoop extends SurfaceView implements Runnable {
         surfaceHolder.unlockCanvasAndPost(canvas); //update the surface
         System.out.println("Drawing done");
 
-
-    }
-
-    //https://gamecodeschool.com/android/drawing-graphics-demo/
-    public void draw2(){
-        System.out.println("Drawing");
-        paint.setColor(Color.RED);
-        canvas.drawRect(0,0,100,100, paint);
-        viewToDrawOn.draw(canvas);
 
     }
 
