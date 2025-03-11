@@ -1,5 +1,6 @@
 package com.example.untitleddungeongame;
 
+import android.graphics.Point;
 import android.os.Bundle;
 import android.view.Display;
 import android.view.SurfaceView;
@@ -30,12 +31,18 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size); //Instead of returning a value, we need to specify a point variable to change
+
+
         //Initializations Work Goes here
         gameView = findViewById(R.id.gameView);
 
 
         //Need the apps context, as for drawing, the gameLoop is our target display
-        game = new GameLoop(this, gameView);
+        game = new GameLoop(this, gameView, size);
 
 
 
@@ -45,4 +52,6 @@ public class MainActivity extends AppCompatActivity {
         gameThread.start();
 
     }
+
+
 }
