@@ -1,14 +1,12 @@
 package com.example.untitleddungeongame;
 
+import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.view.Display;
-import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.view.View;
 
 import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -21,6 +19,8 @@ public class MainActivity extends AppCompatActivity {
 
     MyCallBack myCallBack;
 
+    GameLoop gameControl;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,11 +32,6 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
     }
-
-
-    //https://stackoverflow.com/questions/11490711/android-holder-getsurface-always-return-null
-    //Need to make sure surface is initated
-
 
     @Override
     protected void onStart(){
@@ -51,6 +46,9 @@ public class MainActivity extends AppCompatActivity {
 
         myCallBack = new MyCallBack(this, gameView);
         gameView.getHolder().addCallback(myCallBack);
+
+        gameControl = myCallBack.getGame();
+
     }
 
     @Override

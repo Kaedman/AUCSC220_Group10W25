@@ -47,4 +47,11 @@ public class MyCallBack implements SurfaceHolder.Callback {
         //end code
         game.setDoGameLoop(false);
     }
+
+    /*
+    Allows for external control of the game
+     */
+    public GameLoop getGame(){
+        return game;
+    }
 }
