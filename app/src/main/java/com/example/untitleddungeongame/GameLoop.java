@@ -9,11 +9,6 @@ import android.graphics.Point;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
-
-
-
-
-
 public class GameLoop extends SurfaceView implements Runnable {
     //Refering to this tutorial: https://gamecodeschool.com/android/coding-a-snake-game-for-android/
 
@@ -72,12 +67,9 @@ public class GameLoop extends SurfaceView implements Runnable {
 
     }
 
-
-
     public void setDoGameLoop(boolean state){
         doGameLoop = state;
     }
-
 
     public void setSurfaceHolder(SurfaceHolder holder){
         surfaceHolder = holder;
@@ -87,22 +79,20 @@ public class GameLoop extends SurfaceView implements Runnable {
     Draw instructions for all visuals relevant to the game
      */
     public void draw(){
-//        System.out.println(surfaceHolder.getSurface().isValid());
+
         if (!surfaceHolder.getSurface().isValid()) return;//check surface is correct
-        //currently we are stopping at this check, as our surface is not valid
-        //TODO: Get a proper working surface
-        //https://stackoverflow.com/questions/42213818/android-surface-is-not-valid ?
+
 
         canvas = surfaceHolder.lockCanvas(); //get the current surface as a canvas object, prevent changes to surface
 
         //stuff happens
-        System.out.println("Drawing");
+
         paint.setColor(Color.RED);
         canvas.drawRect(0,0,100,100, paint);
 
 
         surfaceHolder.unlockCanvasAndPost(canvas); //update the surface
-        System.out.println("Drawing done");
+
 
 
     }
