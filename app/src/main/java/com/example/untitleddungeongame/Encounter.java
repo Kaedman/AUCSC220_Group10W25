@@ -1,0 +1,19 @@
+package com.example.untitleddungeongame;
+
+public class Encounter extends Room{
+    private Enemy enemy = null;
+    private Boolean isCleared;
+    public Encounter(Room left, Room right, Room up, Room down, Enemy enemy) {
+        super(left, right, up, down);
+        this.enemy = enemy;
+        this.isCleared = false;
+    }
+
+    public boolean checkCleared() {
+        if (enemy.getHp() <= 0) {
+            isCleared = true;
+        }
+
+        return isCleared;
+    }
+}
