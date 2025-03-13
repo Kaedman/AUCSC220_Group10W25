@@ -6,8 +6,11 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
+import android.graphics.drawable.Drawable;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+
+import java.util.HashMap;
 
 public class GameLoop extends SurfaceView implements Runnable {
     //Refering to this tutorial: https://gamecodeschool.com/android/coding-a-snake-game-for-android/
@@ -28,6 +31,8 @@ public class GameLoop extends SurfaceView implements Runnable {
     private SurfaceView  viewToDrawOn;
     Bitmap bitmap;
 
+    private HashMap<String, Bitmap> assets;
+
     //Other
     private Context context;
     public GameLoop(Context context,  SurfaceHolder surfaceHolder, Point size){
@@ -39,6 +44,7 @@ public class GameLoop extends SurfaceView implements Runnable {
 
         screenX = size.x;
         screenY = size.y;
+
 
         paint = new Paint();
     }
@@ -63,6 +69,7 @@ public class GameLoop extends SurfaceView implements Runnable {
             catch (InterruptedException e){
                 //error
             }
+            doGameLoop = false; //REMOVE LATER
         }
 
     }
@@ -75,6 +82,8 @@ public class GameLoop extends SurfaceView implements Runnable {
         surfaceHolder = holder;
     }
 
+    public void setAssets(HashMap assets) { this.assets = assets; }
+
     /*
     Draw instructions for all visuals relevant to the game
      */
@@ -82,15 +91,25 @@ public class GameLoop extends SurfaceView implements Runnable {
 
         if (!surfaceHolder.getSurface().isValid()) return;//check surface is correct
 
-
+        System.out.println("Drawing");
         canvas = surfaceHolder.lockCanvas(); //get the current surface as a canvas object, prevent changes to surface
 
         //stuff happens
-
         paint.setColor(Color.RED);
-        canvas.drawRect(0,0,100,100, paint);
+//        canvas.drawRect(0,0,100,100, paint);
 
 
+        Sprite test = new Sprite(assets.get("playerRouge"), 32, 32, 0);
+        System.out.println(assets.get("playerRouge"));
+        test.drawSprite(canvas, paint,100, 100, 500, 500);
+        test.drawScaled(canvas, 300, 200, 3, 3);
+        test.drawScaled(canvas, 300, 400, 4, 4);
+
+
+
+
+
+        System.out.println("Done");
         surfaceHolder.unlockCanvasAndPost(canvas); //update the surface
 
 

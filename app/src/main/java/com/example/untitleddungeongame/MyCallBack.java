@@ -1,13 +1,17 @@
 package com.example.untitleddungeongame;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Point;
+import android.graphics.drawable.Drawable;
 import android.view.Display;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import java.util.HashMap;
 
 public class MyCallBack implements SurfaceHolder.Callback {
 
@@ -16,9 +20,12 @@ public class MyCallBack implements SurfaceHolder.Callback {
     private AppCompatActivity activity;
     Thread gameThread;
 
-    public MyCallBack(AppCompatActivity activity, SurfaceView gameView){
+    private HashMap<String, Bitmap> assets;
+
+    public MyCallBack(AppCompatActivity activity, SurfaceView gameView, HashMap assets){
         this.gameView = gameView;
         this.activity = activity;
+        this.assets = assets;
     }
 
     @Override
@@ -32,6 +39,7 @@ public class MyCallBack implements SurfaceHolder.Callback {
 
         game = new GameLoop(activity, holder, size);
         game.setDoGameLoop(true);
+        game.setAssets(assets);
 
         gameThread = new Thread(game);
         gameThread.start();
