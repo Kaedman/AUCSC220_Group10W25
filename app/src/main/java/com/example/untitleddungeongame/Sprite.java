@@ -58,8 +58,10 @@ public class Sprite {
     Draws the current sprite at a specified index and scale amount (eg. 2x scale x and y)
      */
     public void drawScaled(Canvas canvas, Paint paint, int posX, int posY, int scaleX, int scaleY){
-        canvasPosition.set(posX, posY, posX * scaleX, posY * scaleY);
+        canvasPosition.set(posX, posY, posX + spriteX * scaleX, posY + spriteY* scaleY);
         canvas.drawBitmap(resource, currentBound, canvasPosition, paint);
+
+
     }
     /*
     Draws the current sprite at a specified index and scale amount (eg. 2x scale x and y)

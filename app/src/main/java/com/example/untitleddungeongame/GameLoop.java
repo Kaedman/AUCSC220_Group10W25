@@ -41,6 +41,7 @@ public class GameLoop extends SurfaceView implements Runnable {
 
     Sprite test;
     Animation animationTest;
+    AnimatedSprite player;
 
 
 
@@ -72,6 +73,15 @@ public class GameLoop extends SurfaceView implements Runnable {
         animationTest.setRepeat(true);
         animationTest.startAnimation();
 
+        player = new AnimatedSprite(test);
+        player.addAnimation(new Animation("idle", 0, 4, new int[] {400, 84, 124, 84}));
+        player.setCurrentAnimation("idle");
+        player.setCurrentRepeat(true);
+
+        player.addAnimation(new Animation("static", 0, 0, new int[1]));
+        player.setCurrentAnimation("idle");
+
+        player.playCurrentAnimation();
 
 
 
@@ -127,6 +137,10 @@ public class GameLoop extends SurfaceView implements Runnable {
 
         test.setCurrentSprite(animationTest.updateFrame());
         test.drawScaled(canvas, 300, 400, 4, 4);
+
+        player.updateCurrentAnimation();
+        player.drawAnimation(canvas, 600, 200, 20, 20);
+
 
 
         System.out.println("Done");

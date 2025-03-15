@@ -3,7 +3,7 @@ package com.example.untitleddungeongame;
 Class to manage sprite animations, ie delays between frames, looping, which frames are included
  */
 public class Animation {
-    private String animationName;
+    public String animationName;
     private int min;
     private int max;
     private int durr[];
@@ -40,6 +40,11 @@ public class Animation {
         miliOld = System.currentTimeMillis();
     }
 
+
+    /**
+     * Calculates the frame index based on time passed for the current animation
+     * @return - int frame index
+     */
     public int updateFrame(){
         miliDiff = System.currentTimeMillis() - miliOld;
 
