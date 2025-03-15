@@ -17,9 +17,6 @@ public class Sprite {
     private int collumnAmount;
     private int currentIndex;
 
-
-
-
     public Sprite(Bitmap imageResource, int spriteWidth, int spriteHeight, int numberOfCollumns){
 
         resource = imageResource;
@@ -72,13 +69,16 @@ public class Sprite {
         drawScaled(canvas, null, posX, posY, scaleX, scaleY);
     }
 
+    //TODO: Flip Sprite (for both horizontal and vertical axis)
 
-    public void setCurrentIndex(int index){
+
+    private void setCurrentIndex(int index){
         currentIndex = index;
 
     }
 
-    public void updateSprite(){
+    //TODO: Test with sprites that may have more than 1 row.
+    private void updateSprite(){
         int offsetY = 0;
         int index = currentIndex;
         //Correct the choosen position by offsetting the y position bound
@@ -88,9 +88,22 @@ public class Sprite {
 
         }
 
-        currentBound.set(index * spriteX, offsetY, spriteX, spriteY);
+        currentBound.set(index * spriteX, offsetY, spriteX + index * spriteX, spriteY + offsetY);
+        /*
+        Bug: Sprite draws only on inital frame.
+        FIX: Incorrect right and bottom specified, was just sprite X and spriteY, but needed a position greater
+            Than left and top
+        Details: March 14, 2025. By Cole Monnich
+         */
 
+    }
 
+    /*
+    Updates the current sprite AND the sprite looks
+     */
+    public void setCurrentSprite(int index){
+        setCurrentIndex(index);
+        updateSprite();
     }
 
 

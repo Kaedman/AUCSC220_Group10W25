@@ -24,7 +24,9 @@ public class GameLoop extends SurfaceView implements Runnable {
     private Canvas canvas; //drawing happens here
     private SurfaceHolder surfaceHolder; //Actual visual
 
-    private Paint paint; //This may not be required
+    private Paint paint;
+    private Paint fill; //https://stackoverflow.com/questions/36717782/how-to-fill-canvas-with-a-color
+    //Used for "refreshing" a canvas
     private int screenX;
     private int screenY;
 
@@ -35,6 +37,13 @@ public class GameLoop extends SurfaceView implements Runnable {
 
     //Other
     private Context context;
+
+
+    Sprite test;
+    Animation animationTest;
+
+
+
     public GameLoop(Context context,  SurfaceHolder surfaceHolder, Point size){
         super(context);
         this.context = context;
@@ -47,20 +56,29 @@ public class GameLoop extends SurfaceView implements Runnable {
 
 
         paint = new Paint();
-    }
-
-    public void initalizeRest(){
-        //Other initalizations that need to happen after on create
-
-        System.out.println(surfaceHolder.getSurface().isValid());
+        fill = new Paint();
+        fill.setStyle(Paint.Style.FILL);
+        fill.setColor(Color.BLACK);
     }
 
     @Override
     public void run() {
-        initalizeRest();
+
+
+
+        test = new Sprite(assets.get("playerRouge"), 32, 32, 4);
+
+        animationTest = new Animation("Idle", 0, 4, new int[] {84, 84, 124, 400});
+        animationTest.setRepeat(true);
+        animationTest.startAnimation();
+
+
+
+
+
         //GameLoop happens Here
         while (doGameLoop){
-//            System.out.println("Running loop");
+
             draw();
 
             try {
@@ -69,7 +87,7 @@ public class GameLoop extends SurfaceView implements Runnable {
             catch (InterruptedException e){
                 //error
             }
-            doGameLoop = false; //REMOVE LATER
+            doGameLoop = true; //REMOVE LATER //TODO REMOVE WHEN DONE TESTING
         }
 
     }
@@ -95,18 +113,20 @@ public class GameLoop extends SurfaceView implements Runnable {
         canvas = surfaceHolder.lockCanvas(); //get the current surface as a canvas object, prevent changes to surface
 
         //stuff happens
+
+        canvas.drawPaint(fill); //Refresh the canvas
+
         paint.setColor(Color.RED);
-//        canvas.drawRect(0,0,100,100, paint);
+//        canvas.drawRect(0,0,100,100, paint); //Temp Red square to make sure we did not screw up
 
 
-        Sprite test = new Sprite(assets.get("playerRouge"), 32, 32, 0);
+
         System.out.println(assets.get("playerRouge"));
-        test.drawSprite(canvas, paint,100, 100, 500, 500);
-        test.drawScaled(canvas, 300, 200, 3, 3);
+//        test.drawSprite(canvas, paint,100, 100, 500, 500);
+//        test.drawScaled(canvas, 300, 200, 3, 3);
+
+        test.setCurrentSprite(animationTest.updateFrame());
         test.drawScaled(canvas, 300, 400, 4, 4);
-
-
-
 
 
         System.out.println("Done");

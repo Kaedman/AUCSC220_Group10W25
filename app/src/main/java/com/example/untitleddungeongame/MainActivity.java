@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy(){
         super.onDestroy();
-//        game.setDoGameLoop(false);
+        gameControl.setDoGameLoop(false);
 
     }
 
@@ -73,15 +73,15 @@ public class MainActivity extends AppCompatActivity {
 
         assets = new HashMap(10);
         Resources resources = getResources();
-        System.out.println("Before");
-//        assets.put("playerRouge", getResources().getDrawable(R.drawable.playerrouge, null));
+//        System.out.println("Before");
+        //TODO: Migrate keys and image values to a json or xml file, then loop through to create assets
         assets.put("playerRouge", BitmapFactory.decodeResource(resources, R.drawable.playerrouge));
 
 
-        System.out.println("After");
+//        System.out.println("After");
 
 
-//ResourcesCompat.getDrawable(resources, R.drawable.playerrouge, null)
+
 
     }
 
