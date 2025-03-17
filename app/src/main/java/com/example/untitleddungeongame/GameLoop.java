@@ -9,6 +9,7 @@ import android.graphics.Point;
 import android.graphics.drawable.Drawable;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.View;
 
 import java.util.HashMap;
 
@@ -37,6 +38,7 @@ public class GameLoop extends SurfaceView implements Runnable {
 
     //Other
     private Context context;
+    private GameTouchListener touchListener;
 
 
     Sprite test;
@@ -45,7 +47,7 @@ public class GameLoop extends SurfaceView implements Runnable {
 
 
 
-    public GameLoop(Context context,  SurfaceHolder surfaceHolder, Point size){
+    public GameLoop(Context context, SurfaceHolder surfaceHolder, Point size, View gameView){
         super(context);
         this.context = context;
         this.surfaceHolder = surfaceHolder;
@@ -60,6 +62,9 @@ public class GameLoop extends SurfaceView implements Runnable {
         fill = new Paint();
         fill.setStyle(Paint.Style.FILL);
         fill.setColor(Color.BLACK);
+
+        touchListener = new GameTouchListener(this);
+        gameView.setOnTouchListener(touchListener);
     }
 
     @Override
@@ -119,7 +124,7 @@ public class GameLoop extends SurfaceView implements Runnable {
 
         if (!surfaceHolder.getSurface().isValid()) return;//check surface is correct
 
-        System.out.println("Drawing");
+
         canvas = surfaceHolder.lockCanvas(); //get the current surface as a canvas object, prevent changes to surface
 
         //stuff happens
@@ -131,7 +136,7 @@ public class GameLoop extends SurfaceView implements Runnable {
 
 
 
-        System.out.println(assets.get("playerRouge"));
+
 //        test.drawSprite(canvas, paint,100, 100, 500, 500);
 //        test.drawScaled(canvas, 300, 200, 3, 3);
 
@@ -141,13 +146,16 @@ public class GameLoop extends SurfaceView implements Runnable {
         player.updateCurrentAnimation();
         player.drawAnimation(canvas, 600, 200, 20, 20);
 
+        //TODO: Scale Canvas down to phone size, as it is currently not doing so right now
 
-
-        System.out.println("Done");
         surfaceHolder.unlockCanvasAndPost(canvas); //update the surface
 
 
 
+    }
+
+    public void onTouchEvent(float touchX, float touchY){
+        System.out.println("Touch at : " + touchX + ", " + touchY);
     }
 
 }

@@ -26,6 +26,7 @@ public class MyCallBack implements SurfaceHolder.Callback {
         this.gameView = gameView;
         this.activity = activity;
         this.assets = assets;
+
     }
 
     @Override
@@ -37,12 +38,14 @@ public class MyCallBack implements SurfaceHolder.Callback {
         System.out.printf("Width: %d, Height: %d\n", size.x, size.y);
         System.out.printf("Is Surface Valid: %b\n", holder.getSurface().isValid());
 
-        game = new GameLoop(activity, holder, size);
+        game = new GameLoop(activity, holder, size, gameView);
         game.setDoGameLoop(true);
         game.setAssets(assets);
 
         gameThread = new Thread(game);
         gameThread.start();
+
+
     }
 
     @Override

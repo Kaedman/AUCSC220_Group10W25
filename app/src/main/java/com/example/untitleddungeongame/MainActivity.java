@@ -59,6 +59,8 @@ public class MainActivity extends AppCompatActivity {
 
         gameControl = myCallBack.getGame();
 
+
+
     }
 
     @Override
