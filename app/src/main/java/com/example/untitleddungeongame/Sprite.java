@@ -14,6 +14,7 @@ public class Sprite {
 
     private int spriteX;
     private int spriteY;
+    public static float globalScaleX, globalScaleY;
     private int collumnAmount;
     private int currentIndex;
 
@@ -59,6 +60,7 @@ public class Sprite {
      */
     public void drawScaled(Canvas canvas, Paint paint, int posX, int posY, int scaleX, int scaleY){
         canvasPosition.set(posX, posY, posX + spriteX * scaleX, posY + spriteY* scaleY);
+
         canvas.drawBitmap(resource, currentBound, canvasPosition, paint);
 
 
@@ -106,6 +108,11 @@ public class Sprite {
     public void setCurrentSprite(int index){
         setCurrentIndex(index);
         updateSprite();
+    }
+
+    private void scaleToScreen(){ //This might not work the way I want it to
+        canvasPosition.right = (int) (globalScaleX * canvasPosition.right);
+        canvasPosition.bottom = (int) (globalScaleY * canvasPosition.bottom);
     }
 
 

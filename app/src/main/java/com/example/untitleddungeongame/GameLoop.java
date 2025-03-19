@@ -6,6 +6,8 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
+import android.graphics.Rect;
+import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -28,8 +30,13 @@ public class GameLoop extends SurfaceView implements Runnable {
     private Paint paint;
     private Paint fill; //https://stackoverflow.com/questions/36717782/how-to-fill-canvas-with-a-color
     //Used for "refreshing" a canvas
-    private int screenX;
-    private int screenY;
+    private int screenX, screenY;
+
+    //Used for adaptive scaling. Testing on the given screen resolution,
+    //Canvas should scale down or up respectivly
+    private final int SCREENX_CONST = 1440;
+    private final int SCREENY_CONST = 3120;
+    private float scaleX, scaleY;
 
     private SurfaceView  viewToDrawOn;
     Bitmap bitmap;
@@ -56,6 +63,14 @@ public class GameLoop extends SurfaceView implements Runnable {
 
         screenX = size.x;
         screenY = size.y;
+
+        scaleX = (float) screenX / SCREENX_CONST;
+        scaleY = (float) screenY / SCREENY_CONST;
+        System.out.println(scaleX +  ", " + scaleY);
+        Sprite.globalScaleX = scaleX; //Remove??
+        Sprite.globalScaleY = scaleY;
+        //Fixed screen Scaling on smaller devices
+        this.surfaceHolder.setFixedSize((SCREENX_CONST),(SCREENY_CONST)); //This fixed the scaling issue for smaller devices
 
 
         paint = new Paint();
@@ -117,36 +132,41 @@ public class GameLoop extends SurfaceView implements Runnable {
 
     public void setAssets(HashMap assets) { this.assets = assets; }
 
-    /*
+    /**
     Draw instructions for all visuals relevant to the game
+     */
+    /*
+    Bug: Canvas Scaling is wierd on different sized devices, causing sprites to inflate and loss
+    of onscreen canvas information
+    Solution: made surface holder a fixed size of original development resolution, forcing it to not scale
+    on smaller or bigger devices
+    Fixed on: 2025-03-19
      */
     public void draw(){
 
         if (!surfaceHolder.getSurface().isValid()) return;//check surface is correct
 
-
         canvas = surfaceHolder.lockCanvas(); //get the current surface as a canvas object, prevent changes to surface
-
-        //stuff happens
-
+        //Drawing
         canvas.drawPaint(fill); //Refresh the canvas
 
         paint.setColor(Color.RED);
+
+
 //        canvas.drawRect(0,0,100,100, paint); //Temp Red square to make sure we did not screw up
-
-
-
-
 //        test.drawSprite(canvas, paint,100, 100, 500, 500);
 //        test.drawScaled(canvas, 300, 200, 3, 3);
 
         test.setCurrentSprite(animationTest.updateFrame());
-        test.drawScaled(canvas, 300, 400, 4, 4);
+        test.drawScaled(canvas, paint,300, 400, 4, 4);
 
         player.updateCurrentAnimation();
         player.drawAnimation(canvas, 600, 200, 20, 20);
 
-        //TODO: Scale Canvas down to phone size, as it is currently not doing so right now
+
+        //Final Image updates
+
+
 
         surfaceHolder.unlockCanvasAndPost(canvas); //update the surface
 
