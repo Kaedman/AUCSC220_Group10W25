@@ -46,6 +46,7 @@ public class MyCallBack implements SurfaceHolder.Callback {
         gameThread.start();
 
 
+
     }
 
     @Override
