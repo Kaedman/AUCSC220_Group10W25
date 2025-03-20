@@ -1,17 +1,23 @@
 package com.example.untitleddungeongame;
 
+import android.annotation.SuppressLint;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Point;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.Display;
 import android.view.SurfaceView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -21,6 +27,8 @@ public class MainActivity extends AppCompatActivity {
     MyCallBack myCallBack;
 
     GameLoop gameControl;
+
+    HashMap<String, Bitmap> assets;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart(){
         super.onStart();
+        importAssets();
 
         Display display = getWindowManager().getDefaultDisplay();
         Point size = new Point();
@@ -45,17 +54,37 @@ public class MainActivity extends AppCompatActivity {
         //Initializations Work Goes here
         gameView = findViewById(R.id.gameView);
 
-        myCallBack = new MyCallBack(this, gameView);
+        myCallBack = new MyCallBack(this, gameView, assets);
         gameView.getHolder().addCallback(myCallBack);
 
         gameControl = myCallBack.getGame();
+
+
+
 
     }
 
     @Override
     protected void onDestroy(){
         super.onDestroy();
-//        game.setDoGameLoop(false);
+        gameControl.setDoGameLoop(false);
+
+    }
+
+    @SuppressLint("UseCompatLoadingForDrawables")
+    private void importAssets(){
+
+        assets = new HashMap(10);
+        Resources resources = getResources();
+//        System.out.println("Before");
+        //TODO: Migrate keys and image values to a json or xml file, then loop through to create assets
+        assets.put("playerRouge", BitmapFactory.decodeResource(resources, R.drawable.playerrouge));
+
+
+//        System.out.println("After");
+
+
+
 
     }
 
