@@ -46,8 +46,9 @@ public class MainActivity extends AppCompatActivity {
         gameLaunched = false;
     }
 
-
-    public void startGame(){
+    @Override
+    public void onStart(){
+        super.onStart();
 
         importAssets();
         setContentView(R.layout.activity_main);
@@ -65,19 +66,6 @@ public class MainActivity extends AppCompatActivity {
         gameControl = myCallBack.getGame();
         gameLaunched = true;
 
-    }
-    @Override
-    protected  void onStart(){
-        super.onStart();
-        if (gameLaunched)
-            setContentView(R.layout.activity_main);
-        else
-            setContentView(R.layout.main_menu);
-
-    }
-
-    public void buttonPlay(View v){
-        startGame();
     }
 
     @Override
@@ -97,10 +85,7 @@ public class MainActivity extends AppCompatActivity {
         if (gameControl != null){
             gameControl.isPaused = false;
             myCallBack.reStartGame();
-
         }
-
-
         super.onResume();
     }
 
@@ -108,7 +93,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy(){
 //        gameControl.setDoGameLoop(false);
         super.onDestroy();
-
         System.out.println("DESTROYED GAME");
 
 
@@ -119,12 +103,12 @@ public class MainActivity extends AppCompatActivity {
 
         assets = new HashMap(10);
         Resources resources = getResources();
-//        System.out.println("Before");
+
         //TODO: Migrate keys and image values to a json or xml file, then loop through to create assets
         assets.put("playerRouge", BitmapFactory.decodeResource(resources, R.drawable.playerrouge));
 
 
-//        System.out.println("After");
+
 
 
 
