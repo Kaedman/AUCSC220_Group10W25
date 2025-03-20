@@ -1,5 +1,6 @@
 package com.example.untitleddungeongame;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -7,12 +8,15 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
-import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.widget.Button;
+import android.widget.TextView;
+import androidx.appcompat.app.AppCompatActivity;
+import java.util.List;
+import android.graphics.RectF;
 import android.view.View;
-
 import java.util.HashMap;
 
 public class GameLoop extends SurfaceView implements Runnable {
@@ -40,17 +44,15 @@ public class GameLoop extends SurfaceView implements Runnable {
 
     private SurfaceView  viewToDrawOn;
     Bitmap bitmap;
+    CombatMechanic combat;
 
-    private HashMap<String, Bitmap> assets;
+    private final TextView playerHealth;
+    private final TextView enemyHealth;
 
     //Other
-    private Context context;
-    private GameTouchListener touchListener;
-
-
-    Sprite test;
-    Animation animationTest;
-    AnimatedSprite player;
+    private final AppCompatActivity context;
+    @SuppressLint("SetTextI18n")
+    
 
 
 
@@ -63,7 +65,29 @@ public class GameLoop extends SurfaceView implements Runnable {
 
         screenX = size.x;
         screenY = size.y;
+        private HashMap<String, Bitmap> assets;
 
+        //Other
+        private Context context;
+        private GameTouchListener touchListener;
+
+
+        Sprite test;
+        Animation animationTest;
+        AnimatedSprite player;
+        paint = new Paint();
+
+        Button itemsButton = context.findViewById(R.id.items_button);
+        Button attackButton = context.findViewById(R.id.attack_button);
+        playerHealth = context.findViewById(R.id.player_health);
+        enemyHealth = context.findViewById(R.id.enemy_health);
+
+        attackButton.setText("Attack");
+        itemsButton.setText("Items");
+
+        combat = new CombatMechanic(attackButton, itemsButton);
+
+        combat.setCombat(true);
         scaleX = (float) screenX / SCREENX_CONST;
         scaleY = (float) screenY / SCREENY_CONST;
         System.out.println(scaleX +  ", " + scaleY);
@@ -81,6 +105,8 @@ public class GameLoop extends SurfaceView implements Runnable {
         touchListener = new GameTouchListener(this);
         gameView.setOnTouchListener(touchListener);
     }
+
+
 
     @Override
     public void run() {
@@ -111,9 +137,7 @@ public class GameLoop extends SurfaceView implements Runnable {
 
             draw();
 
-            try {
-                Thread.sleep(fps);
-            }
+            try { Thread.sleep(fps); }
             catch (InterruptedException e){
                 //error
             }
@@ -162,16 +186,18 @@ public class GameLoop extends SurfaceView implements Runnable {
 
         player.updateCurrentAnimation();
         player.drawAnimation(canvas, 600, 200, 20, 20);
+        if (combat.isInCombat) {
+              combat.runCombat();
+              context.runOnUiThread(() -> {
+                  playerHealth.setText("pH: " + combat.player.health);
+                  enemyHealth.setText("eH: " + combat.enemy.health);
+              });
+         }
 
 
         //Final Image updates
 
-
-
         surfaceHolder.unlockCanvasAndPost(canvas); //update the surface
-
-
-
     }
 
     public void onTouchEvent(float touchX, float touchY){
