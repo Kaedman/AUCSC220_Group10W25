@@ -10,7 +10,7 @@ public class Rest extends Room{
 
     public boolean useRest() {
         if (!restUsed) {
-            player.setHp(player.getMaxHp);
+            //player.setHp(player.getMaxHp);
             restUsed = true;
         }
 
