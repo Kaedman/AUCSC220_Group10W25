@@ -51,12 +51,18 @@ public class GameLoop extends SurfaceView implements Runnable {
 
     //Other
     private final AppCompatActivity context;
+    private HashMap<String, Bitmap> assets;
+
+    //Other
+    private GameTouchListener touchListener;
+
+
+    Sprite test;
+    Animation animationTest;
+    AnimatedSprite player;
     @SuppressLint("SetTextI18n")
-    
 
-
-
-    public GameLoop(Context context, SurfaceHolder surfaceHolder, Point size, View gameView){
+    public GameLoop(AppCompatActivity context, SurfaceHolder surfaceHolder, Point size, View gameView){
         super(context);
         this.context = context;
         this.surfaceHolder = surfaceHolder;
@@ -65,16 +71,6 @@ public class GameLoop extends SurfaceView implements Runnable {
 
         screenX = size.x;
         screenY = size.y;
-        private HashMap<String, Bitmap> assets;
-
-        //Other
-        private Context context;
-        private GameTouchListener touchListener;
-
-
-        Sprite test;
-        Animation animationTest;
-        AnimatedSprite player;
         paint = new Paint();
 
         Button itemsButton = context.findViewById(R.id.items_button);
@@ -112,10 +108,9 @@ public class GameLoop extends SurfaceView implements Runnable {
     public void run() {
 
 
-
         test = new Sprite(assets.get("playerRouge"), 32, 32, 4);
 
-        animationTest = new Animation("Idle", 0, 4, new int[] {84, 84, 124, 400});
+        animationTest = new Animation("Idle", 0, 4, new int[]{84, 84, 124, 400});
         animationTest.setRepeat(true);
         animationTest.startAnimation();
 
@@ -128,8 +123,6 @@ public class GameLoop extends SurfaceView implements Runnable {
         player.setCurrentAnimation("idle");
 
         player.playCurrentAnimation();
-
-
 
 
         //GameLoop happens Here

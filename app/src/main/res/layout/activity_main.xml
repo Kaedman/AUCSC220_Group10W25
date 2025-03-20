@@ -9,8 +9,8 @@
 
     <SurfaceView
         android:id="@+id/gameView"
-        android:layout_width="389dp"
-        android:layout_height="709dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
