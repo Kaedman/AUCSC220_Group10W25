@@ -31,20 +31,27 @@ public class MyCallBack implements SurfaceHolder.Callback {
 
     @Override
     public void surfaceCreated(@NonNull SurfaceHolder holder) {
-        Display display = activity.getWindowManager().getDefaultDisplay();
-        Point size = new Point();
-        display.getSize(size); //Instead of returning a value, we need to specify a point variable to change
+        if (gameView != null) {
+            Display display = activity.getWindowManager().getDefaultDisplay();
+            Point size = new Point();
+            display.getSize(size); //Instead of returning a value, we need to specify a point variable to change
 
-        System.out.printf("Width: %d, Height: %d\n", size.x, size.y);
-        System.out.printf("Is Surface Valid: %b\n", holder.getSurface().isValid());
+            System.out.printf("Width: %d, Height: %d\n", size.x, size.y);
+            System.out.printf("Is Surface Valid: %b\n", holder.getSurface().isValid());
 
-        game = new GameLoop(activity, holder, size, gameView);
-        game.setDoGameLoop(true);
-        game.setAssets(assets);
+            game = new GameLoop(activity, holder, size, gameView);
+            game.setDoGameLoop(true);
+            game.setAssets(assets);
 
-        gameThread = new Thread(game);
-        gameThread.start();
+            gameThread = new Thread(game);
+            gameThread.start();
 
+            game.isPaused = false;
+        }
+        else{
+            game.isPaused = false;
+            game.setSurfaceHolder(gameView.getHolder());
+        }
 
 
     }
@@ -65,5 +72,10 @@ public class MyCallBack implements SurfaceHolder.Callback {
      */
     public GameLoop getGame(){
         return game;
+    }
+
+    public void reStartGame(){
+        gameThread.start();
+        System.out.println("Starting Up");
     }
 }

@@ -20,7 +20,7 @@ public class GameLoop extends SurfaceView implements Runnable {
 
     //Game Control
     private boolean doGameLoop;
-    private boolean isPaused;
+    public boolean isPaused;
     private int fps;
 
     //Graphics
@@ -80,6 +80,8 @@ public class GameLoop extends SurfaceView implements Runnable {
 
         touchListener = new GameTouchListener(this);
         gameView.setOnTouchListener(touchListener);
+
+        isPaused = true;
     }
 
     @Override
@@ -108,16 +110,23 @@ public class GameLoop extends SurfaceView implements Runnable {
 
         //GameLoop happens Here
         while (doGameLoop){
+            if (!isPaused) {
+                try {
+                    draw();
+                }
+                catch (Error e){
+//                    isPaused = true; //Surface seems to be not available, meaning it either changed or was destroyed
+                    //Due to user likley exiting the app momentarly
+                    System.out.println("I broke :(");
+                }
+                try {
+                    Thread.sleep(fps);
+                }
+                catch (InterruptedException e) {
+                    //error
+                }
 
-            draw();
-
-            try {
-                Thread.sleep(fps);
             }
-            catch (InterruptedException e){
-                //error
-            }
-            doGameLoop = true; //REMOVE LATER //TODO REMOVE WHEN DONE TESTING
         }
 
     }
@@ -129,6 +138,8 @@ public class GameLoop extends SurfaceView implements Runnable {
     public void setSurfaceHolder(SurfaceHolder holder){
         surfaceHolder = holder;
     }
+
+
 
     public void setAssets(HashMap assets) { this.assets = assets; }
 
@@ -166,7 +177,7 @@ public class GameLoop extends SurfaceView implements Runnable {
 
         //Final Image updates
 
-
+        if (!surfaceHolder.getSurface().isValid()) return;//check surface is correct
 
         surfaceHolder.unlockCanvasAndPost(canvas); //update the surface
 

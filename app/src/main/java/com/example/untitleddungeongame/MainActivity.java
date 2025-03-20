@@ -7,8 +7,10 @@ import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.text.Layout;
 import android.view.Display;
 import android.view.SurfaceView;
+import android.view.View;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -29,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
     GameLoop gameControl;
 
     HashMap<String, Bitmap> assets;
+    boolean gameLaunched;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,12 +43,14 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        gameLaunched = false;
     }
 
-    @Override
-    protected void onStart(){
-        super.onStart();
+
+    public void startGame(){
+
         importAssets();
+        setContentView(R.layout.activity_main);
 
         Display display = getWindowManager().getDefaultDisplay();
         Point size = new Point();
@@ -58,16 +63,54 @@ public class MainActivity extends AppCompatActivity {
         gameView.getHolder().addCallback(myCallBack);
 
         gameControl = myCallBack.getGame();
+        gameLaunched = true;
 
+    }
+    @Override
+    protected  void onStart(){
+        super.onStart();
+        if (gameLaunched)
+            setContentView(R.layout.activity_main);
+        else
+            setContentView(R.layout.main_menu);
 
+    }
 
+    public void buttonPlay(View v){
+        startGame();
+    }
+
+    @Override
+    protected void onPause(){
+
+        if (gameControl != null){
+            gameControl.isPaused = true;
+        }
+
+        super.onPause();
 
     }
 
     @Override
+    protected void onResume(){
+
+        if (gameControl != null){
+            gameControl.isPaused = false;
+            myCallBack.reStartGame();
+
+        }
+
+
+        super.onResume();
+    }
+
+    @Override
     protected void onDestroy(){
+//        gameControl.setDoGameLoop(false);
         super.onDestroy();
-        gameControl.setDoGameLoop(false);
+
+        System.out.println("DESTROYED GAME");
+
 
     }
 
