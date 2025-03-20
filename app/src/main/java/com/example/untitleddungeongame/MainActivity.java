@@ -1,6 +1,7 @@
 package com.example.untitleddungeongame;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.view.Display;
