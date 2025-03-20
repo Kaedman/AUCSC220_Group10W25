@@ -2,11 +2,11 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/sometitleart_highdensity"
 
-    >
+    android:layout_height="match_parent"
+    android:background="@drawable/sometitleart_highdensity">
 
     <TextView
         android:id="@+id/textView"
@@ -29,16 +29,41 @@
 
     <Button
         android:id="@+id/play_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="160dp"
-        android:layout_marginTop="200dp"
-        android:layout_marginEnd="163dp"
+        android:layout_width="150dp"
+        android:layout_height="88dp"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="168dp"
+        android:layout_marginEnd="30dp"
         android:onClick="buttonPlay"
         android:text="Play"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/newRun"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+    <Button
+        android:id="@+id/newRun"
+        android:layout_width="150dp"
+        android:layout_height="88dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="168dp"
+        android:layout_marginEnd="45dp"
+        android:text="New Run"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/play_button"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+    <Button
+        android:id="@+id/settings"
+        android:layout_width="333dp"
+        android:layout_height="88dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="134dp"
+        android:onClick="buttonSettings"
+        android:text="Settings"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/play_button" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
