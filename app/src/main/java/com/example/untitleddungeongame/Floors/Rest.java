@@ -1,6 +1,8 @@
-package com.example.untitleddungeongame;
+package com.example.untitleddungeongame.Floors;
 
-public class Rest extends Room{
+import com.example.untitleddungeongame.Enemy;
+
+public class Rest extends Room {
     private boolean restUsed;
 
     public Rest(Room left, Room right, Room up, Room down, Enemy enemy) {

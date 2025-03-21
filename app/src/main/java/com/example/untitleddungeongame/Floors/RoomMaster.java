@@ -1,4 +1,4 @@
-package com.example.untitleddungeongame;
+package com.example.untitleddungeongame.Floors;
 
 import java.util.ArrayList;
 
