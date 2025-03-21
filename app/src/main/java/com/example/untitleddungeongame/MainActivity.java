@@ -1,6 +1,7 @@
 package com.example.untitleddungeongame;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -31,11 +32,16 @@ public class MainActivity extends AppCompatActivity {
 
     public GameLoop gameControl;
 
+
     public HashMap<String, Bitmap> assets;
     public boolean gameLaunched;
     public Button resumeButton;
     public Button quitButton;
     public Button pauseButton;
+
+    static boolean userPause;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
         myCallBack = new MyCallBack(this, gameView, assets);
         gameView.getHolder().addCallback(myCallBack);
 
+
         gameControl = myCallBack.getGame(); //This is actually null
         gameLaunched = true;
         System.out.println(gameControl);
@@ -83,21 +90,14 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onPause(){
-        if (gameControl != null){
-            gameControl.isPaused = true;
-        }
-
+        GameLoop.isPaused = true;
         super.onPause();
 
     }
 
     @Override
     protected void onResume(){
-
-        if (gameControl != null){
-            gameControl.isPaused = false;
-            myCallBack.reStartGame();
-        }
+        GameLoop.isPaused = false;
         super.onResume();
     }
 
@@ -120,6 +120,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onPause(View v){
+        GameLoop.userPaused = true;
         resumeButton.setVisibility(View.VISIBLE);
         quitButton.setVisibility(View.VISIBLE);
         pauseButton.setVisibility(View.GONE);
@@ -127,10 +128,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onQuit(View v){
+        Intent intent = new Intent(this, MainMenu.class);
+        startActivity(intent);
 
     }
 
     public void onResume(View v){
+        GameLoop.userPaused = false;
         resumeButton.setVisibility(View.GONE);
         quitButton.setVisibility(View.GONE);
         pauseButton.setVisibility(View.VISIBLE);

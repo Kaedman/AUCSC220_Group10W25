@@ -48,7 +48,7 @@ public class MyCallBack implements SurfaceHolder.Callback {
 
             game.isPaused = false;
 
-            
+
         }
         else{
             game.isPaused = false;

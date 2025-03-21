@@ -21,8 +21,8 @@ public class GameLoop extends SurfaceView implements Runnable {
 
     //Game Control
     private boolean doGameLoop;
-    public boolean isPaused;
-    private boolean userPaused;
+    static boolean isPaused;
+    static boolean userPaused;
     private int fps;
 
     //Graphics
@@ -53,12 +53,6 @@ public class GameLoop extends SurfaceView implements Runnable {
     Sprite test;
     Animation animationTest;
     AnimatedSprite player;
-    //
-    Button resumeButton;
-    Button quitButton;
-    Button pauseButton;
-
-
 
     public GameLoop(Context context, SurfaceHolder surfaceHolder, Point size, View gameView){
         super(context);
@@ -90,9 +84,6 @@ public class GameLoop extends SurfaceView implements Runnable {
         //Pausing
         isPaused = false; //pausing controlled by leaving app, etc.
         userPaused = false; //Pausing controlled by pause button
-        resumeButton = findViewById(R.id.resume);
-        quitButton = findViewById(R.id.quit);
-        pauseButton = findViewById(R.id.pause);
     }
 
     @Override
@@ -170,10 +161,6 @@ public class GameLoop extends SurfaceView implements Runnable {
         paint.setColor(Color.RED);
 
 
-//        canvas.drawRect(0,0,100,100, paint); //Temp Red square to make sure we did not screw up
-//        test.drawSprite(canvas, paint,100, 100, 500, 500);
-//        test.drawScaled(canvas, 300, 200, 3, 3);
-
         test.setCurrentSprite(animationTest.updateFrame());
         test.drawScaled(canvas, paint,300, 400, 4, 4);
 
@@ -194,9 +181,6 @@ public class GameLoop extends SurfaceView implements Runnable {
 
     public void onPause(){
         userPaused = true;
-        resumeButton.setVisibility(View.VISIBLE);
-        quitButton.setVisibility(View.VISIBLE);
-        pauseButton.setVisibility(View.GONE);
 
     }
 
@@ -206,9 +190,7 @@ public class GameLoop extends SurfaceView implements Runnable {
 
     public void onResume(){
         userPaused = false;
-        resumeButton.setVisibility(View.GONE);
-        quitButton.setVisibility(View.GONE);
-        pauseButton.setVisibility(View.VISIBLE);
+
     }
 
 }
