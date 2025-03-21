@@ -12,6 +12,7 @@ import android.graphics.drawable.Drawable;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
+import android.widget.Button;
 
 import java.util.HashMap;
 
@@ -21,6 +22,7 @@ public class GameLoop extends SurfaceView implements Runnable {
     //Game Control
     private boolean doGameLoop;
     public boolean isPaused;
+    private boolean userPaused;
     private int fps;
 
     //Graphics
@@ -51,6 +53,10 @@ public class GameLoop extends SurfaceView implements Runnable {
     Sprite test;
     Animation animationTest;
     AnimatedSprite player;
+    //
+    Button resumeButton;
+    Button quitButton;
+    Button pauseButton;
 
 
 
@@ -81,13 +87,16 @@ public class GameLoop extends SurfaceView implements Runnable {
         touchListener = new GameTouchListener(this);
         gameView.setOnTouchListener(touchListener);
 
-        isPaused = true;
+        //Pausing
+        isPaused = false; //pausing controlled by leaving app, etc.
+        userPaused = false; //Pausing controlled by pause button
+        resumeButton = findViewById(R.id.resume);
+        quitButton = findViewById(R.id.quit);
+        pauseButton = findViewById(R.id.pause);
     }
 
     @Override
     public void run() {
-
-
 
         test = new Sprite(assets.get("playerRouge"), 32, 32, 4);
 
@@ -105,12 +114,9 @@ public class GameLoop extends SurfaceView implements Runnable {
 
         player.playCurrentAnimation();
 
-
-
-
         //GameLoop happens Here
         while (doGameLoop){
-            if (!isPaused) {
+            if (!isPaused && !userPaused) {
                 try {
                     draw();
                 }
@@ -180,13 +186,29 @@ public class GameLoop extends SurfaceView implements Runnable {
         if (!surfaceHolder.getSurface().isValid()) return;//check surface is correct
 
         surfaceHolder.unlockCanvasAndPost(canvas); //update the surface
-
-
-
     }
 
     public void onTouchEvent(float touchX, float touchY){
         System.out.println("Touch at : " + touchX + ", " + touchY);
+    }
+
+    public void onPause(){
+        userPaused = true;
+        resumeButton.setVisibility(View.VISIBLE);
+        quitButton.setVisibility(View.VISIBLE);
+        pauseButton.setVisibility(View.GONE);
+
+    }
+
+    public void onQuit(){
+
+    }
+
+    public void onResume(){
+        userPaused = false;
+        resumeButton.setVisibility(View.GONE);
+        quitButton.setVisibility(View.GONE);
+        pauseButton.setVisibility(View.VISIBLE);
     }
 
 }

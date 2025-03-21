@@ -47,6 +47,8 @@ public class MyCallBack implements SurfaceHolder.Callback {
             gameThread.start();
 
             game.isPaused = false;
+
+            
         }
         else{
             game.isPaused = false;
@@ -78,4 +80,6 @@ public class MyCallBack implements SurfaceHolder.Callback {
         gameThread.start();
         System.out.println("Starting Up");
     }
+
+
 }

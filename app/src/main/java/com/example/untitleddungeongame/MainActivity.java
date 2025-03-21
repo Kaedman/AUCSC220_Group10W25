@@ -11,6 +11,7 @@ import android.text.Layout;
 import android.view.Display;
 import android.view.SurfaceView;
 import android.view.View;
+import android.widget.Button;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,14 +25,17 @@ import java.util.HashMap;
 public class MainActivity extends AppCompatActivity {
 
     //Declarations
-    SurfaceView gameView;
+    public SurfaceView gameView;
 
-    MyCallBack myCallBack;
+    public MyCallBack myCallBack;
 
-    GameLoop gameControl;
+    public GameLoop gameControl;
 
-    HashMap<String, Bitmap> assets;
-    boolean gameLaunched;
+    public HashMap<String, Bitmap> assets;
+    public boolean gameLaunched;
+    public Button resumeButton;
+    public Button quitButton;
+    public Button pauseButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,14 +67,22 @@ public class MainActivity extends AppCompatActivity {
         myCallBack = new MyCallBack(this, gameView, assets);
         gameView.getHolder().addCallback(myCallBack);
 
-        gameControl = myCallBack.getGame();
+        gameControl = myCallBack.getGame(); //This is actually null
         gameLaunched = true;
+        System.out.println(gameControl);
+
+        resumeButton = findViewById(R.id.resume);
+        quitButton = findViewById(R.id.quit);
+        pauseButton = findViewById(R.id.pause);
+
+        resumeButton.setVisibility(View.GONE);
+        quitButton.setVisibility(View.GONE);
+
 
     }
 
     @Override
     protected void onPause(){
-
         if (gameControl != null){
             gameControl.isPaused = true;
         }
@@ -95,25 +107,34 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
         System.out.println("DESTROYED GAME");
 
-
     }
 
     @SuppressLint("UseCompatLoadingForDrawables")
     private void importAssets(){
-
         assets = new HashMap(10);
         Resources resources = getResources();
 
         //TODO: Migrate keys and image values to a json or xml file, then loop through to create assets
         assets.put("playerRouge", BitmapFactory.decodeResource(resources, R.drawable.playerrouge));
 
+    }
 
+    public void onPause(View v){
+        resumeButton.setVisibility(View.VISIBLE);
+        quitButton.setVisibility(View.VISIBLE);
+        pauseButton.setVisibility(View.GONE);
+        System.out.println("Paused");
+    }
 
-
-
-
+    public void onQuit(View v){
 
     }
 
+    public void onResume(View v){
+        resumeButton.setVisibility(View.GONE);
+        quitButton.setVisibility(View.GONE);
+        pauseButton.setVisibility(View.VISIBLE);
+        System.out.println("Resumed");
+    }
 
 }
