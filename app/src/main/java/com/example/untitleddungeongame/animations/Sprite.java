@@ -1,10 +1,9 @@
-package com.example.untitleddungeongame;
+package com.example.untitleddungeongame.animations;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.graphics.drawable.Drawable;
 
 public class Sprite {
     private Bitmap resource;

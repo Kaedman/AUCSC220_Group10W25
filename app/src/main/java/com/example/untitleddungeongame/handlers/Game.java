@@ -1,25 +1,30 @@
-package com.example.untitleddungeongame;
+package com.example.untitleddungeongame.handlers;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
-import android.graphics.Rect;
-import android.graphics.drawable.Drawable;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.widget.Button;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
-import java.util.List;
-import android.graphics.RectF;
+
 import android.view.View;
+
+import com.example.untitleddungeongame.animations.AssetID;
+import com.example.untitleddungeongame.GameTouchListener;
+import com.example.untitleddungeongame.R;
+import com.example.untitleddungeongame.animations.AnimatedSprite;
+import com.example.untitleddungeongame.animations.Animation;
+import com.example.untitleddungeongame.animations.Sprite;
+import com.example.untitleddungeongame.misc.ElapseTime;
+
 import java.util.HashMap;
 
-public class GameLoop extends SurfaceView implements Runnable {
+public class Game extends SurfaceView implements Runnable {
     //Refering to this tutorial: https://gamecodeschool.com/android/coding-a-snake-game-for-android/
 
     //Game Control
@@ -44,14 +49,14 @@ public class GameLoop extends SurfaceView implements Runnable {
 
     private SurfaceView  viewToDrawOn;
     Bitmap bitmap;
-    CombatMechanic combat;
+    Combat combat;
 
     private final TextView playerHealth;
     private final TextView enemyHealth;
 
     //Other
     private final AppCompatActivity context;
-    private HashMap<String, Bitmap> assets;
+    private HashMap<AssetID, Bitmap> assets;
 
     //Other
     private GameTouchListener touchListener;
@@ -62,7 +67,7 @@ public class GameLoop extends SurfaceView implements Runnable {
     AnimatedSprite player;
     @SuppressLint("SetTextI18n")
 
-    public GameLoop(AppCompatActivity context, SurfaceHolder surfaceHolder, Point size, View gameView){
+    public Game(AppCompatActivity context, SurfaceHolder surfaceHolder, Point size, View gameView){
         super(context);
         this.context = context;
         this.surfaceHolder = surfaceHolder;
@@ -81,7 +86,7 @@ public class GameLoop extends SurfaceView implements Runnable {
         attackButton.setText("Attack");
         itemsButton.setText("Items");
 
-        combat = new CombatMechanic(attackButton, itemsButton);
+        combat = new Combat(attackButton, itemsButton);
 
         combat.setCombat(true);
         scaleX = (float) screenX / SCREENX_CONST;
@@ -108,7 +113,7 @@ public class GameLoop extends SurfaceView implements Runnable {
     public void run() {
 
 
-        test = new Sprite(assets.get("playerRouge"), 32, 32, 4);
+        test = new Sprite(assets.get(AssetID.PLAYER), 32, 32, 4);
 
         animationTest = new Animation("Idle", 0, 4, new int[]{84, 84, 124, 400});
         animationTest.setRepeat(true);
@@ -159,11 +164,12 @@ public class GameLoop extends SurfaceView implements Runnable {
     on smaller or bigger devices
     Fixed on: 2025-03-19
      */
+    @SuppressLint("SetTextI18n")
     public void draw(){
-
         if (!surfaceHolder.getSurface().isValid()) return;//check surface is correct
-
         canvas = surfaceHolder.lockCanvas(); //get the current surface as a canvas object, prevent changes to surface
+
+        ElapseTime.update(); // Update the current time
         //Drawing
         canvas.drawPaint(fill); //Refresh the canvas
 
@@ -179,11 +185,11 @@ public class GameLoop extends SurfaceView implements Runnable {
 
         player.updateCurrentAnimation();
         player.drawAnimation(canvas, 600, 200, 20, 20);
-        if (combat.isInCombat) {
+        if (combat.isInCombat()) {
               combat.runCombat();
               context.runOnUiThread(() -> {
-                  playerHealth.setText("pH: " + combat.player.health);
-                  enemyHealth.setText("eH: " + combat.enemy.health);
+                  playerHealth.setText("pH: " + combat.player.getHealth());
+                  enemyHealth.setText("eH: " + combat.enemy.getHealth());
               });
          }
 

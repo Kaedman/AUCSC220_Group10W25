@@ -5,17 +5,18 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Point;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.Display;
 import android.view.SurfaceView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import com.example.untitleddungeongame.animations.AssetID;
+import com.example.untitleddungeongame.handlers.Game;
 
 import java.util.HashMap;
 
@@ -26,9 +27,9 @@ public class MainActivity extends AppCompatActivity {
 
     MyCallBack myCallBack;
 
-    GameLoop gameControl;
+    Game gameControl;
 
-    HashMap<String, Bitmap> assets;
+    HashMap<AssetID, Bitmap> assets;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,11 +75,11 @@ public class MainActivity extends AppCompatActivity {
     @SuppressLint("UseCompatLoadingForDrawables")
     private void importAssets(){
 
-        assets = new HashMap(10);
+        assets = new HashMap<AssetID, Bitmap>(10);
         Resources resources = getResources();
 //        System.out.println("Before");
         //TODO: Migrate keys and image values to a json or xml file, then loop through to create assets
-        assets.put("playerRouge", BitmapFactory.decodeResource(resources, R.drawable.playerrouge));
+        assets.put(AssetID.PLAYER, BitmapFactory.decodeResource(resources, R.drawable.playerrouge));
 
 
 //        System.out.println("After");

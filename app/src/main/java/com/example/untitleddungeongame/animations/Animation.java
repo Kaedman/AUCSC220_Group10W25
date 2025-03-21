@@ -1,4 +1,4 @@
-package com.example.untitleddungeongame;
+package com.example.untitleddungeongame.animations;
 /*
 Class to manage sprite animations, ie delays between frames, looping, which frames are included
  */

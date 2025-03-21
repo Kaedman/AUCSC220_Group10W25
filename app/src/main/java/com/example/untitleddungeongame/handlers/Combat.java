@@ -1,17 +1,19 @@
-package com.example.untitleddungeongame;
+package com.example.untitleddungeongame.handlers;
 
 import android.view.View;
 import android.widget.Button;
 
-public class CombatMechanic {
-     protected boolean isInCombat = false;
+import com.example.untitleddungeongame.characters.Player;
+import com.example.untitleddungeongame.misc.ElapseTime;
+
+public class Combat {
+     protected boolean inCombat = false;
      private CurrentTurn currentTurn = CurrentTurn.PLAYER_TURN;
 
      Player player = new Player(50);
      Player enemy = new Player(50);
 
-     long lastTime = System.currentTimeMillis();
-     long currentTime = System.currentTimeMillis();
+     private ElapseTime elapseTime = new ElapseTime();
      boolean lastTimeSet = false;
 
      private
@@ -20,19 +22,18 @@ public class CombatMechanic {
           ENEMY_TURN
      }
 
-     public CombatMechanic(Button attackButton, Button itemsButton) {
+     public Combat(Button attackButton, Button itemsButton) {
           attackButton.setOnClickListener(this::attackButtonPressed);
           itemsButton.setOnClickListener(this::itemsButtonPressed);
           currentTurn = CurrentTurn.PLAYER_TURN;
-          isInCombat = true;
+          inCombat = true;
      }
 
      public void setCombat(boolean state) {
-         isInCombat = state;
+         inCombat = state;
      }
 
      public void runCombat() {
-         currentTime = System.currentTimeMillis();
          if (currentTurn == CurrentTurn.ENEMY_TURN) enemyTurn();
      }
 
@@ -41,13 +42,8 @@ public class CombatMechanic {
      }
 
      private void enemyTurn() {
-         if (!lastTimeSet) { // This is adding a delay to the enemy's attack
-            lastTime = currentTime;
-            lastTimeSet = true;
-         }
-
-         if (currentTime - lastTime > 1000) {
-            int damage = enemy.attack;
+         if (elapseTime.hasTimeElapsed(1000)) {
+            int damage = enemy.getAttack();
             player.setHealthWhenHit(damage);
             currentTurn = CurrentTurn.PLAYER_TURN;
             lastTimeSet = false;
@@ -56,15 +52,19 @@ public class CombatMechanic {
      }
 
      public void attackButtonPressed(View button) {
-        if (!isInCombat && currentTurn != CurrentTurn.PLAYER_TURN) return;
+        if (!inCombat && currentTurn != CurrentTurn.PLAYER_TURN) return;
 
-        int damage = player.attack;
+        int damage = player.getAttack();
         enemy.setHealthWhenHit(damage);
         currentTurn = CurrentTurn.ENEMY_TURN;
      }
 
     public void itemsButtonPressed(View button) {
 
+    }
+
+    public boolean isInCombat() {
+        return inCombat;
     }
 
 }
