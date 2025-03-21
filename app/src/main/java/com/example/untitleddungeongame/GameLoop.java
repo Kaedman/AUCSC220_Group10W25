@@ -23,16 +23,16 @@ public class GameLoop extends SurfaceView implements Runnable {
     private boolean doGameLoop;
     static boolean isPaused;
     static boolean userPaused;
-    private int fps;
+    private final int fps;
 
     //Graphics
     private Canvas canvas; //drawing happens here
     private SurfaceHolder surfaceHolder; //Actual visual
 
     private Paint paint;
-    private Paint fill; //https://stackoverflow.com/questions/36717782/how-to-fill-canvas-with-a-color
+    private final Paint fill; //https://stackoverflow.com/questions/36717782/how-to-fill-canvas-with-a-color
     //Used for "refreshing" a canvas
-    private int screenX, screenY;
+    private final int screenX, screenY;
 
     //Used for adaptive scaling. Testing on the given screen resolution,
     //Canvas should scale down or up respectivly
@@ -181,7 +181,6 @@ public class GameLoop extends SurfaceView implements Runnable {
 
     public void onPause(){
         userPaused = true;
-
     }
 
     public void onQuit(){
@@ -190,7 +189,6 @@ public class GameLoop extends SurfaceView implements Runnable {
 
     public void onResume(){
         userPaused = false;
-
     }
 
 }

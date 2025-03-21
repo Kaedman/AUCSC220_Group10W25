@@ -1,9 +1,8 @@
 package com.example.untitleddungeongame;
 
-import android.content.Context;
+
 import android.graphics.Bitmap;
 import android.graphics.Point;
-import android.graphics.drawable.Drawable;
 import android.view.Display;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -16,13 +15,13 @@ import java.util.HashMap;
 public class MyCallBack implements SurfaceHolder.Callback {
 
     private GameLoop game;
-    private SurfaceView gameView;
-    private AppCompatActivity activity;
+    private final SurfaceView gameView;
+    private final AppCompatActivity activity;
     Thread gameThread;
 
-    private HashMap<String, Bitmap> assets;
+    private final HashMap<String, Bitmap> assets;
 
-    public MyCallBack(AppCompatActivity activity, SurfaceView gameView, HashMap assets){
+    public MyCallBack(AppCompatActivity activity, SurfaceView gameView, HashMap<String, Bitmap> assets){
         this.gameView = gameView;
         this.activity = activity;
         this.assets = assets;
@@ -46,12 +45,12 @@ public class MyCallBack implements SurfaceHolder.Callback {
             gameThread = new Thread(game);
             gameThread.start();
 
-            game.isPaused = false;
+            GameLoop.isPaused = false;
 
 
         }
         else{
-            game.isPaused = false;
+            GameLoop.isPaused = false;
             game.setSurfaceHolder(gameView.getHolder());
         }
 
@@ -75,11 +74,5 @@ public class MyCallBack implements SurfaceHolder.Callback {
     public GameLoop getGame(){
         return game;
     }
-
-    public void reStartGame(){
-        gameThread.start();
-        System.out.println("Starting Up");
-    }
-
 
 }
