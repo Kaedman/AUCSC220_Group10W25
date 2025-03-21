@@ -1,6 +1,8 @@
-package com.example.untitleddungeongame;
+package com.example.untitleddungeongame.Floors;
 
-public class Boss extends Room{
+import com.example.untitleddungeongame.Enemy;
+
+public class Boss extends Room {
     private Enemy boss = null;
     private boolean isCleared;
 

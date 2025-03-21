@@ -1,22 +1,22 @@
-package com.example.untitleddungeongame;
+package com.example.untitleddungeongame.Floors;
 
 public class Room {
-    Room left;
-    Room right;
-    Room up;
-    Room down;
+    private Room left;
+    private Room right;
+    private Room up;
+    private Room down;
+    private int roomId;
 
     public Room(Room left, Room right, Room up, Room down) {
-        this.left = left;
-        this.right = left;
-        this.up = left;
-        this.down = left;
+        this.left = null;
+        this.right = null;
+        this.up = null;
+        this.down = null;
+        roomId = 0;
     }
 
-    public Room getLeft() {
-        return left;
-    }
-
+    //Getters
+    public Room getLeft() { return left; }
     public Room getRight() {
         return up;
     }
@@ -27,6 +27,26 @@ public class Room {
 
     public Room getDown() {
         return down;
+    }
+
+    public int getRoomId(){ return roomId; }
+
+    //Setters
+    public void setLeft (Room adjacentRoom) {
+        this.left = adjacentRoom;
+    }
+    public void setRight (Room adjacentRoom) {
+        this.right = adjacentRoom;
+    }
+    //Not named set as something else was named it
+    public void linkUp (Room adjacentRoom) {
+        this.up = adjacentRoom;
+    }
+    public void setDown (Room adjacentRoom) {
+        this.down = adjacentRoom;
+    }
+    public void setRoomId (int id){
+        this.roomId = id;
     }
 
     /**
