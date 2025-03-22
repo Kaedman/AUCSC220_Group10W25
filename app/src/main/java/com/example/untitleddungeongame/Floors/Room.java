@@ -5,12 +5,15 @@ public class Room {
     private Room right;
     private Room up;
     private Room down;
+    //Room ids are a 4 digit numbers, the first 2 digits are the row number, the last 2 digits are
+    //the column numbers.
     private int roomId;
-    public Room(Room left, Room right, Room up, Room down) {
+    public Room(int roomId) {
         this.left = null;
         this.right = null;
         this.up = null;
         this.down = null;
+        this.roomId = roomId;
     }
 
     //Getters

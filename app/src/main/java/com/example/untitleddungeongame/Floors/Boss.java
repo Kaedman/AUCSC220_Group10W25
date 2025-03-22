@@ -6,8 +6,8 @@ public class Boss extends Room {
     private Enemy boss = null;
     private boolean isCleared;
 
-    public Boss(Room left, Room right, Room up, Room down, Enemy boss) {
-        super(left, right, up, down);
+    public Boss(int roomId, Enemy boss) {
+        super(roomId);
         this.boss = boss;
         this.isCleared = false;
     }
