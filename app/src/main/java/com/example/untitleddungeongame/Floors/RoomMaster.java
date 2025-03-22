@@ -35,11 +35,11 @@ public class RoomMaster {
         return emptyPaths;
     }
 
-    private Room generateRooms(int maxRows, int maxCols, int roomThreshold) {
+    private void generateRooms(int maxRows, int maxCols, int roomThreshold) {
         generateRoomArray(maxRows, maxCols, roomThreshold);
-        generateLinkedFloor();
+        headRoom = createOrigin();
 
-        return headRoom;
+        //return headRoom;
     }
 
     /**
@@ -121,47 +121,94 @@ public class RoomMaster {
     }
 
     /**
-     * Creates the Actual rooms and links them together according to the Floor map.
+     * Finds the origin on the floor map and creates the room to start making other rooms
+     * @return The origin room to be used as the head room.
      */
-    public void generateLinkedFloor(){
-        Room headRoom;
+    private Room createOrigin(){
+        Room origin = null;
         for (int row = 0; row < floorMap.length; row++){
             for (int col = 0; col < floorMap[0].length; col++){
                 if (floorMap[row][col] == 0){
-                    continue;
-                }
-
-                //Create room and give id
-                switch (floorMap[row][col]){
-                    //Origin and sets head room
-                    case 1:
-                        headRoom = new Room(((row*1000)+(col*10)));
-                        break;
-                    //Boss
-                    case 2:
-                        Enemy boss = new Enemy("Boss", 10, 10, 5);
-                        Boss bossRoom = new Boss(((row*1000)+(col*10)), boss);
-                        break;
-                    //Encounter
-                    case 3:
-                        Enemy enemy = new Enemy("enemy", 5, 5, 1);
-                        Encounter encounterRoom = new Encounter(((row*1000)+(col*10)), enemy);
-                        break;
-                    //Rest
-                    case 4:
-                        Rest rest = new Rest(((row*1000)+(col*10)));
-                        break;
-                }
-
-                //create links
-
-                //Check Up
-                if (row > 0){
-                    if (floorMap[row-1][col] != 0){
-
-                    }
+                    origin = createRoom(row, col);
                 }
             }
         }
+        return origin;
+    }//createOrigin
+
+    private void createLinkedFloor(Room currentRoom){
+        Room nextRoom;
+        int row = currentRoom.getRoomId() / 100;
+        int col = currentRoom.getRoomId() % 100;
+
+        //Check Up
+        if (row != 0){
+            if(floorMap[row - 1][col] != 0 && currentRoom.getUp() == null){
+               nextRoom = createRoom(row - 1, col);
+               nextRoom.setDownRoom(currentRoom);
+               currentRoom.setUpRoom(nextRoom);
+               createLinkedFloor(nextRoom);
+            }
+        }
+        //Check Left
+        if (col != 0){
+            if(floorMap[row][col - 1] != 0 && currentRoom.getLeft() == null){
+                nextRoom = createRoom(row, col);
+                createLinkedFloor(nextRoom);
+            }
+        }
+
+        //Check Right
+        if (col != floorMap[row].length){
+            if(floorMap[row][col + 1] != 0 && currentRoom.getLeft() == null){
+                nextRoom = createRoom(row, col);
+                createLinkedFloor(nextRoom);
+            }
+        }
+
+        //Check Down
+        if (row != floorMap.length){
+            if(floorMap[row + 1][col] != 0 && currentRoom.getUp() == null){
+                nextRoom = createRoom(row, col);
+                createLinkedFloor(nextRoom);
+            }
+        }
+    }
+
+    private Room createRoom(int row, int col){
+        Room newRoom;
+        Enemy enemy;
+        // 0 is no room, 1 is origin, 2 is boss, 3 is encounter, 4 is rest
+        switch (floorMap[row][col]){
+            //Origin
+            case 1:
+                newRoom = new Room (((row*100)+(col)));
+                break;
+
+            case 2:
+                //REPLACE WITH CREATE NEW ENEMY FUNCTION
+                enemy = new Enemy("Boss", 10, 10, 4);
+
+                newRoom = new Boss (((row*100)+(col)), enemy);
+                break;
+
+            case 3:
+                //REPLACE WITH CREATE NEW ENEMY FUNCTION
+                enemy = new Enemy("Generic", 5, 5, 1);
+
+                newRoom = new Encounter(((row*100)+(col)), enemy);
+                break;
+
+            case 4:
+                newRoom = new Rest (((row*100)+(col)));
+                break;
+
+            //No room to create.
+            default:
+                newRoom = null;
+                break;
+        }
+
+        return newRoom;
     }
 }

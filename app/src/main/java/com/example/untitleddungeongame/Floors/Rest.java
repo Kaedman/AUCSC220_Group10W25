@@ -2,6 +2,7 @@ package com.example.untitleddungeongame.Floors;
 
 import com.example.untitleddungeongame.Enemy;
 
+
 public class Rest extends Room {
     private boolean restUsed;
 
@@ -12,7 +13,7 @@ public class Rest extends Room {
 
     public boolean useRest() {
         if (!restUsed) {
-            player.setHp(player.getMaxHp);
+            //player.setHp(player.getMaxHp);
             restUsed = true;
         }
 
