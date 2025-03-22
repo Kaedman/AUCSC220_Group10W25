@@ -5,8 +5,8 @@ import com.example.untitleddungeongame.Enemy;
 public class Encounter extends Room {
     private Enemy enemy = null;
     private Boolean isCleared;
-    public Encounter(Room left, Room right, Room up, Room down, Enemy enemy) {
-        super(left, right, up, down);
+    public Encounter(int roomId, Enemy enemy) {
+        super(roomId);
         this.enemy = enemy;
         this.isCleared = false;
     }

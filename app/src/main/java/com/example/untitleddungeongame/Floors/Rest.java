@@ -5,8 +5,8 @@ import com.example.untitleddungeongame.Enemy;
 public class Rest extends Room {
     private boolean restUsed;
 
-    public Rest(Room left, Room right, Room up, Room down, Enemy enemy) {
-        super(left, right, up, down);
+    public Rest(int roomId) {
+        super(roomId);
         this.restUsed = false;
     }
 
