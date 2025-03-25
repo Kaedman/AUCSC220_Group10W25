@@ -92,8 +92,6 @@ public class Game extends SurfaceView implements Runnable {
         scaleX = (float) screenX / SCREENX_CONST;
         scaleY = (float) screenY / SCREENY_CONST;
         System.out.println(scaleX +  ", " + scaleY);
-        Sprite.globalScaleX = scaleX; //Remove??
-        Sprite.globalScaleY = scaleY;
         //Fixed screen Scaling on smaller devices
         this.surfaceHolder.setFixedSize((SCREENX_CONST),(SCREENY_CONST)); //This fixed the scaling issue for smaller devices
 

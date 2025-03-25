@@ -13,7 +13,7 @@ public class Sprite {
 
     private int spriteX;
     private int spriteY;
-    public static float globalScaleX, globalScaleY;
+
     private int collumnAmount;
     private int currentIndex;
 
@@ -108,12 +108,5 @@ public class Sprite {
         setCurrentIndex(index);
         updateSprite();
     }
-
-    private void scaleToScreen(){ //This might not work the way I want it to
-        canvasPosition.right = (int) (globalScaleX * canvasPosition.right);
-        canvasPosition.bottom = (int) (globalScaleY * canvasPosition.bottom);
-    }
-
-
 
 }

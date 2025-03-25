@@ -11,12 +11,18 @@ public class Character {
     int speed;
     Item[] equipped = new Item[4];
 
+    int maxHealth; // Controls max health
+
     public Character(int health, int attack, int defense, int speed) {
         this.health = health;
         this.attack = attack;
         this.defense = defense;
         this.speed = speed;
+
+        maxHealth = health;
     }
+
+
 
     public void setHealthWhenHit(int damage) {
         if (health - damage < 0) {
@@ -27,8 +33,8 @@ public class Character {
     }
 
     public void setHealthWhenHeal(int heal) {
-        if (health + heal > 100) {
-            health = 100;
+        if (health + heal > maxHealth) {
+            health = maxHealth;
         } else {
             health += heal;
         }

@@ -11,6 +11,8 @@ public class Player extends Character {
         super(health, 10, 10, 10);
     }
 
+
+    //Should we super these???
     public void setHealthWhenHit(int damage) {
         if (super.health - damage < 0) {
             health = 0;
@@ -25,6 +27,13 @@ public class Player extends Character {
         } else {
             health += heal;
         }
+    }
+
+    public int calculateReceivedDamage(int initialDamage){
+
+        //Imma just yoink terraria's defense stats. Cry about it
+        return initialDamage - defense/2;
+
     }
 
     public int getAttack() {
