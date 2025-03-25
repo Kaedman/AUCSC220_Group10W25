@@ -1,6 +1,7 @@
 package com.example.untitleddungeongame.handlers;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.view.View;
+import android.widget.Button;
 
 import com.example.untitleddungeongame.animations.AssetID;
 import com.example.untitleddungeongame.GameTouchListener;
@@ -29,17 +31,18 @@ public class Game extends SurfaceView implements Runnable {
 
     //Game Control
     private boolean doGameLoop;
-    private boolean isPaused;
-    private int fps;
+    public static boolean isPaused;
+    public static boolean userPaused;
+    private final int fps;
 
     //Graphics
     private Canvas canvas; //drawing happens here
     private SurfaceHolder surfaceHolder; //Actual visual
 
     private Paint paint;
-    private Paint fill; //https://stackoverflow.com/questions/36717782/how-to-fill-canvas-with-a-color
+    private final Paint fill; //https://stackoverflow.com/questions/36717782/how-to-fill-canvas-with-a-color
     //Used for "refreshing" a canvas
-    private int screenX, screenY;
+    private final int screenX, screenY;
 
     //Used for adaptive scaling. Testing on the given screen resolution,
     //Canvas should scale down or up respectivly
@@ -103,6 +106,10 @@ public class Game extends SurfaceView implements Runnable {
 
         touchListener = new GameTouchListener(this);
         gameView.setOnTouchListener(touchListener);
+
+        //Pausing
+        isPaused = false; //pausing controlled by leaving app, etc.
+        userPaused = false; //Pausing controlled by pause button
     }
 
 
@@ -130,12 +137,22 @@ public class Game extends SurfaceView implements Runnable {
 
         //GameLoop happens Here
         while (doGameLoop){
+            if (!isPaused && !userPaused) {
+                try {
+                    draw();
+                }
+                catch (Error e){
+//                    isPaused = true; //Surface seems to be not available, meaning it either changed or was destroyed
+                    //Due to user likley exiting the app momentarly
+                    System.out.println("I broke :(");
+                }
+                try {
+                    Thread.sleep(fps);
+                }
+                catch (InterruptedException e) {
+                    //error
+                }
 
-            draw();
-
-            try { Thread.sleep(fps); }
-            catch (InterruptedException e){
-                //error
             }
             doGameLoop = true; //REMOVE LATER //TODO REMOVE WHEN DONE TESTING
         }
@@ -149,6 +166,8 @@ public class Game extends SurfaceView implements Runnable {
     public void setSurfaceHolder(SurfaceHolder holder){
         surfaceHolder = holder;
     }
+
+
 
     public void setAssets(HashMap assets) { this.assets = assets; }
 
@@ -164,7 +183,9 @@ public class Game extends SurfaceView implements Runnable {
      */
     @SuppressLint("SetTextI18n")
     public void draw(){
+
         if (!surfaceHolder.getSurface().isValid()) return;//check surface is correct
+
         canvas = surfaceHolder.lockCanvas(); //get the current surface as a canvas object, prevent changes to surface
 
         ElapseTime.update(); // Update the current time
@@ -173,10 +194,6 @@ public class Game extends SurfaceView implements Runnable {
 
         paint.setColor(Color.RED);
 
-
-//        canvas.drawRect(0,0,100,100, paint); //Temp Red square to make sure we did not screw up
-//        test.drawSprite(canvas, paint,100, 100, 500, 500);
-//        test.drawScaled(canvas, 300, 200, 3, 3);
 
         test.setCurrentSprite(animationTest.updateFrame());
         test.drawScaled(canvas, paint,300, 400, 4, 4);
@@ -194,11 +211,25 @@ public class Game extends SurfaceView implements Runnable {
 
         //Final Image updates
 
+        if (!surfaceHolder.getSurface().isValid()) return;//check surface is correct
+
         surfaceHolder.unlockCanvasAndPost(canvas); //update the surface
     }
 
     public void onTouchEvent(float touchX, float touchY){
         System.out.println("Touch at : " + touchX + ", " + touchY);
+    }
+
+    public void onPause(){
+        userPaused = true;
+    }
+
+    public void onQuit(){
+
+    }
+
+    public void onResume(){
+        userPaused = false;
     }
 
 }

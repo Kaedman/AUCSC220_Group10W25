@@ -1,13 +1,17 @@
 package com.example.untitleddungeongame;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.telecom.Call;
 import android.view.Display;
 import android.view.SurfaceView;
+import android.view.View;
+import android.widget.Button;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,12 +28,18 @@ public class MainActivity extends AppCompatActivity {
 
     //Declarations
     SurfaceView gameView;
+    public boolean gameLaunched;
+    public Button resumeButton;
+    public Button quitButton;
+    public Button pauseButton;
 
     MyCallBack myCallBack;
 
     Game gameControl;
+    static boolean userPause;
 
     HashMap<AssetID, Bitmap> assets;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,12 +51,15 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        gameLaunched = false;
     }
 
     @Override
     protected void onStart(){
         super.onStart();
+
         importAssets();
+        setContentView(R.layout.activity_main);
 
         Display display = getWindowManager().getDefaultDisplay();
         Point size = new Point();
@@ -58,22 +71,41 @@ public class MainActivity extends AppCompatActivity {
         myCallBack = new MyCallBack(this, gameView, assets);
         gameView.getHolder().addCallback(myCallBack);
 
-        gameControl = myCallBack.getGame();
+        gameLaunched = true;
+        System.out.println(gameControl);
 
+        resumeButton = findViewById(R.id.resume);
+        quitButton = findViewById(R.id.quit);
+        pauseButton = findViewById(R.id.pause);
 
+        resumeButton.setVisibility(View.GONE);
+        quitButton.setVisibility(View.GONE);
 
 
     }
 
     @Override
+    protected void onPause(){
+        Game.isPaused = true;
+        super.onPause();
+
+    }
+
+    @Override
+    protected void onResume(){
+        Game.isPaused = false;
+        super.onResume();
+    }
+
+    @Override
     protected void onDestroy(){
         super.onDestroy();
-        gameControl.setDoGameLoop(false);
+        System.out.println("DESTROYED GAME");
 
     }
 
     @SuppressLint("UseCompatLoadingForDrawables")
-    private void importAssets(){
+    private void importAssets() {
 
         assets = new HashMap<AssetID, Bitmap>(10);
         Resources resources = getResources();
@@ -93,9 +125,28 @@ public class MainActivity extends AppCompatActivity {
 
         assets.put(AssetID.HEALTH_BAR, BitmapFactory.decodeResource(resources, R.drawable.healthbar));
         assets.put(AssetID.CONFIRM_ARROWS, BitmapFactory.decodeResource(resources, R.drawable.confrimationarrows));
-
-
     }
 
+
+    public void onResume(View v){
+        Game.userPaused = false;
+        resumeButton.setVisibility(View.GONE);
+        quitButton.setVisibility(View.GONE);
+        pauseButton.setVisibility(View.VISIBLE);
+        System.out.println("Resumed");
+    }
+    public void onPause(View v){
+        Game.userPaused = true;
+        resumeButton.setVisibility(View.VISIBLE);
+        quitButton.setVisibility(View.VISIBLE);
+        pauseButton.setVisibility(View.GONE);
+        System.out.println("Paused");
+    }
+
+    public void onQuit(View v){
+        Intent intent = new Intent(this, MainMenu.class);
+        startActivity(intent);
+
+    }
 
 }
