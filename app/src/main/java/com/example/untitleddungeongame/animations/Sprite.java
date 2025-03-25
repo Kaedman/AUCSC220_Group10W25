@@ -109,4 +109,11 @@ public class Sprite {
         updateSprite();
     }
 
+    public int getSpriteY() {
+        return spriteY;
+    }
+
+    public int getSpriteX() {
+        return spriteX;
+    }
 }

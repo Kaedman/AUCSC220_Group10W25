@@ -11,6 +11,7 @@ public class AnimatedSprite {
     Animation current;
 
     int currentFrame;
+    public boolean doDraw;
 
     /**
      * Animation Handler for multiple animations
@@ -20,6 +21,8 @@ public class AnimatedSprite {
         sprite = source;
         animations = new ArrayList<Animation>();
         currentFrame = 0;
+
+        doDraw = true;
 
     }
 
@@ -77,5 +80,9 @@ public class AnimatedSprite {
         }
         return null;
 
+    }
+
+    public Sprite getSprite() {
+        return sprite;
     }
 }
