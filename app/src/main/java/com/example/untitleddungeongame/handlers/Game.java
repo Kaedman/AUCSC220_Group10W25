@@ -25,6 +25,7 @@ import com.example.untitleddungeongame.animations.Sprite;
 import com.example.untitleddungeongame.misc.ElapseTime;
 import com.example.untitleddungeongame.ui.ItemBar;
 
+
 import java.util.HashMap;
 
 public class Game extends SurfaceView implements Runnable {
@@ -66,6 +67,7 @@ public class Game extends SurfaceView implements Runnable {
     private GameTouchListener touchListener;
     private ItemBar itemBar;
 
+
     Sprite test;
     Animation animationTest;
     AnimatedSprite player;
@@ -86,7 +88,6 @@ public class Game extends SurfaceView implements Runnable {
         Button attackButton = context.findViewById(R.id.attack_button);
         playerHealth = context.findViewById(R.id.player_health);
         enemyHealth = context.findViewById(R.id.enemy_health);
-        itemBar = new ItemBar(context);
 
         attackButton.setText("Attack");
         itemsButton.setText("Items");
@@ -109,9 +110,14 @@ public class Game extends SurfaceView implements Runnable {
         touchListener = new GameTouchListener(this);
         gameView.setOnTouchListener(touchListener);
 
+        DrawInstructions.phoneSizeX = screenX;
+        DrawInstructions.phoneSizeY = screenY;
+
         //Pausing
         isPaused = false; //pausing controlled by leaving app, etc.
         userPaused = false; //Pausing controlled by pause button
+
+        itemBar = new ItemBar(context);
     }
 
 
@@ -139,6 +145,15 @@ public class Game extends SurfaceView implements Runnable {
         itemBar.setOnClick(pos -> {
             combat.useItem(pos);
         });
+
+        AnimatedSprite slimeTestAnim = new AnimatedSprite(new Sprite(assets.get(AssetID.ENEMY_SLIME), 32, 32, 9));
+        slimeTestAnim.addAnimation(new Animation("idle", 0, 9, new int[] {150, 94, 74, 94, 300, 94, 74, 94, 150}));
+        slimeTestAnim.setCurrentAnimation("idle");
+        slimeTestAnim.setCurrentRepeat(true);
+        slimeTestAnim.playCurrentAnimation();
+
+        DrawInstructions slimeInstruction = new DrawInstructions(0, 500, slimeTestAnim, 20, 20);
+
 
         //GameLoop happens Here
         while (doGameLoop){
@@ -224,7 +239,7 @@ public class Game extends SurfaceView implements Runnable {
             });
         }
 
-
+        DrawInstructions.drawAll(canvas);
         //Final Image updates
 
         if (!surfaceHolder.getSurface().isValid()) return;//check surface is correct
