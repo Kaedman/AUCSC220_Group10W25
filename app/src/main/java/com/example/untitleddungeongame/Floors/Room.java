@@ -1,18 +1,22 @@
-package com.example.untitleddungeongame;
+package com.example.untitleddungeongame.Floors;
 
 public class Room {
-    Room left;
-    Room right;
-    Room up;
-    Room down;
-
-    public Room(Room left, Room right, Room up, Room down) {
-        this.left = left;
-        this.right = left;
-        this.up = left;
-        this.down = left;
+    private Room left;
+    private Room right;
+    private Room up;
+    private Room down;
+    //Room ids are a 4 digit numbers, the first 2 digits are the row number, the last 2 digits are
+    //the column numbers.
+    private int roomId;
+    public Room(int roomId) {
+        this.left = null;
+        this.right = null;
+        this.up = null;
+        this.down = null;
+        this.roomId = roomId;
     }
 
+    //Getters
     public Room getLeft() {
         return left;
     }
@@ -28,7 +32,23 @@ public class Room {
     public Room getDown() {
         return down;
     }
+    public int getRoomId(){
+        return roomId;
+    }
 
+    //Setters
+    public void setLeftRoom(Room adjacentRoom){
+        this.left = adjacentRoom;
+    }
+    public void setRightRoom(Room adjacentRoom){
+        this.right = adjacentRoom;
+    }
+    public void setDownRoom(Room adjacentRoom){
+        this.down = adjacentRoom;
+    }
+    public void setUpRoom(Room adjacentRoom){
+        this.up = adjacentRoom;
+    }
     /**
      * Gets each of a rooms adjacent rooms (left, right, up, down) and returns them in the form of
      * an array of Rooms

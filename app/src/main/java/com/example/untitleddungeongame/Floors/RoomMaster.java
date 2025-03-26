@@ -1,4 +1,6 @@
-package com.example.untitleddungeongame;
+package com.example.untitleddungeongame.Floors;
+
+import com.example.untitleddungeongame.Enemy;
 
 import java.util.ArrayList;
 
@@ -39,8 +41,7 @@ public class RoomMaster {
 
     private Room generateRooms(int maxRows, int maxCols, int roomThreshold) {
         generateRoomArray(maxRows, maxCols, roomThreshold);
-
-        //generateLinkedFloor();
+        generateLinkedFloor();
 
         return headRoom;
     }
@@ -63,7 +64,6 @@ public class RoomMaster {
         path.remove(0);
 
         if (getEmptyPaths(path.get(0)).isEmpty()) {
-
             return findEmptyPath(path);
         } else {
             return path;
@@ -126,6 +126,51 @@ public class RoomMaster {
             currentRoom = destination;
         } else {
             throw new java.lang.RuntimeException("Room destination is not adjacent to current room");
+        }
+    }
+
+    /**
+     * Creates the Actual rooms and links them together according to the Floor map.
+     */
+    public void generateLinkedFloor(){
+        Room headRoom;
+        for (int row = 0; row < floorMap.length; row++){
+            for (int col = 0; col < floorMap[0].length; col++){
+                if (floorMap[row][col] == 0){
+                    continue;
+                }
+
+                //Create room and give id
+                switch (floorMap[row][col]){
+                    //Origin and sets head room
+                    case 1:
+                        headRoom = new Room(((row*1000)+(col*10)));
+                        break;
+                    //Boss
+                    case 2:
+                        Enemy boss = new Enemy("Boss", 10, 10, 5);
+                        Boss bossRoom = new Boss(((row*1000)+(col*10)), boss);
+                        break;
+                    //Encounter
+                    case 3:
+                        Enemy enemy = new Enemy("enemy", 5, 5, 1);
+                        Encounter encounterRoom = new Encounter(((row*1000)+(col*10)), enemy);
+                        break;
+                    //Rest
+                    case 4:
+                        Rest rest = new Rest(((row*1000)+(col*10)));
+                        break;
+                }
+
+                //create links
+
+                //Check Up
+                if (row > 0){
+                    if (floorMap[row-1][col] != 0){
+
+                    }
+                }
+            }
         }
     }
 
