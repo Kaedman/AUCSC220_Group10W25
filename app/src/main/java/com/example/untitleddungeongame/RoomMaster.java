@@ -28,7 +28,8 @@ public class RoomMaster {
 
         for (int[] i : new int[][] {{0,-1}, {0, 1}, {-1, 0}, {1, 0}}) {
             if (currentLoc[0] + i[0] < floorRows && currentLoc[1] + i[1] < floorCols &&
-                    floorMap[currentLoc[0] + i[0]][currentLoc[1] + i[1]] == 0) {
+                    currentLoc[0] + i[0] >= 0 && currentLoc[1] + i[1] >= 0 &&
+                        floorMap[currentLoc[0] + i[0]][currentLoc[1] + i[1]] == 0) {
                 emptyPaths.add(i);
             }
         }
@@ -53,13 +54,13 @@ public class RoomMaster {
      * been found or a call to itself using the path minus the most recently added index
      */
     public ArrayList<int[]> findEmptyPath(ArrayList<int[]> path) {
-        if (getEmptyPaths(path.get(0)).isEmpty()) {
-            if (floorMap[path.get(0)[0]][path.get(0)[1]] == 1) {
-                // About to remove the origin
-                throw new RuntimeException("roomThreshold set too high, number of rooms " +
-                        "required impossible for floor size");
-            }
+        if (floorMap[path.get(0)[0]][path.get(0)[1]] == 1) {
+            // About to remove the origin
+            throw new RuntimeException("roomThreshold set too high, number of rooms " +
+                    "required impossible for floor size");
+        }
 
+        if (getEmptyPaths(path.get(0)).isEmpty()) {
             path.remove(0);
             return findEmptyPath(path);
         } else {
@@ -72,8 +73,10 @@ public class RoomMaster {
      * @param maxRows Maximum rows for the new floor
      * @param maxCols Maximum cols for the new floor
      */
-    private void generateRoomArray(int maxRows, int maxCols, int roomThreshold) {
+    public void generateRoomArray(int maxRows, int maxCols, int roomThreshold) {
         floorMap = new int[maxRows][maxCols];
+        floorRows = maxRows;
+        floorCols = maxCols;
         ArrayList<int[]> path = new ArrayList<>();
 
         roomCount = 0;
@@ -92,17 +95,19 @@ public class RoomMaster {
 
             if (emptyPaths.isEmpty()) {
                 // Start backtracking to find an empty path
-                path = findEmptyPath(path);
-            } else {
-                // Set to a room and move to next (random) location
-                currentLoc = emptyPaths.get((int)(Math.random() * emptyPaths.size()));
-                path.add(0, currentLoc);
-                roomCount++;
-
-                // Set the location in the array to a random room
-                floorMap[currentLoc[0]][currentLoc[1]] =
-                        roomIntList[(int)(Math.random() * roomIntList.length)];
+                currentLoc = findEmptyPath(path).get(0);
             }
+
+            // Set to a room and move to next (random) location
+            int[] randomPath = emptyPaths.get((int)(Math.random() * emptyPaths.size()));
+            currentLoc = new int[] {currentLoc[0] + randomPath[0], currentLoc[1] + randomPath[1]};
+            path.add(0, currentLoc);
+
+
+            // Set the location in the array to a random room
+            floorMap[currentLoc[0]][currentLoc[1]] =
+                    roomIntList[(int)(Math.random() * roomIntList.length)];
+            roomCount++;
         }
 
         // Set last to boss room
@@ -125,5 +130,9 @@ public class RoomMaster {
         this.floorMap = floorMap;
         this.floorRows = floorMap.length;
         this.floorCols = floorMap[0].length;
+    }
+
+    public int getRoomCount() {
+        return roomCount;
     }
 }

@@ -2,6 +2,8 @@ package com.example.untitleddungeongame;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 import com.example.untitleddungeongame.RoomMaster;
 
 import android.util.Log;
@@ -44,7 +46,7 @@ public class RoomMasterTest {
     }
 
     @Test
-    public void findEmptyPathLastEmpty() {
+    public void testFindEmptyPathLastEmpty() {
         RoomMaster roomMaster = new RoomMaster();
         roomMaster.setFloorMap(new int[][] {{0, 6, 3, 5},
                                             {0, 5, 3, 4},
@@ -52,18 +54,25 @@ public class RoomMasterTest {
                                             {0, 0, 0, 2}});
 
         ArrayList<int[]> path = new ArrayList<>();
-        path.add(new int[] {2, 2});
-        path.add(new int[] {2, 3});
-        path.add(new int[] {1, 3});
-        path.add(new int[] {1, 2});
-        path.add(new int[] {0, 2});
-        path.add(new int[] {0, 3});
+        path.add(0, new int[] {2, 2});
+        path.add(0, new int[] {2, 3});
+        path.add(0, new int[] {1, 3});
+        path.add(0, new int[] {1, 2});
+        path.add(0, new int[] {0, 2});
+        path.add(0, new int[] {0, 3});
 
         ArrayList<int[]> expected = new ArrayList<>();
-        expected.add(new int[] {0, 3});
+        expected.add(new int[] {2, 2});
 
         ArrayList<int[]> actual = roomMaster.findEmptyPath(path);
 
         assertArrayEquals(expected.toArray(), actual.toArray());
+    }
+
+    @Test
+    public void testViewFloorMap() {
+        RoomMaster roomMaster = new RoomMaster();
+        roomMaster.generateRoomArray(5, 5, 15);
+        assertTrue(roomMaster.getRoomCount() >= 15);
     }
 }
