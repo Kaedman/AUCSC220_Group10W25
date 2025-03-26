@@ -65,7 +65,7 @@ public class Combat {
      }
 
      public void attackButtonPressed(View button) {
-        if (!inCombat && currentTurn != CurrentTurn.PLAYER_TURN) return;
+        if (!inCombat || currentTurn != CurrentTurn.PLAYER_TURN) return;
 
         int damage = player.getAttack();
         enemy.attack(damage);

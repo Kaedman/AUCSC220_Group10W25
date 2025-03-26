@@ -2,6 +2,7 @@ package com.example.untitleddungeongame.characters;
 
 import com.example.untitleddungeongame.items.Item;
 import com.example.untitleddungeongame.stats.Stat;
+import com.example.untitleddungeongame.stats.StatType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,5 +68,14 @@ public class Character {
 
     public int getHealth() {
         return health;
+    }
+
+    protected Stat getStatModifier(StatType stateType) {
+        for (Stat stat: statusEffects) {
+            if (stat.getType() == stateType){
+                return stat;
+            }
+        }
+        return null;
     }
 }
