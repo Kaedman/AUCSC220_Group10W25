@@ -1,12 +1,45 @@
 package com.example.untitleddungeongame.items;
 
-public interface Item {
-    int count = 0; //Should discuss with group if wanting to be able to carry more than 1 item in a slot
-    //Or only 1 item? If 1 item, why couldn't we just remove item from invetory after use (unless this tracks it)
+import com.example.untitleddungeongame.characters.Character;
 
-    public void use();
+public abstract class Item {
+    private String name;
+    protected int count;
+    private final int maxCount;
 
-    public void drop(int count);
+    public Item(String name, int maxCount) {
+        this.maxCount = maxCount;
+        this.name = name;
+    }
+
+    abstract public boolean use(int position, Character character);
+
+    public void drop(int amount, int position, Item[] storage) {
+        count -= amount;
+        if (count == 0) {
+            remove(position, storage);
+        }
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    protected void remove(int position, Item[] storage) {
+        storage[position] = null;
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public boolean add(int amount) {
+        if (count + amount <= maxCount) { // If the amount is less than the max count
+            count += amount;
+            return true;
+        }
+        return false;
+    }
 
 
 }

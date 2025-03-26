@@ -13,43 +13,38 @@ public class Player extends Character {
 
 
     //Should we super these???
-    public void setHealthWhenHit(int damage) {
-        if (super.health - damage < 0) {
-            health = 0;
-        } else {
-            health -= damage;
+    public boolean addItem(Item item) {
+        boolean itemEquipped = false;
+        for (int i = 0; i < equipped.length; i++) {
+            if (equipped[i] == null) {
+                itemEquipped = item.add(1);
+                equipped[i] = item;
+                break;
+            } else if (equipped[i].getName().equals(item.getName())) {
+                itemEquipped = item.add(1);
+                break;
+            }
         }
-    }
-
-    public void setHealthWhenHeal(int heal) {
-        if (health + heal > 100) {
-            health = 100;
-        } else {
-            health += heal;
+        if (itemEquipped) return true;
+        for (int i = 0; i < inventory.length; i++) {
+            if (inventory[i] == null) {
+                itemEquipped = item.add(1);
+                inventory[i] = item;
+                break;
+            } else if (inventory[i].getName().equals(item.getName())) {
+                itemEquipped = item.add(1);
+                break;
+            }
         }
+        // TODO: Add a way to drop items if inventory is full
+        // TODO: Check if it
+        return itemEquipped;
     }
 
     public int calculateReceivedDamage(int initialDamage){
 
         //Imma just yoink terraria's defense stats. Cry about it
         return initialDamage - defense/2;
-
-    }
-
-    public int getAttack() {
-        return attack;
-    }
-
-    public int getDefense() {
-        return defense;
-    }
-
-    public int getSpeed() {
-        return speed;
-    }
-
-    public int getHealth() {
-        return health;
     }
 }
 

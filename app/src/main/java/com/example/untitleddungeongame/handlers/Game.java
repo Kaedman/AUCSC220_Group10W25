@@ -23,6 +23,7 @@ import com.example.untitleddungeongame.animations.AnimatedSprite;
 import com.example.untitleddungeongame.animations.Animation;
 import com.example.untitleddungeongame.animations.Sprite;
 import com.example.untitleddungeongame.misc.ElapseTime;
+import com.example.untitleddungeongame.ui.ItemBar;
 
 import java.util.HashMap;
 
@@ -63,7 +64,7 @@ public class Game extends SurfaceView implements Runnable {
 
     //Other
     private GameTouchListener touchListener;
-
+    private ItemBar itemBar;
 
     Sprite test;
     Animation animationTest;
@@ -85,6 +86,7 @@ public class Game extends SurfaceView implements Runnable {
         Button attackButton = context.findViewById(R.id.attack_button);
         playerHealth = context.findViewById(R.id.player_health);
         enemyHealth = context.findViewById(R.id.enemy_health);
+        itemBar = new ItemBar(context);
 
         attackButton.setText("Attack");
         itemsButton.setText("Items");
@@ -134,6 +136,9 @@ public class Game extends SurfaceView implements Runnable {
 
         player.playCurrentAnimation();
 
+        itemBar.setOnClick(pos -> {
+            combat.useItem(pos);
+        });
 
         //GameLoop happens Here
         while (doGameLoop){
@@ -203,10 +208,21 @@ public class Game extends SurfaceView implements Runnable {
         if (combat.isInCombat()) {
               combat.runCombat();
               context.runOnUiThread(() -> {
+                  itemBar.displayButtons(combat.showItems);
+                  if (combat.showItems || combat.updateItems) {
+                      itemBar.setItemButtons(combat.player.equipped);
+                      combat.updateItems = false;
+                  }
                   playerHealth.setText("pH: " + combat.player.getHealth());
                   enemyHealth.setText("eH: " + combat.enemy.getHealth());
               });
-         }
+        } else {
+            context.runOnUiThread(() -> {
+//                playerHealth.setText("pH: " + combat.player.getHealth());
+//                enemyHealth.setText("eH: " + combat.enemy.getHealth());
+                itemBar.displayButtons(false);
+            });
+        }
 
 
         //Final Image updates

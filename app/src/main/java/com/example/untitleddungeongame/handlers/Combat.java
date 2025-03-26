@@ -4,6 +4,8 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.untitleddungeongame.characters.Player;
+import com.example.untitleddungeongame.items.heals.Apple;
+import com.example.untitleddungeongame.items.heals.Potion;
 import com.example.untitleddungeongame.misc.ElapseTime;
 
 public class Combat {
@@ -15,6 +17,8 @@ public class Combat {
 
      private ElapseTime elapseTime = new ElapseTime();
      boolean lastTimeSet = false;
+     boolean showItems = false;
+     boolean updateItems = false;
 
      private
      enum CurrentTurn {
@@ -27,6 +31,15 @@ public class Combat {
           itemsButton.setOnClickListener(this::itemsButtonPressed);
           currentTurn = CurrentTurn.PLAYER_TURN;
           inCombat = true;
+          Apple apple = new Apple();
+          Potion potion = new Potion();
+          player.addItem(apple);
+          player.addItem(apple);
+          player.addItem(apple);
+          player.addItem(potion);
+          player.addItem(apple);
+          player.addItem(apple);
+          player.addItem(potion);
      }
 
      public void setCombat(boolean state) {
@@ -44,7 +57,7 @@ public class Combat {
      private void enemyTurn() {
          if (elapseTime.hasTimeElapsed(1000)) {
             int damage = enemy.getAttack();
-            player.setHealthWhenHit(damage);
+            player.attack(damage);
             currentTurn = CurrentTurn.PLAYER_TURN;
             lastTimeSet = false;
          }
@@ -55,16 +68,23 @@ public class Combat {
         if (!inCombat && currentTurn != CurrentTurn.PLAYER_TURN) return;
 
         int damage = player.getAttack();
-        enemy.setHealthWhenHit(damage);
+        enemy.attack(damage);
         currentTurn = CurrentTurn.ENEMY_TURN;
      }
 
     public void itemsButtonPressed(View button) {
-
+        showItems = !showItems;
     }
 
     public boolean isInCombat() {
         return inCombat;
+    }
+
+    public void useItem(int position) {
+        if (player.useItem(position)) {
+            updateItems = true;
+            currentTurn = CurrentTurn.ENEMY_TURN;
+        }
     }
 
 }
