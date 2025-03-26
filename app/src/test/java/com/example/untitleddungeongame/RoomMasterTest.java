@@ -72,7 +72,7 @@ public class RoomMasterTest {
     @Test
     public void testViewFloorMap() {
         RoomMaster roomMaster = new RoomMaster();
-        roomMaster.generateRoomArray(5, 5, 15);
+        roomMaster.generateRoomArray(6, 6, 30);
         assertTrue(roomMaster.getRoomCount() >= 15);
     }
 }

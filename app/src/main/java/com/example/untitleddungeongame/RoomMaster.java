@@ -60,8 +60,10 @@ public class RoomMaster {
                     "required impossible for floor size");
         }
 
+        path.remove(0);
+
         if (getEmptyPaths(path.get(0)).isEmpty()) {
-            path.remove(0);
+
             return findEmptyPath(path);
         } else {
             return path;
@@ -96,6 +98,7 @@ public class RoomMaster {
             if (emptyPaths.isEmpty()) {
                 // Start backtracking to find an empty path
                 currentLoc = findEmptyPath(path).get(0);
+                emptyPaths = getEmptyPaths(currentLoc);
             }
 
             // Set to a room and move to next (random) location
@@ -126,6 +129,10 @@ public class RoomMaster {
         }
     }
 
+    /**
+     * Forces the floorMap to store a passed int[][] value
+     * @param floorMap the new map global floorMap should be set to
+     */
     public void setFloorMap(int[][] floorMap) {
         this.floorMap = floorMap;
         this.floorRows = floorMap.length;
