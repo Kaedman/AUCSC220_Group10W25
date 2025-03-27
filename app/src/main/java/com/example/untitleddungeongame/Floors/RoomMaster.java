@@ -12,11 +12,8 @@ public class RoomMaster {
     private int floorRows;
     private int floorCols;
     private int currentFloor = 1;
-
-    // 0 is no room, 1 is origin, 2 is boss, 3 is encounter, 4 is rest
-    // This array simply indicates which rooms can be randomly chosen from during room generation
-    // (where the origin and boss rooms are reserved)
-    private final int[] roomIntList = {3, 4};
+    private final int DEFAULT_ROOM = 3;
+    private final int REST_COUNT = 3;
 
     /**
      * Finds and returns all currentLoc adjacent values in the floorMap array that have not been
@@ -39,8 +36,9 @@ public class RoomMaster {
         return emptyPaths;
     }
 
-    private Room generateRooms(int maxRows, int maxCols, int roomThreshold) {
+    public Room generateRooms(int maxRows, int maxCols, int roomThreshold) {
         generateRoomArray(maxRows, maxCols, roomThreshold);
+        placeRoom(4, REST_COUNT);
         generateLinkedFloor();
 
         return headRoom;
@@ -108,13 +106,33 @@ public class RoomMaster {
 
 
             // Set the location in the array to a random room
-            floorMap[currentLoc[0]][currentLoc[1]] =
-                    roomIntList[(int)(Math.random() * roomIntList.length)];
+            floorMap[currentLoc[0]][currentLoc[1]] = DEFAULT_ROOM;
             roomCount++;
         }
 
         // Set last to boss room
         floorMap[currentLoc[0]][currentLoc[1]] = 2;
+    }
+
+    /**
+     * Places a specified room that is not the DEFAULT_ROOM count times randomly in the floorMap
+     * @param room the room value to place
+     * @param count the number of the room to place
+     */
+    private void placeRoom(int room, int count) {
+        int row;
+        int col;
+
+        do {
+            row = (int)(Math.random() * floorRows);
+            col = (int)(Math.random() * floorRows);
+        } while (floorMap[row][col] != DEFAULT_ROOM);
+
+        floorMap[row][col] = room;
+
+        if (count > 0) {
+            placeRoom(room, count - 1);
+        }
     }
 
     /**
