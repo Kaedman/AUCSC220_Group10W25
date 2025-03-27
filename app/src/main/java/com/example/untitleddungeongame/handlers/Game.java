@@ -24,6 +24,7 @@ import com.example.untitleddungeongame.animations.Animation;
 import com.example.untitleddungeongame.animations.Sprite;
 import com.example.untitleddungeongame.misc.ElapseTime;
 import com.example.untitleddungeongame.ui.ItemBar;
+import com.example.untitleddungeongame.ui.MapVisuals;
 
 
 import java.util.HashMap;
@@ -44,7 +45,7 @@ public class Game extends SurfaceView implements Runnable {
     private Paint paint;
     private final Paint fill; //https://stackoverflow.com/questions/36717782/how-to-fill-canvas-with-a-color
     //Used for "refreshing" a canvas
-    private final int screenX, screenY;
+    public static int screenX, screenY;
 
     //Used for adaptive scaling. Testing on the given screen resolution,
     //Canvas should scale down or up respectivly
@@ -62,6 +63,7 @@ public class Game extends SurfaceView implements Runnable {
     //Other
     private final AppCompatActivity context;
     private HashMap<AssetID, Bitmap> assets;
+    private MapVisuals map;
 
     //Other
     private GameTouchListener touchListener;
@@ -112,12 +114,16 @@ public class Game extends SurfaceView implements Runnable {
 
         DrawInstructions.phoneSizeX = screenX;
         DrawInstructions.phoneSizeY = screenY;
+        DrawInstructions.clearDrawList();
 
         //Pausing
         isPaused = false; //pausing controlled by leaving app, etc.
         userPaused = false; //Pausing controlled by pause button
 
         itemBar = new ItemBar(context);
+        map = new MapVisuals(5, 5);
+        map.loadFloor1Assets();
+        map.paintBitmap();
     }
 
 
@@ -238,6 +244,7 @@ public class Game extends SurfaceView implements Runnable {
                 itemBar.displayButtons(false);
             });
         }
+
 
         DrawInstructions.drawAll(canvas);
         //Final Image updates
