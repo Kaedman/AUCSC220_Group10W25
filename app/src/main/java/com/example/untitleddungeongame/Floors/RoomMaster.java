@@ -169,24 +169,36 @@ public class RoomMaster {
         //Check Left
         if (col != 0) {
             if (floorMap[row][col - 1] != 0 && currentRoom.getLeft() == null) {
-                nextRoom = createRoom(row, col);
-                createLinkedFloor(nextRoom);
+                if (findRoom(headRoom, row, col - 1) == null) {
+                    nextRoom = createRoom(row, col - 1);
+                    nextRoom.setRightRoom(currentRoom);
+                    currentRoom.setLeftRoom(nextRoom);
+                    createLinkedFloor(nextRoom);
+                }
             }
         }
 
         //Check Right
         if (col != floorMap[row].length) {
             if (floorMap[row][col + 1] != 0 && currentRoom.getLeft() == null) {
-                nextRoom = createRoom(row, col);
-                createLinkedFloor(nextRoom);
+                if (findRoom(headRoom, row, col + 1) == null) {
+                    nextRoom = createRoom(row, col + 1);
+                    nextRoom.setLeftRoom(currentRoom);
+                    currentRoom.setRightRoom(nextRoom);
+                    createLinkedFloor(nextRoom);
+                }
             }
         }
 
         //Check Down
         if (row != floorMap.length) {
             if (floorMap[row + 1][col] != 0 && currentRoom.getUp() == null) {
-                nextRoom = createRoom(row, col);
-                createLinkedFloor(nextRoom);
+                if (findRoom(headRoom, row + 1, col) == null) {
+                    nextRoom = createRoom(row + 1, col);
+                    nextRoom.setUpRoom(currentRoom);
+                    currentRoom.setDownRoom(nextRoom);
+                    createLinkedFloor(nextRoom);
+                }
             }
         }
     }//CreateLinkedFloor
@@ -260,15 +272,11 @@ public class RoomMaster {
                         findRoomRec(currentRoom.getUp(), currentRoom, targetId, returnRoom);
                     } else if (currentRoom.getDown() != null && currentRoom.getDown() != previousRoom) {
                         findRoomRec(currentRoom.getDown(), currentRoom, targetId, returnRoom);
-
-                        //Cant move in any direction except backwards so room not found
-                    } else {
-                        return returnRoom;
                     }
                 }
             }
-
         }
+        return returnRoom;
     }
 
     /**
