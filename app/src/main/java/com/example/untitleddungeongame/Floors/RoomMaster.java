@@ -144,10 +144,12 @@ public class RoomMaster {
         //Check Up
         if (row != 0){
             if(floorMap[row - 1][col] != 0 && currentRoom.getUp() == null){
-               nextRoom = createRoom(row - 1, col);
-               nextRoom.setDownRoom(currentRoom);
-               currentRoom.setUpRoom(nextRoom);
-               createLinkedFloor(nextRoom);
+                if (findRoom(headRoom, row - 1, col) == null) {
+                    nextRoom = createRoom(row - 1, col);
+                    nextRoom.setDownRoom(currentRoom);
+                    currentRoom.setUpRoom(nextRoom);
+                    createLinkedFloor(nextRoom);
+                }
             }
         }
         //Check Left
@@ -210,5 +212,18 @@ public class RoomMaster {
         }
 
         return newRoom;
+    }//createRoom
+
+    //Wrapper for findRoomRec
+    private Room findRoom(Room origin, int targetRow, int targetCol){
+        return findRoomRec(origin, null, ((targetRow * 100) + targetCol), null);
+    }
+
+    private Room findRoomRec(Room currentRoom, Room previousRoom, int targetId, Room returnRoom){
+        if (targetId == currentRoom.getRoomId()){
+            returnRoom = currentRoom;
+        } else {
+            returnRoom = findRoomRec()
+        }
     }
 }
