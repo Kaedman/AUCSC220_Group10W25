@@ -1,6 +1,7 @@
 package com.example.untitleddungeongame.handlers;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.view.View;
+import android.widget.Button;
 
 import com.example.untitleddungeongame.animations.AssetID;
 import com.example.untitleddungeongame.GameTouchListener;
@@ -21,6 +23,9 @@ import com.example.untitleddungeongame.animations.AnimatedSprite;
 import com.example.untitleddungeongame.animations.Animation;
 import com.example.untitleddungeongame.animations.Sprite;
 import com.example.untitleddungeongame.misc.ElapseTime;
+import com.example.untitleddungeongame.ui.ItemBar;
+import com.example.untitleddungeongame.ui.MapVisuals;
+
 
 import java.util.HashMap;
 
@@ -29,17 +34,18 @@ public class Game extends SurfaceView implements Runnable {
 
     //Game Control
     private boolean doGameLoop;
-    private boolean isPaused;
-    private int fps;
+    public static boolean isPaused;
+    public static boolean userPaused;
+    private final int fps;
 
     //Graphics
     private Canvas canvas; //drawing happens here
     private SurfaceHolder surfaceHolder; //Actual visual
 
     private Paint paint;
-    private Paint fill; //https://stackoverflow.com/questions/36717782/how-to-fill-canvas-with-a-color
+    private final Paint fill; //https://stackoverflow.com/questions/36717782/how-to-fill-canvas-with-a-color
     //Used for "refreshing" a canvas
-    private int screenX, screenY;
+    public static int screenX, screenY;
 
     //Used for adaptive scaling. Testing on the given screen resolution,
     //Canvas should scale down or up respectivly
@@ -57,9 +63,11 @@ public class Game extends SurfaceView implements Runnable {
     //Other
     private final AppCompatActivity context;
     private HashMap<AssetID, Bitmap> assets;
+    private MapVisuals map;
 
     //Other
     private GameTouchListener touchListener;
+    private ItemBar itemBar;
 
 
     Sprite test;
@@ -92,8 +100,6 @@ public class Game extends SurfaceView implements Runnable {
         scaleX = (float) screenX / SCREENX_CONST;
         scaleY = (float) screenY / SCREENY_CONST;
         System.out.println(scaleX +  ", " + scaleY);
-        Sprite.globalScaleX = scaleX; //Remove??
-        Sprite.globalScaleY = scaleY;
         //Fixed screen Scaling on smaller devices
         this.surfaceHolder.setFixedSize((SCREENX_CONST),(SCREENY_CONST)); //This fixed the scaling issue for smaller devices
 
@@ -105,6 +111,19 @@ public class Game extends SurfaceView implements Runnable {
 
         touchListener = new GameTouchListener(this);
         gameView.setOnTouchListener(touchListener);
+
+        DrawInstructions.phoneSizeX = screenX;
+        DrawInstructions.phoneSizeY = screenY;
+        DrawInstructions.clearDrawList();
+
+        //Pausing
+        isPaused = false; //pausing controlled by leaving app, etc.
+        userPaused = false; //Pausing controlled by pause button
+
+        itemBar = new ItemBar(context);
+        map = new MapVisuals(5, 5);
+        map.loadFloor1Assets();
+        map.paintBitmap();
     }
 
 
@@ -129,15 +148,37 @@ public class Game extends SurfaceView implements Runnable {
 
         player.playCurrentAnimation();
 
+        itemBar.setOnClick(pos -> {
+            combat.useItem(pos);
+        });
+
+        AnimatedSprite slimeTestAnim = new AnimatedSprite(new Sprite(assets.get(AssetID.ENEMY_SLIME), 32, 32, 9));
+        slimeTestAnim.addAnimation(new Animation("idle", 0, 9, new int[] {150, 94, 74, 94, 300, 94, 74, 94, 150}));
+        slimeTestAnim.setCurrentAnimation("idle");
+        slimeTestAnim.setCurrentRepeat(true);
+        slimeTestAnim.playCurrentAnimation();
+
+        DrawInstructions slimeInstruction = new DrawInstructions(0, 500, slimeTestAnim, 20, 20);
+
 
         //GameLoop happens Here
         while (doGameLoop){
+            if (!isPaused && !userPaused) {
+                try {
+                    draw();
+                }
+                catch (Error e){
+//                    isPaused = true; //Surface seems to be not available, meaning it either changed or was destroyed
+                    //Due to user likley exiting the app momentarly
+                    System.out.println("I broke :(");
+                }
+                try {
+                    Thread.sleep(fps);
+                }
+                catch (InterruptedException e) {
+                    //error
+                }
 
-            draw();
-
-            try { Thread.sleep(fps); }
-            catch (InterruptedException e){
-                //error
             }
             doGameLoop = true; //REMOVE LATER //TODO REMOVE WHEN DONE TESTING
         }
@@ -151,6 +192,8 @@ public class Game extends SurfaceView implements Runnable {
     public void setSurfaceHolder(SurfaceHolder holder){
         surfaceHolder = holder;
     }
+
+
 
     public void setAssets(HashMap assets) { this.assets = assets; }
 
@@ -166,7 +209,9 @@ public class Game extends SurfaceView implements Runnable {
      */
     @SuppressLint("SetTextI18n")
     public void draw(){
+
         if (!surfaceHolder.getSurface().isValid()) return;//check surface is correct
+
         canvas = surfaceHolder.lockCanvas(); //get the current surface as a canvas object, prevent changes to surface
 
         ElapseTime.update(); // Update the current time
@@ -176,10 +221,6 @@ public class Game extends SurfaceView implements Runnable {
         paint.setColor(Color.RED);
 
 
-//        canvas.drawRect(0,0,100,100, paint); //Temp Red square to make sure we did not screw up
-//        test.drawSprite(canvas, paint,100, 100, 500, 500);
-//        test.drawScaled(canvas, 300, 200, 3, 3);
-
         test.setCurrentSprite(animationTest.updateFrame());
         test.drawScaled(canvas, paint,300, 400, 4, 4);
 
@@ -188,19 +229,45 @@ public class Game extends SurfaceView implements Runnable {
         if (combat.isInCombat()) {
               combat.runCombat();
               context.runOnUiThread(() -> {
+                  itemBar.displayButtons(combat.showItems);
+                  if (combat.showItems || combat.updateItems) {
+                      itemBar.setItemButtons(combat.player.equipped);
+                      combat.updateItems = false;
+                  }
                   playerHealth.setText("pH: " + combat.player.getHealth());
                   enemyHealth.setText("eH: " + combat.enemy.getHealth());
               });
-         }
+        } else {
+            context.runOnUiThread(() -> {
+//                playerHealth.setText("pH: " + combat.player.getHealth());
+//                enemyHealth.setText("eH: " + combat.enemy.getHealth());
+                itemBar.displayButtons(false);
+            });
+        }
 
 
+        DrawInstructions.drawAll(canvas);
         //Final Image updates
+
+        if (!surfaceHolder.getSurface().isValid()) return;//check surface is correct
 
         surfaceHolder.unlockCanvasAndPost(canvas); //update the surface
     }
 
     public void onTouchEvent(float touchX, float touchY){
         System.out.println("Touch at : " + touchX + ", " + touchY);
+    }
+
+    public void onPause(){
+        userPaused = true;
+    }
+
+    public void onQuit(){
+
+    }
+
+    public void onResume(){
+        userPaused = false;
     }
 
 }

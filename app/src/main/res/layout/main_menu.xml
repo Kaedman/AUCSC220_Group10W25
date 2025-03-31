@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+
+    android:layout_height="match_parent"
+    android:background="@drawable/sometitleart_highdensity">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="296dp"
+        android:layout_height="104dp"
+        android:layout_marginStart="63dp"
+        android:layout_marginTop="124dp"
+        android:layout_marginEnd="52dp"
+        android:layout_marginBottom="503dp"
+        android:text="Some Untitled Dungeon Game"
+        android:textAlignment="center"
+        android:textColor="#F6F6F6"
+        android:textColorLink="#FFFFFF"
+        android:textSize="34sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/play_button"
+        android:layout_width="150dp"
+        android:layout_height="88dp"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="168dp"
+        android:layout_marginEnd="30dp"
+        android:onClick="buttonPlay"
+        android:text="Play"
+        app:layout_constraintEnd_toStartOf="@+id/newRun"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+    <Button
+        android:id="@+id/newRun"
+        android:layout_width="150dp"
+        android:layout_height="88dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="168dp"
+        android:layout_marginEnd="45dp"
+        android:text="New Run"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/play_button"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+    <Button
+        android:id="@+id/settings"
+        android:layout_width="333dp"
+        android:layout_height="88dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="134dp"
+        android:onClick="buttonSettings"
+        android:text="Settings"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/play_button" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
