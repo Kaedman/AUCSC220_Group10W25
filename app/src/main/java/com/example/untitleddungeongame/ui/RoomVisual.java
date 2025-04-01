@@ -9,6 +9,7 @@ import android.graphics.Rect;
 import com.example.untitleddungeongame.animations.Sprite;
 
 import java.util.Arrays;
+import java.util.Random;
 
 
 /**
@@ -22,15 +23,16 @@ public class RoomVisual {
     private Bitmap looks;
     private Canvas drawer;
     //Dimensions fo the room
-    static private int tilesX = 12;
-    static private int tilesY = 10;
+    static private int tilesX = 9;
+    static private int tilesY = 19;
 
     static private int tilePixelWidth = 32;
     static private int tilePixelHeight = 32;
     static private int floorTileIndex = 1;
     static private int emptyTile = -1;
-    static private int scaleX = 4;
-    static private int scaleY = 4;
+    static private int scaleX = 5;
+    static private int scaleY = 5;
+    static private Random random = new Random();
 
     //Other
     private int[][] mapSpriteData;
@@ -53,7 +55,7 @@ public class RoomVisual {
         for (int y = 0; y < mapSpriteData.length; y ++){
             Arrays.fill(mapSpriteData[y], emptyTile);
         }
-        System.out.println("Done setup");
+
     }
 
     /**
@@ -68,7 +70,7 @@ public class RoomVisual {
         for (int i = 0; i < mapSpriteData[0].length; i ++){
             mapSpriteData[0][i] = getRandomSprite();
         }
-        for (int i = 0; i < mapSpriteData.length; i ++){
+        for (int i = 0; i < mapSpriteData[0].length; i ++){
             mapSpriteData[mapSpriteData.length -1][i] = getRandomSprite();
         }
     }
@@ -84,10 +86,9 @@ public class RoomVisual {
     }
 
     private int getRandomSprite(){
-        double random = Math.random();
-        int arrayLength = allowedTileVisuals.length - 1;
-        return (int) (arrayLength * random);
-
+        return allowedTileVisuals[random.nextInt(allowedTileVisuals.length)];
+        //https://stackoverflow.com/questions/5034370/retrieving-a-random-item-from-arraylist
+        //Getting random element from list, I was using math.Random before
     }
 
     /**
@@ -110,7 +111,7 @@ public class RoomVisual {
         //actual tiles
         for (int yOffset = 0; yOffset <  mapSpriteData.length; yOffset++){
             for (int xOffset = 0; xOffset < mapSpriteData[yOffset].length; xOffset++){
-                System.out.println(mapSpriteData[yOffset][xOffset]);
+
                 if (mapSpriteData[yOffset][xOffset] != emptyTile) {
                     tileVisuals.setCurrentSprite(mapSpriteData[yOffset][xOffset]);
 //                    tileVisuals.setCurrentSprite(0);

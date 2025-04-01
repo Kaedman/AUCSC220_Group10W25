@@ -98,11 +98,12 @@ public class Sprite {
         //Correct the choosen position by offsetting the y position bound
         while (index > collumnAmount){
             index -= collumnAmount;
-            offsetY += spriteY;
+            offsetY++;
+
 
         }
 
-        currentBound.set(index * spriteX, offsetY, spriteX + index * spriteX, spriteY + offsetY);
+        currentBound.set(index * spriteX, offsetY * spriteY, spriteX + index * spriteX, spriteY + offsetY * spriteY);
         /*
         Bug: Sprite draws only on inital frame.
         FIX: Incorrect right and bottom specified, was just sprite X and spriteY, but needed a position greater
