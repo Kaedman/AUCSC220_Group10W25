@@ -25,6 +25,8 @@ import com.example.untitleddungeongame.animations.Sprite;
 import com.example.untitleddungeongame.misc.ElapseTime;
 import com.example.untitleddungeongame.ui.ItemBar;
 import com.example.untitleddungeongame.ui.MapVisuals;
+import com.example.untitleddungeongame.ui.RoomDirection;
+import com.example.untitleddungeongame.ui.RoomVisual;
 
 
 import java.util.HashMap;
@@ -123,7 +125,16 @@ public class Game extends SurfaceView implements Runnable {
         itemBar = new ItemBar(context);
     }
 
+    RoomVisual roomVisual;
+    Sprite tiles;
+    public void testRoomVisuals(){
+        roomVisual = new RoomVisual(new int[] {13,14,15}, RoomDirection.BASE);
+        tiles = new Sprite(assets.get(AssetID.TILESET), 32, 48, 13);
+        RoomVisual.tileVisuals = tiles;
+        roomVisual.generateBaseRoom();
+        roomVisual.generateVisual();
 
+    }
 
     @Override
     public void run() {
@@ -156,6 +167,8 @@ public class Game extends SurfaceView implements Runnable {
         slimeTestAnim.playCurrentAnimation();
 
         DrawInstructions slimeInstruction = new DrawInstructions(0, 500, slimeTestAnim, 20, 20);
+
+        testRoomVisuals();
 
 
         //GameLoop happens Here
@@ -215,6 +228,8 @@ public class Game extends SurfaceView implements Runnable {
         //Drawing
         canvas.drawPaint(fill); //Refresh the canvas
 
+        roomVisual.draw(canvas);
+
         paint.setColor(Color.RED);
 
 
@@ -244,6 +259,7 @@ public class Game extends SurfaceView implements Runnable {
 
 
         DrawInstructions.drawAll(canvas);
+
         //Final Image updates
 
         if (!surfaceHolder.getSurface().isValid()) return;//check surface is correct

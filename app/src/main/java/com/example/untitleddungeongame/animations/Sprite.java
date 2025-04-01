@@ -6,7 +6,7 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 
 public class Sprite {
-    private Bitmap resource;
+    public Bitmap resource;
 
     private Rect currentBound;
     private Rect canvasPosition;
@@ -70,6 +70,17 @@ public class Sprite {
      */
     public void drawScaled(Canvas canvas, int posX, int posY, int scaleX, int scaleY){
         drawScaled(canvas, null, posX, posY, scaleX, scaleY);
+    }
+
+    public void drawBitmapScaled(Canvas canvas, Bitmap bitmap, int posX, int posY, int scaleX, int scaleY){
+        Bitmap updatedBitmap = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas c = new Canvas(updatedBitmap);
+        c.setBitmap(updatedBitmap);
+        c.drawBitmap(bitmap, 0, 0, null);
+        drawScaled(c, posX, posY, scaleX, scaleY);
+
+        canvas = c;
+        bitmap = updatedBitmap;
     }
 
     //TODO: Flip Sprite (for both horizontal and vertical axis)
