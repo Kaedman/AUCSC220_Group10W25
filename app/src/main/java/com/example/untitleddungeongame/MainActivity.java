@@ -7,11 +7,11 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.os.Bundle;
-import android.telecom.Call;
 import android.view.Display;
 import android.view.SurfaceView;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     public Button resumeButton;
     public Button quitButton;
     public Button pauseButton;
+    public ImageButton leftArrow;
 
     MyCallBack myCallBack;
 
@@ -77,11 +78,8 @@ public class MainActivity extends AppCompatActivity {
         resumeButton = findViewById(R.id.resume);
         quitButton = findViewById(R.id.quit);
         pauseButton = findViewById(R.id.pause);
-
         resumeButton.setVisibility(View.GONE);
         quitButton.setVisibility(View.GONE);
-
-
     }
 
     @Override
@@ -124,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
         assets.put(AssetID.BUTTON_INVENTORY, BitmapFactory.decodeResource(resources, R.drawable.buttoninventory));
 
         assets.put(AssetID.HEALTH_BAR, BitmapFactory.decodeResource(resources, R.drawable.healthbar));
-        assets.put(AssetID.CONFIRM_ARROWS, BitmapFactory.decodeResource(resources, R.drawable.confrimationarrows));
+        assets.put(AssetID.CONFIRM_ARROWS, BitmapFactory.decodeResource(resources, R.drawable.leftarrow_active));
     }
 
 
@@ -149,4 +147,19 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public void moveLeft(View v) {
+        v.setEnabled(false);
+    }
+
+    public void moveRight(View v) {
+        v.setEnabled(false);
+    }
+
+    public void moveUp(View v) {
+        v.setEnabled(false);
+    }
+
+    public void moveDown(View v) {
+        v.setEnabled(false);
+    }
 }
