@@ -121,9 +121,6 @@ public class Game extends SurfaceView implements Runnable {
         userPaused = false; //Pausing controlled by pause button
 
         itemBar = new ItemBar(context);
-        map = new MapVisuals(5, 5);
-        map.loadFloor1Assets();
-        map.paintBitmap();
     }
 
 
