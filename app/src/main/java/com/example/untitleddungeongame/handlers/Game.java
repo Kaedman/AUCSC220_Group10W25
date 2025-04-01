@@ -228,7 +228,7 @@ public class Game extends SurfaceView implements Runnable {
         //Drawing
         canvas.drawPaint(fill); //Refresh the canvas
 
-        roomVisual.draw(canvas);
+        roomVisual.draw(canvas, (int)(-RoomVisual.getScaleX() * RoomVisual.getTilePixelWidth() * 0.5), 0);
 
         paint.setColor(Color.RED);
 

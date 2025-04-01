@@ -23,15 +23,15 @@ public class RoomVisual {
     private Bitmap looks;
     private Canvas drawer;
     //Dimensions fo the room
-    static private int tilesX = 9;
-    static private int tilesY = 19;
+    static private int tilesX = 7;
+    static private int tilesY = 14;
 
     static private int tilePixelWidth = 32;
     static private int tilePixelHeight = 32;
     static private int floorTileIndex = 1;
     static private int emptyTile = -1;
-    static private int scaleX = 5;
-    static private int scaleY = 5;
+    static private int scaleX = 7;
+    static private int scaleY = 7;
     static private Random random = new Random();
 
     //Other
@@ -122,12 +122,34 @@ public class RoomVisual {
 
     }
 
-    public void draw(Canvas c){
-        Rect r = new Rect( 0, 0, tilesX * tilePixelWidth * scaleX, tilesY * tilePixelHeight * scaleY);
-        c.drawBitmap(looks, r, r, null);
+    public void draw(Canvas c, int xOffset, int yOffset){
+        Rect canvasPaintLocation = new Rect(xOffset, yOffset, tilesX * tilePixelWidth * scaleX, tilesY * tilePixelHeight * scaleY);
+        Rect bitmapGrab = new Rect(0, 0, tilesX * tilePixelWidth * scaleX, tilesY * tilePixelHeight * scaleY);
+        c.drawBitmap(looks, bitmapGrab, canvasPaintLocation, null);
 
     }
 
+    public static int getTilesX() {
+        return tilesX;
+    }
 
+    public static int getTilesY() {
+        return tilesY;
+    }
 
+    public static int getTilePixelWidth() {
+        return tilePixelWidth;
+    }
+
+    public static int getTilePixelHeight() {
+        return tilePixelHeight;
+    }
+
+    public static int getScaleX() {
+        return scaleX;
+    }
+
+    public static int getScaleY() {
+        return scaleY;
+    }
 }
