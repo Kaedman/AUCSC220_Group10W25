@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Display;
 import android.view.SurfaceView;
 import android.view.View;
@@ -122,7 +123,6 @@ public class MainActivity extends AppCompatActivity {
         assets.put(AssetID.BUTTON_INVENTORY, BitmapFactory.decodeResource(resources, R.drawable.buttoninventory));
 
         assets.put(AssetID.HEALTH_BAR, BitmapFactory.decodeResource(resources, R.drawable.healthbar));
-        assets.put(AssetID.CONFIRM_ARROWS, BitmapFactory.decodeResource(resources, R.drawable.leftarrow_active));
     }
 
 
@@ -149,17 +149,21 @@ public class MainActivity extends AppCompatActivity {
 
     public void moveLeft(View v) {
         v.setEnabled(false);
+        Log.d("left", v.toString());
     }
 
     public void moveRight(View v) {
         v.setEnabled(false);
+        Log.d("right", v.toString());
     }
 
     public void moveUp(View v) {
         v.setEnabled(false);
+        Log.d("up", v.toString());
     }
 
     public void moveDown(View v) {
         v.setEnabled(false);
+        Log.d("down", v.toString());
     }
 }

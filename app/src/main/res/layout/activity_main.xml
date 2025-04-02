@@ -21,11 +21,12 @@
 
     <ImageView
         android:id="@+id/left_arrow"
-        android:layout_width="@dimen/arrow_size"
-        android:layout_height="@dimen/arrow_size"
+        android:layout_width="@dimen/arrow_width"
+        android:layout_height="@dimen/arrow_height"
         android:contentDescription="@string/left_arrow"
+        android:onClick="moveLeft"
         android:padding="0dp"
-        android:scaleType="fitCenter"
+        android:scaleType="centerCrop"
         android:src="@drawable/confirmationarrow3"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -33,25 +34,27 @@
 
     <ImageView
         android:id="@+id/right_arrow"
-        android:layout_width="@dimen/arrow_size"
-        android:layout_height="@dimen/arrow_size"
-        android:contentDescription="@string/right_arrow"
-        android:padding="0dp"
-        android:scaleType="fitCenter"
-        android:src="@drawable/confirmationarrow1"
+        android:layout_width="@dimen/arrow_width"
+        android:layout_height="@dimen/arrow_height"
         android:layout_centerVertical="true"
+        android:contentDescription="@string/right_arrow"
+        android:onClick="moveRight"
+        android:padding="0dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/confirmationarrow1"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/up_arrow"
-        android:layout_width="@dimen/arrow_size"
-        android:layout_height="@dimen/arrow_size"
+        android:layout_width="@dimen/arrow_height"
+        android:layout_height="@dimen/arrow_width"
         android:layout_marginTop="@dimen/top_bottom_arrow_margin"
         android:contentDescription="@string/up_arrow"
+        android:onClick="moveUp"
         android:padding="0dp"
-        android:scaleType="fitCenter"
+        android:scaleType="centerCrop"
         android:src="@drawable/confirmationarrow4"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -59,16 +62,17 @@
 
     <ImageView
         android:id="@+id/down_arrow"
-        android:layout_width="@dimen/arrow_size"
-        android:layout_height="@dimen/arrow_size"
+        android:layout_width="@dimen/arrow_height"
+        android:layout_height="@dimen/arrow_width"
         android:layout_marginBottom="@dimen/top_bottom_arrow_margin"
         android:contentDescription="@string/down_arrow"
+        android:onClick="moveDown"
         android:padding="0dp"
-        android:scaleType="fitCenter"
+        android:scaleType="centerCrop"
         android:src="@drawable/confirmationarrow2"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintRight_toRightOf="parent" />
 
     <Button
         android:id="@+id/attack_button"

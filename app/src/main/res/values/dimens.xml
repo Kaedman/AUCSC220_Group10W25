@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="arrow_size">75dp</dimen>
+    <dimen name="arrow_height">70dp</dimen>
+    <dimen name="arrow_width">30dp</dimen>
     <dimen name="top_bottom_arrow_margin">50dp</dimen>
 </resources>
