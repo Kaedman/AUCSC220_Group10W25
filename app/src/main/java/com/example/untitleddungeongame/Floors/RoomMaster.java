@@ -1,12 +1,14 @@
 package com.example.untitleddungeongame.Floors;
 
+import android.util.Log;
+
 import com.example.untitleddungeongame.Enemy;
 
 import java.util.ArrayList;
 
 public class RoomMaster {
-    private Room headRoom = null;
-    private Room currentRoom = null;
+    private Room headRoom;
+    private Room currentRoom;
     private int roomCount = 0;
     private int[][] floorMap;
     private int floorRows;
@@ -40,11 +42,12 @@ public class RoomMaster {
         return emptyPaths;
     }
 
-    private void generateRooms(int maxRows, int maxCols, int roomThreshold) {
+    public Room generateRooms(int maxRows, int maxCols, int roomThreshold) {
         generateRoomArray(maxRows, maxCols, roomThreshold);
         headRoom = createOrigin();
+        currentRoom = headRoom;
 
-        //return headRoom;
+        return headRoom;
     }
 
     /**
@@ -124,12 +127,16 @@ public class RoomMaster {
      * Sets the currentRoom to a new adjacent room
      *
      * @param destination the room checked for adjacency and moved to
+     * @return the currentRoom if movement was successful, null otherwise
      */
     public void moveToRoom(Room destination) {
-        if (destination.isAdjacent(currentRoom)) {
-            currentRoom = destination;
-        } else {
+        if (destination == null) {
+            throw new java.lang.RuntimeException("Room does not exist");
+        } else if (!destination.isAdjacent(currentRoom)) {
             throw new java.lang.RuntimeException("Room destination is not adjacent to current room");
+        } else {
+            currentRoom = destination;
+            Log.d("New Room: ", String.valueOf(currentRoom.getRoomId()));
         }
     }
 
@@ -142,7 +149,8 @@ public class RoomMaster {
         Room origin = null;
         for (int row = 0; row < floorMap.length; row++) {
             for (int col = 0; col < floorMap[0].length; col++) {
-                if (floorMap[row][col] == 0) {
+                // Kaeden: Fixed a bug where the origin was set when the room value was 0, and not 1
+                if (floorMap[row][col] == 1) {
                     origin = createRoom(row, col);
                 }
             }
@@ -236,7 +244,6 @@ public class RoomMaster {
                 newRoom = null;
                 break;
         }
-
         return newRoom;
     }//createRoom
 
@@ -292,5 +299,13 @@ public class RoomMaster {
 
     public int getRoomCount() {
         return roomCount;
+    }
+
+    public Room getCurrentRoom() {
+        return currentRoom;
+    }
+
+    public int getCurrentFloor() {
+        return currentFloor;
     }
 }
