@@ -138,7 +138,7 @@
     <com.example.untitleddungeongame.ui.CustomDialog
         android:id="@+id/combat_dialog"
         android:layout_width="404dp"
-        android:layout_height="34dp"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="40dp"
         app:layout_constraintBottom_toTopOf="@+id/item_bar"
         app:layout_constraintEnd_toEndOf="parent"

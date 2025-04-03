@@ -3,9 +3,12 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
+
 import com.example.untitleddungeongame.R;
 import com.example.untitleddungeongame.misc.ElapseTime;
 
@@ -14,11 +17,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class CustomDialog extends FrameLayout {
+public class CustomDialog extends LinearLayout {
 
-    private FrameLayout rootView;
+    private LinearLayout rootView;
     private FrameLayout wrapperView;
     private TextView textView;
+    private TextView popupInfo;
 
     private List<String> currentText = new ArrayList<>();
     private int length = 0;
@@ -47,17 +51,20 @@ public class CustomDialog extends FrameLayout {
         rootView = findViewById(R.id.dialog_root);
         wrapperView = findViewById(R.id.dialog_wrapper);
         textView = findViewById(R.id.dialog_text);
+        popupInfo = findViewById(R.id.dialog_info);
+        popupInfo.setText("Tap anywhere on the screen");
 
         closeDialog();
     }
 
-    public void setText(String text, boolean autoClose) {
+    public void setText(String text) {
         currentText = Arrays.asList(text.split(" "));
         length = text.length();
         currantWordIndex = 0;
         isTextSet = true;
         elapseTime.reset();
         rootView.setVisibility(VISIBLE);
+        System.out.println(text);
     }
 
     public void updateText() {

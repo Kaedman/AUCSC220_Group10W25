@@ -57,7 +57,7 @@ public class Presenter {
         updateItems = true;
     }
 
-    public void setDialogText(String text, boolean autoClose) {
+    public void setDialogText(String text) {
         activity.runOnUiThread(() -> {
             combatDialog.setText(text);
         });
