@@ -1,7 +1,7 @@
 package com.example.untitleddungeongame.misc;
 
 public class ElapseTime {
-    static long currentTime = System.currentTimeMillis();
+    static private long currentTime = System.currentTimeMillis();
     private long lastTime = System.currentTimeMillis();
     private boolean lastTimeSet = false;
 
@@ -20,11 +20,39 @@ public class ElapseTime {
             lastTimeSet = true;
         }
 
-        if (currentTime - lastTime > time) {
-            lastTimeSet = false;
-            return true;
-        }
+        if (currentTime - lastTime < time) return false;
 
-        return false;
+        lastTimeSet = false;
+        return true;
     }
+
+    /**
+     * Returns true if the time has elapsed since the last time set
+     * @param time the time to check if it has elapsed in seconds
+     * @return true if the time has elapsed
+     */
+    public boolean hasTimeElapsedSeconds(long time) {
+        return hasTimeElapsed(time * 1000);
+    }
+
+    /**
+     * Returns true if the time has elapsed since the last time set
+     * @param time the time to check if it has elapsed in minutes
+     * @return true if the time has elapsed
+     */
+    public boolean hasTimeElapsedMinutes(long time) {
+        return hasTimeElapsed(time * 60 * 1000);
+    }
+
+    public void reset() {
+        lastTimeSet = false;
+    }
+
+    public static long getCurrentTime() {
+        return currentTime;
+    }
+    public static Double getCurrentTimeSeconds() {
+        return (double) currentTime / 1000;
+    }
+
 }

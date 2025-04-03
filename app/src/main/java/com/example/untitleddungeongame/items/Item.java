@@ -1,9 +1,9 @@
 package com.example.untitleddungeongame.items;
 
-import com.example.untitleddungeongame.characters.Character;
+import com.example.untitleddungeongame.characters.Entity;
 
 public abstract class Item {
-    private String name;
+    private final String name;
     protected int count;
     private final int maxCount;
 
@@ -12,7 +12,7 @@ public abstract class Item {
         this.name = name;
     }
 
-    abstract public boolean use(int position, Character character);
+    abstract public boolean use(int position, Entity character);
 
     public void drop(int amount, int position, Item[] storage) {
         count -= amount;

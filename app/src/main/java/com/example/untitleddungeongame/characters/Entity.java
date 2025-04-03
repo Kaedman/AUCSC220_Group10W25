@@ -7,19 +7,20 @@ import com.example.untitleddungeongame.stats.StatType;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Character {
+public class Entity {
     private String name;
 
     protected int health;
     protected int attack;
     protected int defense;
     protected int speed;
-    public Item[] equipped = new Item[4];
+    protected Item[] equipped = new Item[4];
+    protected String[] attacks = new String[4];
     public List<Stat> statusEffects = new ArrayList<>();
 
     int maxHealth; // Controls max health
 
-    public Character(int health, int attack, int defense, int speed) {
+    public Entity(int health, int attack, int defense, int speed) {
         this.health = health;
         this.attack = attack;
         this.defense = defense;
@@ -30,7 +31,7 @@ public class Character {
 
 
 
-    public void attack(int damage) {
+    public void takeDamage(int damage) {
         if (health - damage < 0) {
             health = 0;
         } else {
@@ -70,6 +71,9 @@ public class Character {
         return health;
     }
 
+    public Item[] getEquipped() {
+        return equipped;
+    }
     protected Stat getStatModifier(StatType stateType) {
         for (Stat stat: statusEffects) {
             if (stat.getType() == stateType){

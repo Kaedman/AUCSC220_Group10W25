@@ -2,7 +2,7 @@ package com.example.untitleddungeongame.characters;
 
 import com.example.untitleddungeongame.items.Item;
 
-public class Player extends Character {
+public class Player extends Entity {
 
     Item[] inventory = new Item[10];
 

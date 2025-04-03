@@ -22,7 +22,9 @@ import com.example.untitleddungeongame.R;
 import com.example.untitleddungeongame.animations.AnimatedSprite;
 import com.example.untitleddungeongame.animations.Animation;
 import com.example.untitleddungeongame.animations.Sprite;
+import com.example.untitleddungeongame.combat.Combat;
 import com.example.untitleddungeongame.misc.ElapseTime;
+import com.example.untitleddungeongame.ui.CustomDialog;
 import com.example.untitleddungeongame.ui.ItemBar;
 import com.example.untitleddungeongame.ui.MapVisuals;
 
@@ -57,13 +59,12 @@ public class Game extends SurfaceView implements Runnable {
     Bitmap bitmap;
     Combat combat;
 
-    private final TextView playerHealth;
-    private final TextView enemyHealth;
 
     //Other
     private final AppCompatActivity context;
     private HashMap<AssetID, Bitmap> assets;
     private MapVisuals map;
+    private CustomDialog dialog;
 
     //Other
     private GameTouchListener touchListener;
@@ -86,15 +87,7 @@ public class Game extends SurfaceView implements Runnable {
         screenY = size.y;
         paint = new Paint();
 
-        Button itemsButton = context.findViewById(R.id.items_button);
-        Button attackButton = context.findViewById(R.id.attack_button);
-        playerHealth = context.findViewById(R.id.player_health);
-        enemyHealth = context.findViewById(R.id.enemy_health);
-
-        attackButton.setText("Attack");
-        itemsButton.setText("Items");
-
-        combat = new Combat(attackButton, itemsButton);
+        combat = new Combat(context);
 
         combat.setCombat(true);
         scaleX = (float) screenX / SCREENX_CONST;
@@ -226,36 +219,16 @@ public class Game extends SurfaceView implements Runnable {
 
         player.updateCurrentAnimation();
         player.drawAnimation(canvas, 600, 200, 20, 20);
-        if (combat.isInCombat()) {
-              combat.runCombat();
-              context.runOnUiThread(() -> {
-                  itemBar.displayButtons(combat.showItems);
-                  if (combat.showItems || combat.updateItems) {
-                      itemBar.setItemButtons(combat.player.equipped);
-                      combat.updateItems = false;
-                  }
-                  playerHealth.setText("pH: " + combat.player.getHealth());
-                  enemyHealth.setText("eH: " + combat.enemy.getHealth());
-              });
-        } else {
-            context.runOnUiThread(() -> {
-//                playerHealth.setText("pH: " + combat.player.getHealth());
-//                enemyHealth.setText("eH: " + combat.enemy.getHealth());
-                itemBar.displayButtons(false);
-            });
-        }
-
+        combat.run();
 
         DrawInstructions.drawAll(canvas);
         //Final Image updates
-
-        if (!surfaceHolder.getSurface().isValid()) return;//check surface is correct
 
         surfaceHolder.unlockCanvasAndPost(canvas); //update the surface
     }
 
     public void onTouchEvent(float touchX, float touchY){
-        System.out.println("Touch at : " + touchX + ", " + touchY);
+        combat.screenTappedOn(touchX, touchY);
     }
 
     public void onPause(){

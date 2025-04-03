@@ -1,8 +1,8 @@
 package com.example.untitleddungeongame.characters;
 
-public class NPC extends Character {
+public class NPC extends Entity {
 
-    public NPC(int health, int attack, int defense, int speed) {
-        super(health, attack, defense, speed);
+    public NPC(int health) {
+        super(health, 10, 10, 10);
     }
 }
