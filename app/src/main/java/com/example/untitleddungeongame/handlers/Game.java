@@ -24,7 +24,7 @@ import com.example.untitleddungeongame.animations.Animation;
 import com.example.untitleddungeongame.animations.Sprite;
 import com.example.untitleddungeongame.misc.ElapseTime;
 import com.example.untitleddungeongame.ui.ItemBar;
-import com.example.untitleddungeongame.ui.RoomDirection;
+
 import com.example.untitleddungeongame.ui.RoomVisual;
 
 
@@ -127,7 +127,7 @@ public class Game extends SurfaceView implements Runnable {
     RoomVisual roomVisual;
     Sprite tiles;
     public void testRoomVisuals(){
-        roomVisual = new RoomVisual(new int[] {7,8,9}, RoomDirection.BASE);
+        roomVisual = new RoomVisual(new int[] {7,8,9});
         tiles = new Sprite(assets.get(AssetID.TILESET), 32, 48, 13);
         RoomVisual.tileVisuals = tiles;
         roomVisual.generateBaseRoom();

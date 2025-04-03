@@ -43,12 +43,12 @@ public class RoomVisual {
     private int[][] mapSpriteData;
     private int[] allowedTileVisuals;
 
-    public RoomDirection roomDirecitionType;
 
-    public RoomVisual(int[] allowedTileIndexs, RoomDirection directionType){
+
+    public RoomVisual(int[] allowedTileIndexs){
         mapSpriteData = new int[tilesY][tilesX];
         allowedTileVisuals = allowedTileIndexs;
-        roomDirecitionType = directionType;
+
 
         looks = Bitmap.createBitmap(tilesX * tilePixelWidth * scaleX, tilesY * tilePixelHeight * scaleY, Bitmap.Config.ARGB_8888);
         drawer = new Canvas(looks);
