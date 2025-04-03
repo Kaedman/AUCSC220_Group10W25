@@ -16,6 +16,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 
+import com.example.untitleddungeongame.Floors.Room;
+import com.example.untitleddungeongame.Floors.RoomMaster;
 import com.example.untitleddungeongame.animations.AssetID;
 import com.example.untitleddungeongame.GameTouchListener;
 import com.example.untitleddungeongame.R;
@@ -121,16 +123,26 @@ public class Game extends SurfaceView implements Runnable {
         userPaused = false; //Pausing controlled by pause button
 
         itemBar = new ItemBar(context);
-        map = new MapVisuals(5, 5);
-        map.loadFloor1Assets();
-        map.paintBitmap();
+
     }
+
+
+    RoomMaster floor;
+    int roomX = 5;
+    int roomY = 5;
+    public void floorGenerationTest(){
+//        floor.setFloorMap(new int[roomX][roomY]);
+        floor = new RoomMaster();
+        floor.generateRoomArray(roomX, roomY, 10);
+        System.out.println(floor);
+    }
+
 
 
 
     @Override
     public void run() {
-
+        floorGenerationTest();
 
         test = new Sprite(assets.get(AssetID.PLAYER), 32, 32, 4);
 
