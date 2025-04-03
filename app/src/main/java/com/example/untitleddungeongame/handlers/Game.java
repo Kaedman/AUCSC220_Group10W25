@@ -24,7 +24,6 @@ import com.example.untitleddungeongame.animations.Animation;
 import com.example.untitleddungeongame.animations.Sprite;
 import com.example.untitleddungeongame.misc.ElapseTime;
 import com.example.untitleddungeongame.ui.ItemBar;
-import com.example.untitleddungeongame.ui.MapVisuals;
 import com.example.untitleddungeongame.ui.RoomDirection;
 import com.example.untitleddungeongame.ui.RoomVisual;
 
@@ -65,7 +64,7 @@ public class Game extends SurfaceView implements Runnable {
     //Other
     private final AppCompatActivity context;
     private HashMap<AssetID, Bitmap> assets;
-    private MapVisuals map;
+
 
     //Other
     private GameTouchListener touchListener;
@@ -132,6 +131,10 @@ public class Game extends SurfaceView implements Runnable {
         tiles = new Sprite(assets.get(AssetID.TILESET), 32, 48, 13);
         RoomVisual.tileVisuals = tiles;
         roomVisual.generateBaseRoom();
+        roomVisual.setEntrances(true, true, true, true);
+        roomVisual.fixEntrances();
+
+
         roomVisual.generateVisual();
 
     }

@@ -33,6 +33,11 @@ public class RoomVisual {
     static private int scaleX = 7;
     static private int scaleY = 7;
     static private Random random = new Random();
+    //Enterances
+    public boolean entranceUp = false;
+    public boolean entranceLeft = false;
+    public boolean entranceRight = false;
+    public boolean entranceDown = false;
 
     //Other
     private int[][] mapSpriteData;
@@ -58,6 +63,7 @@ public class RoomVisual {
 
     }
 
+
     /**
      * Generates a basic room, where it creates 4 enterances into the room and a outline of tiles
      */
@@ -75,12 +81,37 @@ public class RoomVisual {
         }
     }
 
+    public void setEntrances(boolean up, boolean left, boolean right, boolean down){
+        entranceUp = up;
+        entranceLeft = left;
+        entranceRight = right;
+        entranceDown = down;
+    }
+
     /**
      * Opens up enterances where they should be
      */
-    private void fixEnterances(){
-        switch(roomDirecitionType){
+    public void fixEntrances(){
+        //Calculate Edge Midpoints
+        int verticalEdgeMidpoint = mapSpriteData.length/2;
+        int horizontalEdgeMidpoint = mapSpriteData[0].length/2;
+        //Ease of access + reading
+        int top = 0;
+        int bottom = mapSpriteData.length -1;
+        int left = 0;
+        int right = mapSpriteData[0].length -1;
 
+        if (entranceUp){
+            mapSpriteData[top][horizontalEdgeMidpoint] = -1;
+        }
+        if (entranceLeft){
+            mapSpriteData[verticalEdgeMidpoint][left] = -1;
+        }
+        if (entranceRight){
+            mapSpriteData[verticalEdgeMidpoint][right] = -1;
+        }
+        if (entranceDown){
+            mapSpriteData[bottom][horizontalEdgeMidpoint] = -1;
         }
 
     }
