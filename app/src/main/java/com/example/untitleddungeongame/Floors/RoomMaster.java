@@ -38,6 +38,9 @@ public class RoomMaster {
 
     public Room generateRooms(int maxRows, int maxCols, int roomThreshold) {
         generateRoomArray(maxRows, maxCols, roomThreshold);
+        headRoom = createOrigin();
+        currentRoom = headRoom;
+        createLinkedFloor(headRoom);
         placeRoom(4, REST_COUNT);
         generateLinkedFloor();
 
