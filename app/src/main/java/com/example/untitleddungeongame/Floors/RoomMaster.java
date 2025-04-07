@@ -1,5 +1,7 @@
 package com.example.untitleddungeongame.Floors;
 
+import android.util.Log;
+
 import com.example.untitleddungeongame.Enemy;
 
 import java.util.ArrayList;
@@ -142,8 +144,9 @@ public class RoomMaster {
         Room origin = null;
         for (int row = 0; row < floorMap.length; row++) {
             for (int col = 0; col < floorMap[0].length; col++) {
-                if (floorMap[row][col] == 0) {
+                if (floorMap[row][col] == 1) {
                     origin = createRoom(row, col);
+
                 }
             }
         }
