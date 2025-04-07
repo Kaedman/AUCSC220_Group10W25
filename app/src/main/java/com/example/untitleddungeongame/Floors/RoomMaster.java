@@ -296,4 +296,18 @@ public class RoomMaster {
     public int getRoomCount() {
         return roomCount;
     }
+
+    @Override
+    public String toString(){
+        StringBuilder construct = new StringBuilder();
+
+        for (int y = 0; y < floorMap.length; y ++){
+            for (int x = 0; x < floorMap[y].length; x++){
+                construct.append(" " + floorMap[y][x] + " ");
+            }
+            construct.append('\n');
+
+        }
+        return construct.toString();
+    }
 }

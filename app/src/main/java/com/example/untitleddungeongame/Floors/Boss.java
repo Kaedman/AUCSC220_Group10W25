@@ -19,8 +19,9 @@ public class Boss extends Room {
 
         return isCleared;
     }
-
-    private Room getNewFloor() {
-        return RoomMaster.generateRooms();
+    RoomMaster nextFloor;
+    private RoomMaster getNewFloor() {
+        nextFloor.generateRoomArray(5, 5, 10);
+        return nextFloor;
     }
 }
