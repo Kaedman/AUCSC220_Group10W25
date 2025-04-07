@@ -7,8 +7,8 @@ import com.example.untitleddungeongame.Enemy;
 import java.util.ArrayList;
 
 public class RoomMaster {
-    private Room headRoom;
-    private Room currentRoom;
+    private Room headRoom = null;
+    private Room currentRoom = null;
     private int roomCount = 0;
     private int[][] floorMap;
     private int floorRows;
@@ -127,7 +127,6 @@ public class RoomMaster {
      * Sets the currentRoom to a new adjacent room
      *
      * @param destination the room checked for adjacency and moved to
-     * @return the currentRoom if movement was successful, null otherwise
      */
     public void moveToRoom(Room destination) {
         if (destination == null) {
@@ -244,6 +243,7 @@ public class RoomMaster {
                 newRoom = null;
                 break;
         }
+
         return newRoom;
     }//createRoom
 
@@ -307,5 +307,19 @@ public class RoomMaster {
 
     public int getCurrentFloor() {
         return currentFloor;
+    }
+
+    @Override
+    public String toString(){
+        StringBuilder construct = new StringBuilder();
+
+        for (int y = 0; y < floorMap.length; y ++){
+            for (int x = 0; x < floorMap[y].length; x++){
+                construct.append(" " + floorMap[y][x] + " ");
+            }
+            construct.append('\n');
+
+        }
+        return construct.toString();
     }
 }
