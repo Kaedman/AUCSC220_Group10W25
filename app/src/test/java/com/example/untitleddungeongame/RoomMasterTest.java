@@ -77,13 +77,13 @@ public class RoomMasterTest {
     @Test
     public void TestRoomGenOrigin(){
         RoomMaster roomMaster = new RoomMaster();
-        roomMaster.setFloorMap(new int[][] {{4, 3, 2, 0},
+        roomMaster.setFloorMap(new int[][] {{4, 3, 0, 1},
                                             {0, 3, 0, 4},
-                                            {0, 4, 1, 2},
-                                            {0, 0, 0, 2}});
+                                            {2, 4, 1, 2},
+                                            {4, 0, 0, 2}});
         roomMaster.setHead(roomMaster.createFloor());
-        int actualId = roomMaster.getHead().getRight().getRoomId();
-        int expectedId = 203;
+        int actualId = roomMaster.getHead().getRight().getUp().getUp().getRoomId();
+        int expectedId = 3;
 
         assertEquals(actualId, expectedId);
     }

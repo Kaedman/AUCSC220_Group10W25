@@ -22,7 +22,7 @@ public class Room {
     }
 
     public Room getRight() {
-        return up;
+        return right;
     }
 
     public Room getUp() {

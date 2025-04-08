@@ -240,16 +240,38 @@ public class RoomMaster {
                     if ((cursorRoom.getRoomId() % 100) == (aboveRoomCursor.getRoomId() % 100)){
                         cursorRoom.setUpRoom(aboveRoomCursor);
                         aboveRoomCursor.setDownRoom(cursorRoom);
+                        cursorRoom = cursorRoom.getRight();
+                        aboveRoomCursor = aboveRoomCursor.getRight();
                     } else if ((cursorRoom.getRoomId() % 100) > (aboveRoomCursor.getRoomId() % 100)){
                         aboveRoomCursor = aboveRoomCursor.getRight();
                     } else {
                         cursorRoom = cursorRoom.getRight();
                     }
                 }
+
+                //Remove Side links for gaps in map
+                aboveRoomCursor = aboveRowHead.getRight();
+                while (aboveRoomCursor != null){
+                    if(((aboveRoomCursor.getLeft().getRoomId() % 100) + 1) != (aboveRoomCursor.getRoomId() % 100)){
+                        aboveRoomCursor.getLeft().setRightRoom(null);
+                        aboveRoomCursor.setLeftRoom(null);
+                    }
+                    aboveRoomCursor = aboveRoomCursor.getRight();
+                }
             }
             //Move aboveRoom down a row
             aboveRowHead = cursorRowHead;
         }//row for loop
+
+        //Remove Side links for gaps in map for final row
+        aboveRoomCursor = aboveRowHead.getRight();
+        while (aboveRoomCursor != null){
+            if(((aboveRoomCursor.getLeft().getRoomId() % 100) + 1) != (aboveRoomCursor.getRoomId() % 100)){
+                aboveRoomCursor.getLeft().setRightRoom(null);
+                aboveRoomCursor.setLeftRoom(null);
+            }
+            aboveRoomCursor = aboveRoomCursor.getRight();
+        }
 
         return origin;
     }//createFloor
