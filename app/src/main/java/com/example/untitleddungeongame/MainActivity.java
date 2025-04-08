@@ -12,6 +12,7 @@ import android.view.Display;
 import android.view.SurfaceView;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -81,6 +82,8 @@ public class MainActivity extends AppCompatActivity {
         resumeButton.setVisibility(View.GONE);
         quitButton.setVisibility(View.GONE);
 
+        //Pause Button Jank, By: Cole
+        pauseButton.setAlpha(0);
 
     }
 

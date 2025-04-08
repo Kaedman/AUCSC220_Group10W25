@@ -85,10 +85,10 @@
 
     <Button
         android:id="@+id/pause"
-        android:layout_width="74dp"
-        android:layout_height="47dp"
-        android:layout_marginStart="292dp"
-        android:layout_marginTop="48dp"
+        android:layout_width="54dp"
+        android:layout_height="66dp"
+        android:layout_marginStart="316dp"
+        android:layout_marginTop="64dp"
         android:onClick="onPause"
         android:text="| |"
         app:layout_constraintStart_toStartOf="parent"
@@ -132,5 +132,15 @@
             android:layout_weight="1"
             android:text="Button" />
     </LinearLayout>
+
+    <ImageView
+        android:id="@+id/pauseVisual"
+        android:layout_width="52dp"
+        android:layout_height="66dp"
+        android:layout_marginTop="64dp"
+        android:layout_marginEnd="40dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/buttonpause" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
