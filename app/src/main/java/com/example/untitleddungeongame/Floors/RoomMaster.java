@@ -201,30 +201,23 @@ public class RoomMaster {
     }
 
     public Room createFloor(){
-        Room cursorRoom = null;
-        Room prevRoom = null;
-        Room aboveRoom = null;
-        Room aboveRowHead = null;
         Room origin = null;
+        Room prevRoom = null;
+        Room cursorRowHead = null;
+        Room cursorRoom = null;
+        Room aboveRowHead = null;
+        Room aboveRoomCursor = null;
 
         for (int row = 0; row < floorMap.length; row++){
+            cursorRowHead = null;
+            prevRoom = null;
+            //Make each room for the current row and links them together ignoring gaps.
             for (int col = 0; col < floorMap[row].length; col++){
                 if (floorMap[row][col] != 0){
                     cursorRoom = createRoom(row, col);
 
-                    //Link Above
-                    if (aboveRowHead != null){
-                        aboveRoom = aboveRowHead;
-                        //finds Room along above row
-                        while (aboveRoom != null){
-                            if (aboveRoom.getRoomId() % 100 == cursorRoom.getRoomId() % 100){
-                                aboveRoom.setDownRoom(cursorRoom);
-                                cursorRoom.setUpRoom(aboveRoom);
-                                break;
-                            } else {
-                                aboveRoom = aboveRoom.getRight();
-                            }
-                        }
+                    if (cursorRowHead == null){
+                        cursorRowHead = cursorRoom;
                     }
 
                     if (floorMap[row][col] == 1){
@@ -238,16 +231,24 @@ public class RoomMaster {
                     prevRoom = cursorRoom;
                 }
             }//col for loop
-            //cleans side links for above row
+            //Link the above row verticals with the current row
+            if (aboveRowHead != null) {
+                cursorRoom = cursorRowHead;
+                aboveRoomCursor = aboveRowHead;
 
-
-            //Move aboveRoom down a row
-            aboveRowHead = cursorRoom;
-            while (aboveRowHead.getLeft() != null){
-                aboveRowHead = aboveRowHead.getLeft();
+                while (cursorRoom != null && aboveRoomCursor != null){
+                    if ((cursorRoom.getRoomId() % 100) == (aboveRoomCursor.getRoomId() % 100)){
+                        cursorRoom.setUpRoom(aboveRoomCursor);
+                        aboveRoomCursor.setDownRoom(cursorRoom);
+                    } else if ((cursorRoom.getRoomId() % 100) > (aboveRoomCursor.getRoomId() % 100)){
+                        aboveRoomCursor = aboveRoomCursor.getRight();
+                    } else {
+                        cursorRoom = cursorRoom.getRight();
+                    }
+                }
             }
-            prevRoom = null;
-
+            //Move aboveRoom down a row
+            aboveRowHead = cursorRowHead;
         }//row for loop
 
         return origin;

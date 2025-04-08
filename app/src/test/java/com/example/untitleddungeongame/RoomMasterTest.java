@@ -82,8 +82,8 @@ public class RoomMasterTest {
                                             {0, 4, 1, 2},
                                             {0, 0, 0, 2}});
         roomMaster.setHead(roomMaster.createFloor());
-        int actualId = roomMaster.getHead().getLeft().getUp().getUp().getRoomId();
-        int expectedId = 1;
+        int actualId = roomMaster.getHead().getRight().getRoomId();
+        int expectedId = 203;
 
         assertEquals(actualId, expectedId);
     }
