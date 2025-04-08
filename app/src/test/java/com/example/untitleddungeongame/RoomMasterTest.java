@@ -73,4 +73,19 @@ public class RoomMasterTest {
         roomMaster.generateRoomArray(6, 6, 30);
         assertTrue(roomMaster.getRoomCount() >= 15);
     }
+
+    @Test
+    public void TestRoomGenOrigin(){
+        RoomMaster roomMaster = new RoomMaster();
+        roomMaster.setFloorMap(new int[][] {{4, 3, 2, 0},
+                                            {0, 3, 0, 4},
+                                            {0, 4, 1, 2},
+                                            {0, 0, 0, 2}});
+        roomMaster.setHead(roomMaster.createFloor());
+        int actualId = roomMaster.getHead().getLeft().getUp().getUp().getRoomId();
+        int expectedId = 1;
+
+        assertEquals(actualId, expectedId);
+    }
+
 }

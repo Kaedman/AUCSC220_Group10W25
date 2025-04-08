@@ -42,11 +42,9 @@ public class RoomMaster {
         return emptyPaths;
     }
 
-    private void generateRooms(int maxRows, int maxCols, int roomThreshold) {
+    public void generateRooms(int maxRows, int maxCols, int roomThreshold) {
         generateRoomArray(maxRows, maxCols, roomThreshold);
         headRoom = createFloor();
-
-        //return headRoom;
     }
 
     /**
@@ -203,79 +201,62 @@ public class RoomMaster {
     }
 
     public Room createFloor(){
-        Room currentRoom = null;
+        Room cursorRoom = null;
         Room prevRoom = null;
         Room aboveRoom = null;
+        Room aboveRowHead = null;
         Room origin = null;
 
-        //check first position
-        if (floorMap[0][0] != 0){
-            prevRoom = createRoom(0,0);
-            aboveRoom = prevRoom;
-            if (floorMap[0][0] == 1){
-                origin = prevRoom;
-            }
-        }
-
-        //Create first row of rooms
-        for (int i = 1; i < floorMap[0].length; i++){
-            if (floorMap[0][i] != 0){
-                currentRoom = createRoom(0, i);
-                if (floorMap[0][i - 1] != 0 && prevRoom.getRoomId() % 100 == i-1){
-                    currentRoom.setLeftRoom(prevRoom);
-                    prevRoom.setRightRoom(currentRoom);
-                }
-                if (floorMap[0][i] == 1){
-                    origin = currentRoom;
-                }
-            }
-            prevRoom = currentRoom;
-        }
-
-        aboveRoom = prevRoom;
-        while (aboveRoom.getLeft() != null){
-            aboveRoom = aboveRoom.getLeft();
-        }
-
-        //Create Rest of Rooms so vertical can be checked.
-        for (int row = 1; row < floorMap.length; row++){
-            if (floorMap[row][0] != 0){
-               prevRoom = createRoom(row, 0);
-                if (floorMap[row][0] == 1){
-                    origin = prevRoom;
-                }
-            }
-
-            for (int col = 1; col < floorMap[row].length; col++){
+        for (int row = 0; row < floorMap.length; row++){
+            for (int col = 0; col < floorMap[row].length; col++){
                 if (floorMap[row][col] != 0){
-                    currentRoom = createRoom(row, col);
+                    cursorRoom = createRoom(row, col);
 
-                    //Check previous
-                    if (floorMap[row][col - 1] != 0 && prevRoom.getRoomId() % 100 == col - 1){
-                        currentRoom.setLeftRoom(prevRoom);
-                        prevRoom.setRightRoom(currentRoom);
-                    }
-
-                    //Check Above
-                    if (floorMap[row - 1][col] != 0 && aboveRoom.getRoomId() / 100 == row - 1){
-                        currentRoom.setUpRoom(aboveRoom);
-                        aboveRoom.setDownRoom(currentRoom);
+                    //Link Above
+                    if (aboveRowHead != null){
+                        aboveRoom = aboveRowHead;
+                        //finds Room along above row
+                        while (aboveRoom != null){
+                            if (aboveRoom.getRoomId() % 100 == cursorRoom.getRoomId() % 100){
+                                aboveRoom.setDownRoom(cursorRoom);
+                                cursorRoom.setUpRoom(aboveRoom);
+                                break;
+                            } else {
+                                aboveRoom = aboveRoom.getRight();
+                            }
+                        }
                     }
 
                     if (floorMap[row][col] == 1){
-                        origin = currentRoom;
+                        origin = cursorRoom;
                     }
+
+                    if (prevRoom != null) {
+                        cursorRoom.setLeftRoom(prevRoom);
+                        prevRoom.setRightRoom(cursorRoom);
+                    }
+                    prevRoom = cursorRoom;
                 }
-                prevRoom = currentRoom;
-                aboveRoom = aboveRoom.getRight();
-            }
+            }//col for loop
+            //cleans side links for above row
+
 
             //Move aboveRoom down a row
-            aboveRoom = aboveRoom.getDown();
-            while (aboveRoom.getLeft() != null){
-                aboveRoom = aboveRoom.getLeft();
+            aboveRowHead = cursorRoom;
+            while (aboveRowHead.getLeft() != null){
+                aboveRowHead = aboveRowHead.getLeft();
             }
-        }
+            prevRoom = null;
+
+        }//row for loop
+
         return origin;
     }//createFloor
+
+    public Room getHead(){
+        return headRoom;
+    }
+    public void setHead(Room newHead){
+        headRoom = newHead;
+    }
 }
