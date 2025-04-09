@@ -7,6 +7,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
+import android.graphics.Rect;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.widget.Button;
@@ -25,6 +26,7 @@ import com.example.untitleddungeongame.combat.Combat;
 import com.example.untitleddungeongame.misc.ElapseTime;
 import com.example.untitleddungeongame.ui.CustomDialog;
 import com.example.untitleddungeongame.ui.OutputText;
+import com.example.untitleddungeongame.ui.Particle;
 import com.example.untitleddungeongame.ui.RoomVisual;
 
 
@@ -123,6 +125,7 @@ public class Game extends SurfaceView implements Runnable {
         roomVisual.generateVisual();
 
     }
+    Particle testP;
 
     @Override
     public void run() {
@@ -154,17 +157,17 @@ public class Game extends SurfaceView implements Runnable {
 
         testRoomVisuals();
 
-
         //GameLoop happens Here
         while (doGameLoop){
             if (!isPaused && !userPaused) {
                 try {
+
                     draw();
                 }
                 catch (Error e){
 //                    isPaused = true; //Surface seems to be not available, meaning it either changed or was destroyed
                     //Due to user likley exiting the app momentarly
-                    System.out.println("I broke :(");
+
                 }
                 try {
                     Thread.sleep(fps);
@@ -206,6 +209,8 @@ public class Game extends SurfaceView implements Runnable {
         //Drawing
         canvas.drawPaint(fill); //Refresh the canvas
 
+
+
         roomVisual.draw(canvas, (int)(-RoomVisual.getScaleX() * RoomVisual.getTilePixelWidth() * 0.5), 0);
 
         paint.setColor(Color.RED);
@@ -223,6 +228,8 @@ public class Game extends SurfaceView implements Runnable {
         drawHealthBar(canvas, 600, 900, pHP, pMAXHP, 300, 30);
 
         DrawInstructions.drawAll(canvas);
+
+
 
         //Final Image updates
 

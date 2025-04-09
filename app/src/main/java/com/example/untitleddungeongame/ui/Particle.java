@@ -4,7 +4,6 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.provider.Telephony;
 
 public class Particle {
 
@@ -12,7 +11,9 @@ public class Particle {
     private int lifeTimer, lifeTimerMax;
     private float velocityX, velocityY;
 
-    private float frictionX, frictionY;
+    private float velocityChangeX, velocityChangeY;
+
+    public boolean alive;
     //Technical
     //Could use particles not purley for visuals, but for moving x or y points
 
@@ -31,8 +32,9 @@ public class Particle {
     public Particle(int positionX, int positionY, float velocityX, float velocityY, float frictionX, float frictionY, int maxLifeTime){
         posX = positionX; posY = positionY;
         this.velocityX = velocityX; this.velocityY = velocityY;
-        this.frictionX = frictionX; this.frictionY = frictionY;
+        this.velocityChangeX = frictionX; this.velocityChangeY = frictionY;
         lifeTimerMax = maxLifeTime;
+        alive = true;
 
     }
 
@@ -41,29 +43,88 @@ public class Particle {
     }
 
     public Particle(int positionX, int positionY, int maxLifeTime){
-        this(positionX, positionY, 0, 0, 1, 1, maxLifeTime);
+        this(positionX, positionY, 0, 0, 0, 0, maxLifeTime);
     }
 
     public void update(){
-        posX += (int)(frictionX * velocityX);
-        posY += (int)(frictionY * velocityY);
+
+        alive = (lifeTimer <= lifeTimerMax);
+
+        if (alive) {
+            lifeTimer ++;
+            posX += velocityX;
+            posY -= velocityY;
+            velocityY += velocityChangeY;
+            velocityX += velocityChangeX;
+
+        }
+
+    }
+
+    public void setCurrentLifeTime(int newTime){
+        lifeTimer = newTime;
+    }
+    public void setMaxLifeTime(int newMax){
+        lifeTimerMax = newMax;
+    }
+
+
+    public void setPosX(int posX) {
+        this.posX = posX;
+    }
+
+    public void setPosY(int posY) {
+        this.posY = posY;
+    }
+
+    public void setVelocityX(float velocityX) {
+        this.velocityX = velocityX;
+    }
+
+    public void setVelocityY(float velocityY) {
+        this.velocityY = velocityY;
+    }
+
+    public void setVelocityChangeX(float velocityChangeX) {
+        this.velocityChangeX = velocityChangeX;
+    }
+
+    public void setVelocityChangeY(float velocityChangeY) {
+        this.velocityChangeY = velocityChangeY;
     }
 
     //Actual visuals
     private Bitmap visual;
     int visualSizeX, visualSizeY;
 
-    public void setVisual(Bitmap bitmap){
+    public void setVisualBitmap(Bitmap bitmap){
         visual = bitmap;
         visualSizeX = bitmap.getWidth();
         visualSizeY = bitmap.getHeight();
     }
 
+    /**
+     * Creates a rectangle visual
+     * @param rect - rect for visual
+     * @param color - color of rect
+     */
+    public void setVisualRect(Rect rect, int color){
+        visual = Bitmap.createBitmap(rect.right, rect.bottom, Bitmap.Config.ARGB_8888);
+        Canvas c = new Canvas(visual);
+        c.setBitmap(visual);
+
+        Paint p = new Paint();
+        p.setColor(color);
+        c.drawRect(rect, p);
+    }
+
+
     public void drawVisual(Canvas canvas, Paint p, int xDisplace, int yDisplace, int scaleX, int scaleY){
         Rect r = new Rect(0, 0, visualSizeX, visualSizeY);
         Rect toDraw = new Rect(posX + xDisplace, posY + yDisplace, (posX + xDisplace) + visualSizeX * scaleX, (posY + yDisplace) + visualSizeY * scaleY);
 
-        canvas.drawBitmap(visual, r, toDraw, p);
+//        canvas.drawBitmap(visual, r, toDraw, p);
+        canvas.drawBitmap(visual, posX + xDisplace, posY + yDisplace, null);
     }
 
     public void drawVisual(Canvas canvas, Paint p, int scaleX, int scaleY){
