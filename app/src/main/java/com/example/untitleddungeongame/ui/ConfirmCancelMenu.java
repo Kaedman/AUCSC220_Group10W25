@@ -30,10 +30,6 @@ public class ConfirmCancelMenu extends LinearLayout {
 
     private void init(Context context, RoomMaster roomMaster) {
         this.roomMaster = roomMaster;
-        LayoutParams layoutParams = new LayoutParams(
-                LayoutParams.MATCH_PARENT,
-                LayoutParams.WRAP_CONTENT
-        );
         LayoutInflater.from(context).inflate(R.layout.confirm_cancel_menu, this, true);
         rootView = findViewById(R.id.confirm_cancel_menu);
         confirmButton = findViewById(R.id.confirm);
@@ -42,7 +38,7 @@ public class ConfirmCancelMenu extends LinearLayout {
 
     public void onConfirm(View v) {
         if (roomMaster.getCurrentRoom() instanceof Rest) {
-            roomMaster.useRest();
+            //roomMaster.useRest();
             enterRest(); // Should be updated if there are any other triggers added in enterRest,
             // right now just used to update the dialog
         } else if (roomMaster.getCurrentRoom() instanceof Boss) {

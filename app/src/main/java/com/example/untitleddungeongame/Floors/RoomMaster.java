@@ -48,8 +48,8 @@ public class RoomMaster {
         return emptyPaths;
     }
 
+
     public void generateRooms(int maxRows, int maxCols, int roomThreshold) {
-    public Room generateRooms(int maxRows, int maxCols, int roomThreshold) {
         generateRoomArray(maxRows, maxCols, roomThreshold);
         headRoom = createFloor();
     }

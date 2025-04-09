@@ -26,6 +26,7 @@ import com.example.untitleddungeongame.Floors.RoomMaster;
 import com.example.untitleddungeongame.animations.AssetID;
 import com.example.untitleddungeongame.characters.Player;
 import com.example.untitleddungeongame.handlers.Game;
+import com.example.untitleddungeongame.ui.Arrows;
 import com.example.untitleddungeongame.ui.CustomDialog;
 import com.example.untitleddungeongame.ui.PauseMenu;
 
@@ -36,9 +37,10 @@ public class MainActivity extends AppCompatActivity {
     //Declarations
     SurfaceView gameView;
     public boolean gameLaunched;
-    public Button pauseButton;
+
 
     PauseMenu pauseMenu;
+    Button pauseButton;
 
     MyCallBack myCallBack;
     Player player;
@@ -87,14 +89,11 @@ public class MainActivity extends AppCompatActivity {
         player = new Player(10);
 
         roomMaster = new RoomMaster(player);
-
-        //roomMaster.generateRooms(STARTING_ROWS, STARTING_COLS, STARTING_THRESHOLD);
+        roomMaster.generateRooms(STARTING_ROWS, STARTING_COLS, STARTING_THRESHOLD);
 
         Arrows arrows = findViewById(R.id.arrows);
         arrows.setRoomMaster(roomMaster);
 
-        resumeButton = findViewById(R.id.resume);
-        quitButton = findViewById(R.id.quit);
         pauseButton = findViewById(R.id.pause);
         pauseButton.setAlpha(0.0f);
         pauseMenu = findViewById(R.id.pause_menu_main);
@@ -147,7 +146,6 @@ public class MainActivity extends AppCompatActivity {
         assets.put(AssetID.BUTTON_INVENTORY, BitmapFactory.decodeResource(resources, R.drawable.buttoninventory));
 
         assets.put(AssetID.HEALTH_BAR, BitmapFactory.decodeResource(resources, R.drawable.healthbar));
-        assets.put(AssetID.CONFIRM_ARROWS, BitmapFactory.decodeResource(resources, R.drawable.confrimationarrows));
     }
 
 
