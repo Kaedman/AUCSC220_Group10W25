@@ -6,7 +6,7 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 
 public class Sprite {
-    private Bitmap resource;
+    public Bitmap resource;
 
     private Rect currentBound;
     private Rect canvasPosition;
@@ -72,6 +72,17 @@ public class Sprite {
         drawScaled(canvas, null, posX, posY, scaleX, scaleY);
     }
 
+    public void drawBitmapScaled(Canvas canvas, Bitmap bitmap, int posX, int posY, int scaleX, int scaleY){
+        Bitmap updatedBitmap = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas c = new Canvas(updatedBitmap);
+        c.setBitmap(updatedBitmap);
+        c.drawBitmap(bitmap, 0, 0, null);
+        drawScaled(c, posX, posY, scaleX, scaleY);
+
+        canvas = c;
+        bitmap = updatedBitmap;
+    }
+
     //TODO: Flip Sprite (for both horizontal and vertical axis)
 
 
@@ -87,11 +98,12 @@ public class Sprite {
         //Correct the choosen position by offsetting the y position bound
         while (index > collumnAmount){
             index -= collumnAmount;
-            offsetY += spriteY;
+            offsetY++;
+
 
         }
 
-        currentBound.set(index * spriteX, offsetY, spriteX + index * spriteX, spriteY + offsetY);
+        currentBound.set(index * spriteX, offsetY * spriteY, spriteX + index * spriteX, spriteY + offsetY * spriteY);
         /*
         Bug: Sprite draws only on inital frame.
         FIX: Incorrect right and bottom specified, was just sprite X and spriteY, but needed a position greater

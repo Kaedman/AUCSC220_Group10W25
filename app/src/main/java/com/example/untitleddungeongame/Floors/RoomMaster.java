@@ -48,12 +48,10 @@ public class RoomMaster {
         return emptyPaths;
     }
 
+    public void generateRooms(int maxRows, int maxCols, int roomThreshold) {
     public Room generateRooms(int maxRows, int maxCols, int roomThreshold) {
         generateRoomArray(maxRows, maxCols, roomThreshold);
-        headRoom = createOrigin();
-        currentRoom = headRoom;
-
-        return headRoom;
+        headRoom = createFloor();
     }
 
     /**
@@ -135,86 +133,13 @@ public class RoomMaster {
      * @param destination the room checked for adjacency and moved to
      */
     public void moveToRoom(Room destination) {
-        if (destination == null) {
-            throw new java.lang.RuntimeException("Room does not exist");
-        } else if (!destination.isAdjacent(currentRoom)) {
-            throw new java.lang.RuntimeException("Room destination is not adjacent to current room");
-        } else {
+        if (destination.isAdjacent(currentRoom)) {
             currentRoom = destination;
-            Log.d("New Room: ", String.valueOf(currentRoom.getRoomId()));
+        } else {
+            throw new java.lang.RuntimeException("Room destination is not adjacent to current room");
         }
     }
 
-    /**
-     * Finds the origin on the floor map and creates the room to start making other rooms
-     *
-     * @return The origin room to be used as the head room.
-     */
-    private Room createOrigin() {
-        Room origin = null;
-        for (int row = 0; row < floorMap.length; row++) {
-            for (int col = 0; col < floorMap[0].length; col++) {
-                // Kaeden: Fixed a bug where the origin was set when the room value was 0, and not 1
-                if (floorMap[row][col] == 1) {
-                    origin = createRoom(row, col);
-                }
-            }
-        }
-        return origin;
-    }//createOrigin
-
-    private void createLinkedFloor(Room currentRoom) {
-        Room nextRoom;
-        int row = currentRoom.getRoomId() / 100;
-        int col = currentRoom.getRoomId() % 100;
-
-        //Check Up
-        if (row != 0) {
-            if (floorMap[row - 1][col] != 0 && currentRoom.getUp() == null) {
-                if (findRoom(headRoom, row - 1, col) == null) {
-                    nextRoom = createRoom(row - 1, col);
-                    nextRoom.setDownRoom(currentRoom);
-                    currentRoom.setUpRoom(nextRoom);
-                    createLinkedFloor(nextRoom);
-                }
-            }
-        }
-        //Check Left
-        if (col != 0) {
-            if (floorMap[row][col - 1] != 0 && currentRoom.getLeft() == null) {
-                if (findRoom(headRoom, row, col - 1) == null) {
-                    nextRoom = createRoom(row, col - 1);
-                    nextRoom.setRightRoom(currentRoom);
-                    currentRoom.setLeftRoom(nextRoom);
-                    createLinkedFloor(nextRoom);
-                }
-            }
-        }
-
-        //Check Right
-        if (col != floorMap[row].length) {
-            if (floorMap[row][col + 1] != 0 && currentRoom.getLeft() == null) {
-                if (findRoom(headRoom, row, col + 1) == null) {
-                    nextRoom = createRoom(row, col + 1);
-                    nextRoom.setLeftRoom(currentRoom);
-                    currentRoom.setRightRoom(nextRoom);
-                    createLinkedFloor(nextRoom);
-                }
-            }
-        }
-
-        //Check Down
-        if (row != floorMap.length) {
-            if (floorMap[row + 1][col] != 0 && currentRoom.getUp() == null) {
-                if (findRoom(headRoom, row + 1, col) == null) {
-                    nextRoom = createRoom(row + 1, col);
-                    nextRoom.setUpRoom(currentRoom);
-                    currentRoom.setDownRoom(nextRoom);
-                    createLinkedFloor(nextRoom);
-                }
-            }
-        }
-    }//CreateLinkedFloor
 
     private Room createRoom(int row, int col) {
         Room newRoom;
@@ -253,49 +178,6 @@ public class RoomMaster {
         return newRoom;
     }//createRoom
 
-    //Wrapper for findRoomRec
-    private Room findRoom(Room origin, int targetRow, int targetCol) {
-        return findRoomRec(origin, null, ((targetRow * 100) + targetCol), null);
-    }
-
-    private Room findRoomRec(Room currentRoom, Room previousRoom, int targetId, Room returnRoom) {
-        int row = currentRoom.getRoomId() / 100;
-        int col = currentRoom.getRoomId() % 100;
-        if (targetId == currentRoom.getRoomId()) {
-            returnRoom = currentRoom;
-        } else {
-            //Match Y first
-            if (row < (targetId / 100) && currentRoom.getUp() != null && currentRoom.getUp() != previousRoom) {
-                findRoomRec(currentRoom.getUp(), currentRoom, targetId, returnRoom);
-            } else if (row > (targetId / 100) && currentRoom.getDown() != null && currentRoom.getDown() != previousRoom) {
-                findRoomRec(currentRoom.getDown(), currentRoom, targetId, returnRoom);
-            } else {
-                //Match X next
-                if (col < (targetId % 100) && currentRoom.getRight() != null && currentRoom.getRight() != previousRoom) {
-                    findRoomRec(currentRoom.getRight(), currentRoom, targetId, returnRoom);
-                } else if (col > (targetId % 100) && currentRoom.getLeft() != null && currentRoom.getLeft() != previousRoom) {
-                    findRoomRec(currentRoom.getLeft(), currentRoom, targetId, returnRoom);
-                } else {
-                    //Can't move in optimal direction so go anywhere possible
-                    if (currentRoom.getRight() != null && currentRoom.getRight() != previousRoom) {
-                        findRoomRec(currentRoom.getRight(), currentRoom, targetId, returnRoom);
-                    } else if (currentRoom.getLeft() != null && currentRoom.getLeft() != previousRoom) {
-                        findRoomRec(currentRoom.getLeft(), currentRoom, targetId, returnRoom);
-                    } else if (currentRoom.getUp() != null && currentRoom.getUp() != previousRoom) {
-                        findRoomRec(currentRoom.getUp(), currentRoom, targetId, returnRoom);
-                    } else if (currentRoom.getDown() != null && currentRoom.getDown() != previousRoom) {
-                        findRoomRec(currentRoom.getDown(), currentRoom, targetId, returnRoom);
-                    }
-                }
-            }
-        }
-        return returnRoom;
-    }
-
-    public void useRest() {
-        ((Rest) currentRoom).useRest(player);
-    }
-
     /**
      * Forces the floorMap to store a passed int[][] value
      *
@@ -331,5 +213,88 @@ public class RoomMaster {
 
         }
         return construct.toString();
+    }
+
+    public Room createFloor(){
+        Room origin = null;
+        Room prevRoom = null;
+        Room cursorRowHead = null;
+        Room cursorRoom = null;
+        Room aboveRowHead = null;
+        Room aboveRoomCursor = null;
+
+        for (int row = 0; row < floorMap.length; row++){
+            cursorRowHead = null;
+            prevRoom = null;
+            //Make each room for the current row and links them together ignoring gaps.
+            for (int col = 0; col < floorMap[row].length; col++){
+                if (floorMap[row][col] != 0){
+                    cursorRoom = createRoom(row, col);
+
+                    if (cursorRowHead == null){
+                        cursorRowHead = cursorRoom;
+                    }
+
+                    if (floorMap[row][col] == 1){
+                        origin = cursorRoom;
+                    }
+
+                    if (prevRoom != null) {
+                        cursorRoom.setLeftRoom(prevRoom);
+                        prevRoom.setRightRoom(cursorRoom);
+                    }
+                    prevRoom = cursorRoom;
+                }
+            }//col for loop
+            //Link the above row verticals with the current row
+            if (aboveRowHead != null) {
+                cursorRoom = cursorRowHead;
+                aboveRoomCursor = aboveRowHead;
+
+                while (cursorRoom != null && aboveRoomCursor != null){
+                    if ((cursorRoom.getRoomId() % 100) == (aboveRoomCursor.getRoomId() % 100)){
+                        cursorRoom.setUpRoom(aboveRoomCursor);
+                        aboveRoomCursor.setDownRoom(cursorRoom);
+                        cursorRoom = cursorRoom.getRight();
+                        aboveRoomCursor = aboveRoomCursor.getRight();
+                    } else if ((cursorRoom.getRoomId() % 100) > (aboveRoomCursor.getRoomId() % 100)){
+                        aboveRoomCursor = aboveRoomCursor.getRight();
+                    } else {
+                        cursorRoom = cursorRoom.getRight();
+                    }
+                }
+
+                //Remove Side links for gaps in map
+                aboveRoomCursor = aboveRowHead.getRight();
+                while (aboveRoomCursor != null){
+                    if(((aboveRoomCursor.getLeft().getRoomId() % 100) + 1) != (aboveRoomCursor.getRoomId() % 100)){
+                        aboveRoomCursor.getLeft().setRightRoom(null);
+                        aboveRoomCursor.setLeftRoom(null);
+                    }
+                    aboveRoomCursor = aboveRoomCursor.getRight();
+                }
+            }
+            //Move aboveRoom down a row
+            aboveRowHead = cursorRowHead;
+        }//row for loop
+
+        //Remove Side links for gaps in map for final row
+        aboveRoomCursor = aboveRowHead.getRight();
+        while (aboveRoomCursor != null){
+            if(((aboveRoomCursor.getLeft().getRoomId() % 100) + 1) != (aboveRoomCursor.getRoomId() % 100)){
+                aboveRoomCursor.getLeft().setRightRoom(null);
+                aboveRoomCursor.setLeftRoom(null);
+            }
+            aboveRoomCursor = aboveRoomCursor.getRight();
+        }
+
+        return origin;
+    }//createFloor
+
+    public Room getHead(){
+        return headRoom;
+    }
+    public void setHead(Room newHead){
+        headRoom = newHead;
     }
 }

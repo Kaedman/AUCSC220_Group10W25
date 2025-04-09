@@ -8,11 +8,13 @@ public class Room {
     //Room ids are a 4 digit numbers, the first 2 digits are the row number, the last 2 digits are
     //the column numbers.
     private int roomId;
+
     public Room(int roomId) {
         this.left = null;
         this.right = null;
         this.up = null;
         this.down = null;
+        roomId = 0;
         this.roomId = roomId;
     }
 
@@ -22,7 +24,7 @@ public class Room {
     }
 
     public Room getRight() {
-        return up;
+        return right;
     }
 
     public Room getUp() {
@@ -35,6 +37,7 @@ public class Room {
     public int getRoomId(){
         return roomId;
     }
+
 
     //Setters
     public void setLeftRoom(Room adjacentRoom){
@@ -49,6 +52,10 @@ public class Room {
     public void setUpRoom(Room adjacentRoom){
         this.up = adjacentRoom;
     }
+    public void setRoomId (int id){
+        this.roomId = id;
+    }
+
     /**
      * Gets each of a rooms adjacent rooms (left, right, up, down) and returns them in the form of
      * an array of Rooms

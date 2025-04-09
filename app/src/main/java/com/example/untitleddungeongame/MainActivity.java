@@ -26,7 +26,8 @@ import com.example.untitleddungeongame.Floors.RoomMaster;
 import com.example.untitleddungeongame.animations.AssetID;
 import com.example.untitleddungeongame.characters.Player;
 import com.example.untitleddungeongame.handlers.Game;
-import com.example.untitleddungeongame.ui.Arrows;
+import com.example.untitleddungeongame.ui.CustomDialog;
+import com.example.untitleddungeongame.ui.PauseMenu;
 
 import java.util.HashMap;
 
@@ -35,15 +36,9 @@ public class MainActivity extends AppCompatActivity {
     //Declarations
     SurfaceView gameView;
     public boolean gameLaunched;
-    public Button resumeButton;
-    public Button quitButton;
     public Button pauseButton;
-    public Button confirmButton;
-    public Button cancelButton;
-    public ImageView leftArrow;
-    public ImageView rightArrow;
-    public ImageView upArrow;
-    public ImageView downArrow;
+
+    PauseMenu pauseMenu;
 
     MyCallBack myCallBack;
     Player player;
@@ -101,14 +96,19 @@ public class MainActivity extends AppCompatActivity {
         resumeButton = findViewById(R.id.resume);
         quitButton = findViewById(R.id.quit);
         pauseButton = findViewById(R.id.pause);
+        pauseButton.setAlpha(0.0f);
+        pauseMenu = findViewById(R.id.pause_menu_main);
+        pauseMenu.disable(true);
 
-        resumeButton.setVisibility(View.GONE);
-        quitButton.setVisibility(View.GONE);
+        pauseMenu.setOnQuitClickListener(this::onQuit);
+        pauseMenu.setOnResumeClickListener(this::onResume);
+
     }
 
     @Override
     protected void onPause(){
         Game.isPaused = true;
+        pauseMenu.disable(false);
         super.onPause();
 
     }
@@ -116,6 +116,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume(){
         Game.isPaused = false;
+        pauseMenu.disable(true);
         super.onResume();
     }
 
@@ -123,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy(){
         super.onDestroy();
         System.out.println("DESTROYED GAME");
-
+        pauseMenu.setVisibility(View.GONE);
     }
 
     @SuppressLint("UseCompatLoadingForDrawables")
@@ -146,19 +147,19 @@ public class MainActivity extends AppCompatActivity {
         assets.put(AssetID.BUTTON_INVENTORY, BitmapFactory.decodeResource(resources, R.drawable.buttoninventory));
 
         assets.put(AssetID.HEALTH_BAR, BitmapFactory.decodeResource(resources, R.drawable.healthbar));
+        assets.put(AssetID.CONFIRM_ARROWS, BitmapFactory.decodeResource(resources, R.drawable.confrimationarrows));
     }
+
 
     public void onResume(View v){
         Game.userPaused = false;
-        resumeButton.setVisibility(View.GONE);
-        quitButton.setVisibility(View.GONE);
+        pauseMenu.disable(true);
         pauseButton.setVisibility(View.VISIBLE);
         System.out.println("Resumed");
     }
     public void onPause(View v){
         Game.userPaused = true;
-        resumeButton.setVisibility(View.VISIBLE);
-        quitButton.setVisibility(View.VISIBLE);
+        pauseMenu.disable(false);
         pauseButton.setVisibility(View.GONE);
         System.out.println("Paused");
     }

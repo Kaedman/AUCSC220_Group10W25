@@ -4,6 +4,10 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
+import com.example.untitleddungeongame.Floors.Encounter;
+import com.example.untitleddungeongame.Floors.Rest;
+import com.example.untitleddungeongame.Floors.Room;
+
 /**
  * Example local unit test, which will execute on the development machine (host).
  *
@@ -14,4 +18,17 @@ public class ExampleUnitTest {
     public void addition_isCorrect() {
         assertEquals(4, 2 + 2);
     }
+
+    //Just testing room joining.
+    @Test
+    public void TestRoomJoining() {
+        Enemy enemy = new Enemy("Test", 5, 5, 2);
+        Encounter enemyRoom = new Encounter(0010, enemy);
+        Rest restRoom = new Rest(0020);
+        enemyRoom.setLeftRoom(restRoom);
+        restRoom.setRightRoom(enemyRoom);
+        Room currentRoom = restRoom;
+        currentRoom.setUpRoom(enemyRoom);
+    }
+
 }

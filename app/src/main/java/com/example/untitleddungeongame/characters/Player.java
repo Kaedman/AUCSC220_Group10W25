@@ -1,14 +1,15 @@
 package com.example.untitleddungeongame.characters;
 
-import com.example.untitleddungeongame.items.Item;
+import com.example.untitleddungeongame.hotbar.attacks.Attack;
+import com.example.untitleddungeongame.hotbar.items.Item;
 
-public class Player extends Character {
+public class Player extends Entity {
 
     Item[] inventory = new Item[10];
 
 
     public Player(int health) {
-        super(health, 10, 10, 10);
+        super("Player", health, 10, 10, 10);
     }
 
 
@@ -39,6 +40,19 @@ public class Player extends Character {
         // TODO: Add a way to drop items if inventory is full
         // TODO: Check if it
         return itemEquipped;
+    }
+
+    public boolean addAttack(Attack attack) {
+        for (int i = 0; i < attacks.length; i++) {
+            if (attacks[i] != null && attack.getName().equals(attacks[i].getName())) {
+                return false;
+            }
+            if (attacks[i] == null) {
+                attacks[i] = attack;
+                return true;
+            }
+        }
+        return false;
     }
 
     public int calculateReceivedDamage(int initialDamage){
