@@ -1,6 +1,6 @@
 package com.example.untitleddungeongame.hotbar.items.heals;
 
-import com.example.untitleddungeongame.characters.Entity;
+import com.example.untitleddungeongame.entity.Entity;
 import com.example.untitleddungeongame.hotbar.items.Item;
 
 public class Apple extends Item {

@@ -1,6 +1,6 @@
 package com.example.untitleddungeongame.hotbar.items;
 
-import com.example.untitleddungeongame.characters.Entity;
+import com.example.untitleddungeongame.entity.Entity;
 import com.example.untitleddungeongame.hotbar.HotBarInfo;
 
 public abstract class Item extends HotBarInfo {

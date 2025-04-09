@@ -1,4 +1,4 @@
-package com.example.untitleddungeongame.characters;
+package com.example.untitleddungeongame.entity;
 
 import com.example.untitleddungeongame.hotbar.attacks.Attack;
 import com.example.untitleddungeongame.hotbar.items.Item;

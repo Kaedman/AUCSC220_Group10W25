@@ -1,4 +1,4 @@
-package com.example.untitleddungeongame.characters;
+package com.example.untitleddungeongame.entity;
 
 import android.util.Pair;
 

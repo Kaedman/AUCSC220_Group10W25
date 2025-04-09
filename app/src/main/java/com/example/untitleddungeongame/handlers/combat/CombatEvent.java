@@ -1,6 +1,6 @@
 package com.example.untitleddungeongame.handlers.combat;
 
-import com.example.untitleddungeongame.characters.Entity;
+import com.example.untitleddungeongame.entity.Entity;
 
 public class CombatEvent {
     private Entity source;

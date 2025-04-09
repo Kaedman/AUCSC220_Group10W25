@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.untitleddungeongame.misc.OutputText;
 import com.example.untitleddungeongame.R;
-import com.example.untitleddungeongame.characters.Entity;
+import com.example.untitleddungeongame.entity.Entity;
 import com.example.untitleddungeongame.hotbar.attacks.Attack;
 import com.example.untitleddungeongame.hotbar.items.Item;
 import com.example.untitleddungeongame.ui.hotbar.HotBar;
