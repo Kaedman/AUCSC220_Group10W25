@@ -38,7 +38,6 @@ public class Room {
         return roomId;
     }
 
-    public int getRoomId(){ return roomId; }
 
     //Setters
     public void setLeftRoom(Room adjacentRoom){

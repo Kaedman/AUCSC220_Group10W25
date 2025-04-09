@@ -9,10 +9,8 @@ import java.util.ArrayList;
 public class RoomMaster {
     private Room headRoom = null;
     private Room currentRoom = null;
-    private int roomCount;
     private int roomCount = 0;
     private int[][] floorMap;
-    private int currentFloor;
     private int floorRows;
     private int floorCols;
     private int currentFloor = 1;
