@@ -174,7 +174,7 @@ public class Game extends SurfaceView implements Runnable {
                 }
 
             }
-            doGameLoop = true; //REMOVE LATER //TODO REMOVE WHEN DONE TESTING
+
         }
 
     }
@@ -270,7 +270,7 @@ public class Game extends SurfaceView implements Runnable {
      * @param maxHP - Max hp of entity
      */
     private void drawHealthBar(Canvas c, int x, int y, int currentHP, int maxHP, int barWidth, int barHeight){
-        float currentPercent = (float)(currentHP/maxHP);
+        float currentPercent = ((float)currentHP)/maxHP;
 
         Paint p = new Paint();
         p.setColor(Color.RED);

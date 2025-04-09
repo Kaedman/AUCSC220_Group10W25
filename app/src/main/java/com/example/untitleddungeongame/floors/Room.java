@@ -22,7 +22,16 @@ public class Room {
         roomId = 0;
         this.roomId = roomId;
 
+        setUpLooks();
+
+    }
+
+    public void setUpLooks(){
         looks = new RoomVisual(currentTileGen);
+        looks.setEntrances((up != null), (left != null), (right != null), (down != null));
+        looks.generateBaseRoom();
+        looks.fixEntrances();
+        looks.generateVisual();
     }
 
     //Getters
