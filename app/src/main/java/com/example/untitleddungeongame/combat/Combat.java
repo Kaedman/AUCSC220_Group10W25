@@ -89,4 +89,7 @@ public class Combat {
         controller.screenTapped();
     }
 
+    public Player getPlayer() {
+        return player;
+    }
 }

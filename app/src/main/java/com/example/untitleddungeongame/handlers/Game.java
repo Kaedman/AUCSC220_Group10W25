@@ -222,6 +222,11 @@ public class Game extends SurfaceView implements Runnable {
         combat.run();
         context.runOnUiThread(this::runOnUiThread);
 
+        int pHP = combat.getPlayer().getHealth();
+        int pMAXHP = combat.getPlayer().getMaxHealth();
+
+        drawHealthBar(canvas, 600, 900, pHP, pMAXHP, 300, 30);
+
         DrawInstructions.drawAll(canvas);
 
         //Final Image updates
@@ -263,14 +268,20 @@ public class Game extends SurfaceView implements Runnable {
 
     /**
      * Helper for visualization of hp
-     * @param c
-     * @param x
-     * @param y
-     * @param currentHP
-     * @param maxHP
+     * @param c - canvas
+     * @param x - positionX
+     * @param y - positionY
+     * @param currentHP - Current Hp of entity
+     * @param maxHP - Max hp of entity
      */
-    private void drawHealthBar(Canvas c, int x, int y, int currentHP, int maxHP){
+    private void drawHealthBar(Canvas c, int x, int y, int currentHP, int maxHP, int barWidth, int barHeight){
+        float currentPercent = (float)(currentHP/maxHP);
 
+        Paint p = new Paint();
+        p.setColor(Color.RED);
+        c.drawRect(x, y, x + barWidth, y + barHeight, p);
+        p.setColor(Color.GREEN);
+        c.drawRect(x, y, x + barWidth * currentPercent, y + barHeight, p);
     }
 
 }

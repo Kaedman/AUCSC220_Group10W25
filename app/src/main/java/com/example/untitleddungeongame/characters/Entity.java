@@ -67,6 +67,8 @@ public class Entity {
         return health;
     }
 
+    public int getMaxHealth() {return maxHealth;}
+
     public String getName() {
         return name;
     }
