@@ -1,4 +1,4 @@
-package com.example.untitleddungeongame.Floors;
+package com.example.untitleddungeongame.floors;
 
 public class Room {
     private Room left;

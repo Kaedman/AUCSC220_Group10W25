@@ -15,7 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.view.View;
 
-import com.example.untitleddungeongame.animations.AssetID;
+import com.example.untitleddungeongame.Assets;
 import com.example.untitleddungeongame.GameTouchListener;
 import com.example.untitleddungeongame.R;
 import com.example.untitleddungeongame.animations.AnimatedSprite;
@@ -62,7 +62,6 @@ public class Game extends SurfaceView implements Runnable {
 
     //Other
     private final AppCompatActivity context;
-    private HashMap<AssetID, Bitmap> assets;
 
 
     //Other
@@ -85,8 +84,8 @@ public class Game extends SurfaceView implements Runnable {
         dialogBox = context.findViewById(R.id.combat_dialog);
 
         combat = new Combat(context);
-
         combat.setCombat(true);
+
         scaleX = (float) screenX / SCREENX_CONST;
         scaleY = (float) screenY / SCREENY_CONST;
         System.out.println(scaleX +  ", " + scaleY);
@@ -116,7 +115,7 @@ public class Game extends SurfaceView implements Runnable {
     Sprite tiles;
     public void testRoomVisuals(){
         roomVisual = new RoomVisual(new int[] {7,8,9});
-        tiles = new Sprite(assets.get(AssetID.TILESET), 32, 48, 13);
+        tiles = new Sprite(Assets.AssetID.TILESET, 32, 48, 13);
         RoomVisual.tileVisuals = tiles;
         roomVisual.generateBaseRoom();
         roomVisual.setEntrances(true, true, true, true);
@@ -131,7 +130,7 @@ public class Game extends SurfaceView implements Runnable {
     public void run() {
 
 
-        test = new Sprite(assets.get(AssetID.PLAYER), 32, 32, 4);
+        test = new Sprite(Assets.AssetID.PLAYER, 32, 32, 4);
 
         animationTest = new Animation("Idle", 0, 4, new int[]{84, 84, 124, 400});
         animationTest.setRepeat(true);
@@ -147,7 +146,7 @@ public class Game extends SurfaceView implements Runnable {
 
         player.playCurrentAnimation();
 
-        AnimatedSprite slimeTestAnim = new AnimatedSprite(new Sprite(assets.get(AssetID.ENEMY_SLIME), 32, 32, 9));
+        AnimatedSprite slimeTestAnim = new AnimatedSprite(new Sprite(Assets.AssetID.ENEMY_SLIME, 32, 32, 9));
         slimeTestAnim.addAnimation(new Animation("idle", 0, 9, new int[] {150, 94, 74, 94, 300, 94, 74, 94, 150}));
         slimeTestAnim.setCurrentAnimation("idle");
         slimeTestAnim.setCurrentRepeat(true);
@@ -189,10 +188,6 @@ public class Game extends SurfaceView implements Runnable {
     public void setSurfaceHolder(SurfaceHolder holder){
         surfaceHolder = holder;
     }
-
-
-
-    public void setAssets(HashMap assets) { this.assets = assets; }
 
     /**
     Draw instructions for all visuals relevant to the game

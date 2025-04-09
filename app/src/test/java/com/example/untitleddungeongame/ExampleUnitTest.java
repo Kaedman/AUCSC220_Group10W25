@@ -4,9 +4,9 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-import com.example.untitleddungeongame.Floors.Encounter;
-import com.example.untitleddungeongame.Floors.Rest;
-import com.example.untitleddungeongame.Floors.Room;
+import com.example.untitleddungeongame.floors.Encounter;
+import com.example.untitleddungeongame.floors.Rest;
+import com.example.untitleddungeongame.floors.Room;
 
 /**
  * Example local unit test, which will execute on the development machine (host).

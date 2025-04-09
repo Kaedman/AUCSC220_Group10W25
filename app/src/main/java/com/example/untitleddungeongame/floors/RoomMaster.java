@@ -1,6 +1,4 @@
-package com.example.untitleddungeongame.Floors;
-
-import android.util.Log;
+package com.example.untitleddungeongame.floors;
 
 import com.example.untitleddungeongame.Enemy;
 

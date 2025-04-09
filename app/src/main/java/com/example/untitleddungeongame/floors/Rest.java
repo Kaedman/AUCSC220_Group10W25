@@ -1,6 +1,4 @@
-package com.example.untitleddungeongame.Floors;
-
-import com.example.untitleddungeongame.Enemy;
+package com.example.untitleddungeongame.floors;
 
 
 public class Rest extends Room {
