@@ -1,4 +1,4 @@
-package com.example.untitleddungeongame.ui;
+package com.example.untitleddungeongame.misc;
 
 public class OutputText {
     private static String outputText = "";

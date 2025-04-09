@@ -1,4 +1,4 @@
-package com.example.untitleddungeongame.combat;
+package com.example.untitleddungeongame.handlers.combat;
 
 import com.example.untitleddungeongame.misc.ElapseTime;
 

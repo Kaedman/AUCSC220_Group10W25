@@ -1,7 +1,7 @@
 package com.example.untitleddungeongame.stats;
 
 public enum StatType {
-    HEALTH,
+    HEALTH_REGEN,
     ATTACK,
     DEFENSE,
     SPEED

@@ -7,7 +7,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
-import android.graphics.Rect;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.widget.Button;
@@ -22,16 +21,19 @@ import com.example.untitleddungeongame.R;
 import com.example.untitleddungeongame.animations.AnimatedSprite;
 import com.example.untitleddungeongame.animations.Animation;
 import com.example.untitleddungeongame.animations.Sprite;
-import com.example.untitleddungeongame.combat.Combat;
+import com.example.untitleddungeongame.entity.Enemy;
+import com.example.untitleddungeongame.entity.Player;
+import com.example.untitleddungeongame.handlers.combat.Combat;
+import com.example.untitleddungeongame.hotbar.attacks.QuickAttack;
+import com.example.untitleddungeongame.hotbar.items.heals.Apple;
+import com.example.untitleddungeongame.hotbar.items.heals.Potion;
 import com.example.untitleddungeongame.misc.ElapseTime;
 import com.example.untitleddungeongame.ui.CustomDialog;
-import com.example.untitleddungeongame.ui.OutputText;
+import com.example.untitleddungeongame.misc.OutputText;
 import com.example.untitleddungeongame.ui.Particle;
 import com.example.untitleddungeongame.ui.RoomVisual;
 
-
-import java.util.HashMap;
-
+@SuppressLint("ViewConstructor")
 public class Game extends SurfaceView implements Runnable {
     //Refering to this tutorial: https://gamecodeschool.com/android/coding-a-snake-game-for-android/
 
@@ -61,21 +63,24 @@ public class Game extends SurfaceView implements Runnable {
     Bitmap bitmap;
     Combat combat;
 
+    Player player = new Player(50);
+    Enemy enemy = new Enemy("Enemy", 50);
+
 
     //Other
-    private final AppCompatActivity context;
+    private final AppCompatActivity activity;
 
 
     //Other
     private GameTouchListener touchListener;
     Sprite test;
     Animation animationTest;
-    AnimatedSprite player;
+    AnimatedSprite playerSprite;
     @SuppressLint("SetTextI18n")
 
-    public Game(AppCompatActivity context, SurfaceHolder surfaceHolder, Point size, View gameView){
-        super(context);
-        this.context = context;
+    public Game(AppCompatActivity activity, SurfaceHolder surfaceHolder, Point size, View gameView){
+        super(activity);
+        this.activity = activity;
         this.surfaceHolder = surfaceHolder;
 
         fps = 1000/60;
@@ -83,9 +88,9 @@ public class Game extends SurfaceView implements Runnable {
         screenX = size.x;
         screenY = size.y;
         paint = new Paint();
-        dialogBox = context.findViewById(R.id.combat_dialog);
+        dialogBox = activity.findViewById(R.id.combat_dialog);
 
-        combat = new Combat(context);
+        combat = new Combat(activity, player, enemy);
         combat.setCombat(true);
 
         scaleX = (float) screenX / SCREENX_CONST;
@@ -111,6 +116,19 @@ public class Game extends SurfaceView implements Runnable {
         isPaused = false; //pausing controlled by leaving app, etc.
         userPaused = false; //Pausing controlled by pause button
 
+        Apple apple = new Apple();
+        Potion potion = new Potion();
+
+        QuickAttack quickAttack = new QuickAttack();
+        player.addAttack(quickAttack);
+        player.addItem(apple);
+        player.addItem(apple);
+        player.addItem(apple);
+        player.addItem(potion);
+        player.addItem(apple);
+        player.addItem(apple);
+        player.addItem(potion);
+
     }
 
     RoomVisual roomVisual;
@@ -125,7 +143,6 @@ public class Game extends SurfaceView implements Runnable {
         roomVisual.generateVisual();
 
     }
-    Particle testP;
 
     @Override
     public void run() {
@@ -137,15 +154,15 @@ public class Game extends SurfaceView implements Runnable {
         animationTest.setRepeat(true);
         animationTest.startAnimation();
 
-        player = new AnimatedSprite(test);
-        player.addAnimation(new Animation("idle", 0, 4, new int[] {400, 84, 124, 84}));
-        player.setCurrentAnimation("idle");
-        player.setCurrentRepeat(true);
+        playerSprite = new AnimatedSprite(test);
+        playerSprite.addAnimation(new Animation("idle", 0, 4, new int[] {400, 84, 124, 84}));
+        playerSprite.setCurrentAnimation("idle");
+        playerSprite.setCurrentRepeat(true);
 
-        player.addAnimation(new Animation("static", 0, 0, new int[1]));
-        player.setCurrentAnimation("idle");
+        playerSprite.addAnimation(new Animation("static", 0, 0, new int[1]));
+        playerSprite.setCurrentAnimation("idle");
 
-        player.playCurrentAnimation();
+        playerSprite.playCurrentAnimation();
 
         AnimatedSprite slimeTestAnim = new AnimatedSprite(new Sprite(Assets.AssetID.ENEMY_SLIME, 32, 32, 9));
         slimeTestAnim.addAnimation(new Animation("idle", 0, 9, new int[] {150, 94, 74, 94, 300, 94, 74, 94, 150}));
@@ -156,6 +173,7 @@ public class Game extends SurfaceView implements Runnable {
         DrawInstructions slimeInstruction = new DrawInstructions(0, 500, slimeTestAnim, 20, 20);
 
         testRoomVisuals();
+
 
         //GameLoop happens Here
         while (doGameLoop){
@@ -217,13 +235,13 @@ public class Game extends SurfaceView implements Runnable {
         test.setCurrentSprite(animationTest.updateFrame());
         test.drawScaled(canvas, paint,300, 400, 4, 4);
 
-        player.updateCurrentAnimation();
-        player.drawAnimation(canvas, 600, 200, 20, 20);
+        playerSprite.updateCurrentAnimation();
+        playerSprite.drawAnimation(canvas, 600, 200, 20, 20);
         combat.run();
-        context.runOnUiThread(this::runOnUiThread);
+        activity.runOnUiThread(this::runOnUiThread);
 
-        int pHP = combat.getPlayer().getHealth();
-        int pMAXHP = combat.getPlayer().getMaxHealth();
+        int pHP = player.getHealth();
+        int pMAXHP = player.getMaxHealth();
 
         drawHealthBar(canvas, 600, 900, pHP, pMAXHP, 300, 30);
 

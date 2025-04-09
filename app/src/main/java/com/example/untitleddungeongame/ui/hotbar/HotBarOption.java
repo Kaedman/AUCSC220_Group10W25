@@ -1,4 +1,4 @@
-package com.example.untitleddungeongame.ui.items;
+package com.example.untitleddungeongame.ui.hotbar;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -67,8 +67,8 @@ public class HotBarOption<T extends HotBarInfo> extends FrameLayout {
             itemName.setText("");
             itemCount.setText("");
         } else {
-            itemButton.setEnabled(true);
-            itemButton.setAlpha(1f);
+            itemButton.setVisibility(VISIBLE);
+            itemButton.setAlpha(0f);
         }
 
     }

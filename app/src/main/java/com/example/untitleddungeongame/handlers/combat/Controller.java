@@ -1,9 +1,8 @@
-package com.example.untitleddungeongame.combat;
+package com.example.untitleddungeongame.handlers.combat;
 
-import com.example.untitleddungeongame.characters.Entity;
-import com.example.untitleddungeongame.ui.OutputText;
-import com.example.untitleddungeongame.characters.NPC;
-import com.example.untitleddungeongame.characters.Player;
+import com.example.untitleddungeongame.misc.OutputText;
+import com.example.untitleddungeongame.entity.Enemy;
+import com.example.untitleddungeongame.entity.Player;
 import com.example.untitleddungeongame.hotbar.attacks.Attack;
 import com.example.untitleddungeongame.hotbar.items.Item;
 import com.example.untitleddungeongame.misc.ElapseTime;
@@ -17,13 +16,13 @@ public class Controller {
     private final ElapseTime elapseTime = new ElapseTime();
 
     private final Player player;
-    private final NPC enemy;
+    private final Enemy enemy;
 
     boolean parried = false;
     boolean isReadyToParry = false;
     boolean canParry = true;
 
-    public Controller(Player player, NPC enemy) {
+    public Controller(Player player, Enemy enemy) {
         this.player = player;
         this.enemy = enemy;
 
