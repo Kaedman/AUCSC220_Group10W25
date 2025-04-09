@@ -1,7 +1,6 @@
 package com.example.untitleddungeongame.handlers;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -9,24 +8,22 @@ import android.graphics.Paint;
 import android.graphics.Point;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.widget.Button;
-import android.widget.TextView;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.view.View;
-import android.widget.Button;
 
+import com.example.untitleddungeongame.R;
 import com.example.untitleddungeongame.animations.AssetID;
 import com.example.untitleddungeongame.GameTouchListener;
-import com.example.untitleddungeongame.R;
 import com.example.untitleddungeongame.animations.AnimatedSprite;
 import com.example.untitleddungeongame.animations.Animation;
 import com.example.untitleddungeongame.animations.Sprite;
 import com.example.untitleddungeongame.combat.Combat;
 import com.example.untitleddungeongame.misc.ElapseTime;
 import com.example.untitleddungeongame.ui.CustomDialog;
-import com.example.untitleddungeongame.ui.ItemBar;
 import com.example.untitleddungeongame.ui.MapVisuals;
+import com.example.untitleddungeongame.ui.OutputText;
 
 
 import java.util.HashMap;
@@ -43,6 +40,7 @@ public class Game extends SurfaceView implements Runnable {
     //Graphics
     private Canvas canvas; //drawing happens here
     private SurfaceHolder surfaceHolder; //Actual visual
+    protected final CustomDialog dialogBox;
 
     private Paint paint;
     private final Paint fill; //https://stackoverflow.com/questions/36717782/how-to-fill-canvas-with-a-color
@@ -68,7 +66,6 @@ public class Game extends SurfaceView implements Runnable {
 
     //Other
     private GameTouchListener touchListener;
-    private ItemBar itemBar;
 
 
     Sprite test;
@@ -86,6 +83,7 @@ public class Game extends SurfaceView implements Runnable {
         screenX = size.x;
         screenY = size.y;
         paint = new Paint();
+        dialogBox = context.findViewById(R.id.combat_dialog);
 
         combat = new Combat(context);
 
@@ -113,7 +111,6 @@ public class Game extends SurfaceView implements Runnable {
         isPaused = false; //pausing controlled by leaving app, etc.
         userPaused = false; //Pausing controlled by pause button
 
-        itemBar = new ItemBar(context);
         map = new MapVisuals(5, 5);
         map.loadFloor1Assets();
         map.paintBitmap();
@@ -140,10 +137,6 @@ public class Game extends SurfaceView implements Runnable {
         player.setCurrentAnimation("idle");
 
         player.playCurrentAnimation();
-
-        itemBar.setOnClick(pos -> {
-            combat.useItem(pos);
-        });
 
         AnimatedSprite slimeTestAnim = new AnimatedSprite(new Sprite(assets.get(AssetID.ENEMY_SLIME), 32, 32, 9));
         slimeTestAnim.addAnimation(new Animation("idle", 0, 9, new int[] {150, 94, 74, 94, 300, 94, 74, 94, 150}));
@@ -204,22 +197,18 @@ public class Game extends SurfaceView implements Runnable {
     public void draw(){
 
         if (!surfaceHolder.getSurface().isValid()) return;//check surface is correct
-
         canvas = surfaceHolder.lockCanvas(); //get the current surface as a canvas object, prevent changes to surface
-
         ElapseTime.update(); // Update the current time
         //Drawing
         canvas.drawPaint(fill); //Refresh the canvas
-
         paint.setColor(Color.RED);
-
-
         test.setCurrentSprite(animationTest.updateFrame());
         test.drawScaled(canvas, paint,300, 400, 4, 4);
 
         player.updateCurrentAnimation();
         player.drawAnimation(canvas, 600, 200, 20, 20);
         combat.run();
+        context.runOnUiThread(this::runOnUiThread);
 
         DrawInstructions.drawAll(canvas);
         //Final Image updates
@@ -228,6 +217,10 @@ public class Game extends SurfaceView implements Runnable {
     }
 
     public void onTouchEvent(float touchX, float touchY){
+        if (dialogBox.isTextFinishedUpdating()) {
+            dialogBox.closeDialog();
+            OutputText.setInDialog(false);
+        }
         combat.screenTappedOn(touchX, touchY);
     }
 
@@ -237,6 +230,17 @@ public class Game extends SurfaceView implements Runnable {
 
     public void onQuit(){
 
+    }
+    public void setDialogText(String text) {
+        dialogBox.setText(text);
+        OutputText.setInDialog(true);
+    }
+
+    private void runOnUiThread() {
+        dialogBox.updateText();
+        if (OutputText.isNewText()) {
+            setDialogText(OutputText.getOutputText());
+        }
     }
 
     public void onResume(){

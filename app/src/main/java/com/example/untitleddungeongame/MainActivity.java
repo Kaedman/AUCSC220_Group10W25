@@ -22,6 +22,7 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.untitleddungeongame.animations.AssetID;
 import com.example.untitleddungeongame.handlers.Game;
 import com.example.untitleddungeongame.ui.CustomDialog;
+import com.example.untitleddungeongame.ui.PauseMenu;
 
 import java.util.HashMap;
 
@@ -30,9 +31,9 @@ public class MainActivity extends AppCompatActivity {
     //Declarations
     SurfaceView gameView;
     public boolean gameLaunched;
-    public Button resumeButton;
-    public Button quitButton;
     public Button pauseButton;
+
+    PauseMenu pauseMenu;
 
     MyCallBack myCallBack;
 
@@ -76,13 +77,17 @@ public class MainActivity extends AppCompatActivity {
         gameLaunched = true;
         System.out.println(gameControl);
 
-        resumeButton = findViewById(R.id.resume);
-        quitButton = findViewById(R.id.quit);
         pauseButton = findViewById(R.id.pause);
+        pauseMenu = findViewById(R.id.pause_menu_main);
+        pauseMenu.setVisibility(View.GONE);
 
-        resumeButton.setVisibility(View.GONE);
-        quitButton.setVisibility(View.GONE);
+        pauseMenu.setOnQuitClickListener(v -> {
+            System.out.println("Quit");
+        });
 
+        pauseMenu.setOnResumeClickListener(v -> {
+            System.out.println("Resume");
+        });
 
     }
 
@@ -132,15 +137,13 @@ public class MainActivity extends AppCompatActivity {
 
     public void onResume(View v){
         Game.userPaused = false;
-        resumeButton.setVisibility(View.GONE);
-        quitButton.setVisibility(View.GONE);
+        pauseMenu.disable(true);
         pauseButton.setVisibility(View.VISIBLE);
         System.out.println("Resumed");
     }
     public void onPause(View v){
         Game.userPaused = true;
-        resumeButton.setVisibility(View.VISIBLE);
-        quitButton.setVisibility(View.VISIBLE);
+        pauseMenu.disable(false);
         pauseButton.setVisibility(View.GONE);
         System.out.println("Paused");
     }

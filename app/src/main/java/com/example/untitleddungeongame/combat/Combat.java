@@ -4,33 +4,39 @@ import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.untitleddungeongame.ui.OutputText;
 import com.example.untitleddungeongame.characters.NPC;
 import com.example.untitleddungeongame.characters.Player;
-import com.example.untitleddungeongame.items.heals.Apple;
-import com.example.untitleddungeongame.items.heals.Potion;
+import com.example.untitleddungeongame.hotbar.attacks.QuickAttack;
+import com.example.untitleddungeongame.hotbar.items.heals.Apple;
+import com.example.untitleddungeongame.hotbar.items.heals.Potion;
 
 public class Combat {
      protected boolean inCombat = false;
-     protected boolean inDialog = false;
-     protected final Controller controller = new Controller();
+     protected final Controller controller;
      protected final Presenter presentor;
      Player player = new Player(50);
-     NPC enemy = new NPC(50);
+     NPC enemy = new NPC("Enemy", 50);
      boolean showItems = false;
      boolean updateItems = false;
-     private AppCompatActivity activity;
+     private final AppCompatActivity activity;
 
      public Combat(AppCompatActivity activity) {
          this.activity = activity;
          presentor = new Presenter(activity);
+         controller = new Controller(player, enemy);
          presentor.attackButton.setOnClickListener(this::attackButtonPressed);
          presentor.itemsButton.setOnClickListener(this::itemsButtonPressed);
          presentor.itemBar.setOnClick(this::useItem);
-         controller.setPlayerEvent(this::playerTurn);
-         controller.setEnemyEvent(this::enemyTurn);
+         presentor.attackBar.setOnClick(this::useAttack);
+         presentor.setItemBar(player.getEquipped());
+         presentor.setAttackBar(player.getAttacks());
          inCombat = true;
          Apple apple = new Apple();
          Potion potion = new Potion();
+
+         QuickAttack quickAttack = new QuickAttack();
+         player.addAttack(quickAttack);
          player.addItem(apple);
          player.addItem(apple);
          player.addItem(apple);
@@ -44,57 +50,21 @@ public class Combat {
          inCombat = state;
      }
 
-    private void playerTurn() {
-         int damage = player.getAttack();
-        enemy.takeDamage(damage);
-        if (enemy.getHealth() <= 0) {
-            inCombat = false;
-        }
-    }
-
-    private boolean enemyTurn() {
-         if (controller.isPlayerParrying()) {
-             presentor.setDialogText("You parried the attack!");
-             return true;
-         }
-         int damage = enemy.getAttack();
-        player.takeDamage(damage);
-        if (player.getHealth() <= 0) {
-            inCombat = false;
-        }
-        return false;
-    }
-
      public void run() {
-         if (!inCombat) {
-             activity.runOnUiThread(() -> {
-                presentor.itemBar.displayButtons(false);
-
-             });
-             return;
-         }
-
-         if (controller.isNewText()) {
-             presentor.setDialogText(controller.outputText);
-             inDialog = true;
-         }
-         controller.run(inDialog);
+         controller.run();
          activity.runOnUiThread(() -> {
                 presentor.updateHealth(player, enemy);
-                presentor.updateItems(player);
-                presentor.combatDialog.updateText();
+                presentor.updateHotBars();
          });
      }
 
      public void attackButtonPressed(View button) {
         if (!inCombat) return;
-
-        controller.setReady();
+        presentor.switchAttacks();
      }
 
     public void itemsButtonPressed(View button) {
         if (!inCombat) return;
-
         presentor.switchItems();
     }
 
@@ -103,19 +73,20 @@ public class Combat {
     }
 
     public void useItem(int position) {
-        System.out.println("Using item at position " + position);
-        if (player.useItem(position)) {
-            updateItems = true;
-            controller.setReady();
-        }
+        if (!inCombat || OutputText.isInDialog()) return;
+        presentor.optionPressed();
+        controller.useItem(position, player);
+    }
+
+    public void useAttack(int position) {
+        if (!inCombat || OutputText.isInDialog()) return;
+        presentor.optionPressed();
+        controller.useAttack(position, player);
     }
 
     public void screenTappedOn(float touchX, float touchY) {
-        if (presentor.combatDialog.isTextFinishedUpdating()) {
-            presentor.closeDialog();
-            inDialog = false;
-        }
-        controller.screenTapped(inDialog);
+        if (!inCombat || OutputText.isInDialog()) return;
+        controller.screenTapped();
     }
 
 }

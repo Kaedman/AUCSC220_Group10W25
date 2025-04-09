@@ -1,4 +1,5 @@
 package com.example.untitleddungeongame.ui;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -42,6 +43,7 @@ public class CustomDialog extends LinearLayout {
         init(context);
     }
 
+    @SuppressLint("SetTextI18n")
     private void init(Context context) {
         LayoutParams layoutParams = new LayoutParams(
                 LayoutParams.MATCH_PARENT,
@@ -64,7 +66,6 @@ public class CustomDialog extends LinearLayout {
         isTextSet = true;
         elapseTime.reset();
         rootView.setVisibility(VISIBLE);
-        System.out.println(text);
     }
 
     public void updateText() {
@@ -81,7 +82,7 @@ public class CustomDialog extends LinearLayout {
             return;
         }
 
-        if (!elapseTime.hasTimeElapsed(50)) return;
+        if (!elapseTime.hasTimeElapsed(25)) return;
 
         String currentWord = currentText.get(currantWordIndex);
         String newText = String.format("%s %s", current, currentWord);
@@ -106,6 +107,7 @@ public class CustomDialog extends LinearLayout {
     }
 
     public boolean isTextFinishedUpdating() {
+
         return !isTextSet;
     }
 }

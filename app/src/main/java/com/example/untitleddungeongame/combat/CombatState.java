@@ -2,56 +2,63 @@ package com.example.untitleddungeongame.combat;
 
 import androidx.annotation.Nullable;
 
+import java.util.HashMap;
+import java.util.Objects;
+
 public class CombatState {
     private State currentState;
-    enum State {
+    private State previousState;
+
+    public final CombatTurn combatTurn = new CombatTurn();
+    public enum State {
         READY,
         WAITING,
-        ATTACKING,
-        PARRYING,
+        TURN_START,
+        ATTACK,
+        ITEM_USE,
+        STATUS_EFFECT,
+        PARRY,
+        ENDING
     }
+
+    private final HashMap<State, Runnable> stateCallbacks = new HashMap<>();
 
     public CombatState() {
         currentState = State.READY;
+        previousState = State.READY;
     }
 
-    public void switchState(boolean isParrying) {
-        switch (currentState) {
-            case READY:
-                currentState = State.WAITING;
-                break;
-
-            case WAITING:
-                currentState = State.ATTACKING;
-                break;
-
-            case ATTACKING:
-                if (isParrying) {
-                    currentState = State.PARRYING;
-                } else {
-                    currentState = State.READY;
-                }
-                break;
-            case PARRYING:
-                currentState = State.ATTACKING;
-                break;
+    public void runState() {
+        if (stateCallbacks.containsKey(currentState)) {
+            Objects.requireNonNull(stateCallbacks.get(currentState)).run();
         }
+    }
+
+    public void switchState(State newState) {
+        if (currentState == newState) return;
+        if (newState == State.TURN_START && (
+                currentState == State.ATTACK
+                || currentState == State.ITEM_USE
+                || currentState == State.STATUS_EFFECT
+                || currentState == State.PARRY
+        )) {
+            System.out.println("Switching to combat turn");
+            combatTurn.switchTurn();
+        }
+        previousState = currentState;
+        currentState = newState;
     }
 
     public boolean isReady() {
         return currentState == State.READY;
     }
 
-    public boolean isWaiting() {
-        return currentState == State.WAITING;
+    public void setStateCallback(State state, Runnable callback) {
+        stateCallbacks.put(state, callback);
     }
 
-    public boolean isAttacking() {
-        return currentState == State.ATTACKING;
-    }
-
-    public boolean isParrying() {
-        return currentState == State.PARRYING;
+    public CombatTurn.State currentTurn() {
+        return combatTurn.currentTurn();
     }
 
 }

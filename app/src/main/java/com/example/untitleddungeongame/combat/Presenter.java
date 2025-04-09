@@ -6,22 +6,25 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.untitleddungeongame.ui.OutputText;
 import com.example.untitleddungeongame.R;
 import com.example.untitleddungeongame.characters.Entity;
-import com.example.untitleddungeongame.characters.Player;
+import com.example.untitleddungeongame.hotbar.attacks.Attack;
+import com.example.untitleddungeongame.hotbar.items.Item;
 import com.example.untitleddungeongame.ui.CustomDialog;
-import com.example.untitleddungeongame.ui.ItemBar;
+import com.example.untitleddungeongame.ui.items.HotBar;
 
 @SuppressLint("SetTextI18n")
 public class Presenter {
     protected final AppCompatActivity activity;
     protected final Button attackButton, itemsButton;
     private final TextView playerHealth, enemyHealth;
-    protected final ItemBar itemBar;
-    protected final CustomDialog combatDialog;
+
+    protected final HotBar<Item> itemBar;
+    protected final HotBar<Attack> attackBar;
 
     boolean showItems = false;
-    boolean updateItems = false;
+    boolean showAttacks = false;
     boolean newDialog = false;
 
     public Presenter(AppCompatActivity activity) {
@@ -29,10 +32,14 @@ public class Presenter {
 
         attackButton = activity.findViewById(R.id.attack_button);
         itemsButton = activity.findViewById(R.id.items_button);
-        itemBar = new ItemBar(activity);
         playerHealth = activity.findViewById(R.id.player_health);
         enemyHealth = activity.findViewById(R.id.enemy_health);
-        combatDialog = activity.findViewById(R.id.combat_dialog);
+
+        itemBar = activity.findViewById(R.id.item_bar);
+        attackBar = activity.findViewById(R.id.attack_bar);
+
+        attackBar.disable(true);
+        itemBar.disable(true);
 
         attackButton.setText("Attack");
         itemsButton.setText("Items");
@@ -43,27 +50,50 @@ public class Presenter {
         playerHealth.setText("Player Health: " + player.getHealth());
         enemyHealth.setText("Enemy Health: " + enemy.getHealth());
     }
-
-    public void updateItems(Player player) {
-        itemBar.displayButtons(showItems);
-        if (showItems || updateItems) {
-            itemBar.setItemButtons(player.getEquipped());
-            updateItems = false;
+    public void optionPressed() {
+       if (showItems) {
+           switchItems();
+       }
+       if (showAttacks) {
+           switchAttacks();
+       }
+    }
+    public void switchItems() {
+        if (OutputText.isInDialog()) return;
+        showItems = !showItems;
+        itemBar.disable(!showItems);
+        itemBar.updateUi();
+        if (showAttacks) {
+            attackBar.disable(true);
+            showAttacks = false;
+        }
+    }
+    public void switchAttacks() {
+        if (OutputText.isInDialog()) return;
+        showAttacks = !showAttacks;
+        attackBar.disable(!showAttacks);
+        attackBar.updateUi();
+        if (showItems) {
+            itemBar.disable(true);
+            showItems = false;
         }
     }
 
-    public void switchItems() {
-        showItems = !showItems;
-        updateItems = true;
+
+
+    public void setItemBar(Item[] items) {
+        itemBar.set(items);
+    }
+    public void setAttackBar(Attack[] attacks) {
+        attackBar.set(attacks);
     }
 
-    public void setDialogText(String text) {
-        activity.runOnUiThread(() -> {
-            combatDialog.setText(text);
-        });
-    }
-
-    public void closeDialog() {
-        activity.runOnUiThread(combatDialog::closeDialog);
+    public void updateHotBars() {
+        if (showItems) {
+            itemBar.updateUi();
+        }
+        if (showAttacks) {
+            attackBar.updateUi();
+        }
     }
 }

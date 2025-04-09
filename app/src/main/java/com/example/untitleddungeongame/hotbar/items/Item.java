@@ -1,13 +1,15 @@
-package com.example.untitleddungeongame.items;
+package com.example.untitleddungeongame.hotbar.items;
 
 import com.example.untitleddungeongame.characters.Entity;
+import com.example.untitleddungeongame.hotbar.HotBarInfo;
 
-public abstract class Item {
+public abstract class Item extends HotBarInfo {
     private final String name;
     protected int count;
     private final int maxCount;
 
     public Item(String name, int maxCount) {
+        super(name);
         this.maxCount = maxCount;
         this.name = name;
     }
@@ -21,15 +23,11 @@ public abstract class Item {
         }
     }
 
-    public String getName() {
-        return name;
-    }
-
     protected void remove(int position, Item[] storage) {
         storage[position] = null;
     }
 
-    public int getCount() {
+    public int getInfo() {
         return count;
     }
 
@@ -41,5 +39,12 @@ public abstract class Item {
         return false;
     }
 
+    public boolean equals(Item item) {
+        return name.equals(item.getName()) && count == item.getInfo();
+    }
+
+    public boolean equals(String name, int count) {
+        return this.name.equals(name) && this.count == count;
+    }
 
 }
