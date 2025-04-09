@@ -16,19 +16,32 @@
         android:orientation="vertical"
         android:textAlignment="center" />
 
-    <FrameLayout
-        android:id="@+id/dialog_wrapper"
-        android:layout_width="291dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:background="#FFFFFF"
-        android:padding="12dp">
 
-        <TextView
-            android:id="@+id/dialog_text"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <SurfaceView
             android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+        <FrameLayout
+            android:id="@+id/dialog_wrapper"
+            android:layout_width="291dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="start"
-            android:textColor="#000000" />
-    </FrameLayout>
+            android:layout_gravity="center_horizontal"
+            android:background="#FFFFFF"
+            android:padding="12dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/dialog_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:textColor="#000000" />
+        </FrameLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </LinearLayout>
