@@ -23,7 +23,8 @@ public class Assets {
         BUTTON_INVENTORY,
 
         HEALTH_BAR,
-        CONFIRM_ARROWS
+        CONFIRM_ARROWS,
+        DIALOG_FRAME
     }
     static HashMap<AssetID, Bitmap> assets = new HashMap<>();
 
