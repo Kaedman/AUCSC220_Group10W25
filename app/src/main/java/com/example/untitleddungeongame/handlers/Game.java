@@ -1,7 +1,6 @@
 package com.example.untitleddungeongame.handlers;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -9,26 +8,22 @@ import android.graphics.Paint;
 import android.graphics.Point;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.widget.Button;
-import android.widget.TextView;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.view.View;
 
-import com.example.untitleddungeongame.animations.AssetID;
+import com.example.untitleddungeongame.Assets;
 import com.example.untitleddungeongame.GameTouchListener;
 import com.example.untitleddungeongame.R;
 import com.example.untitleddungeongame.animations.AnimatedSprite;
 import com.example.untitleddungeongame.animations.Animation;
 import com.example.untitleddungeongame.animations.Sprite;
-import com.example.untitleddungeongame.combat.Combat;
+import com.example.untitleddungeongame.handlers.combat.Combat;
 import com.example.untitleddungeongame.misc.ElapseTime;
 import com.example.untitleddungeongame.ui.CustomDialog;
-import com.example.untitleddungeongame.ui.OutputText;
+import com.example.untitleddungeongame.misc.OutputText;
 import com.example.untitleddungeongame.ui.RoomVisual;
-
-
-import java.util.HashMap;
 
 public class Game extends SurfaceView implements Runnable {
     //Refering to this tutorial: https://gamecodeschool.com/android/coding-a-snake-game-for-android/
@@ -62,7 +57,6 @@ public class Game extends SurfaceView implements Runnable {
 
     //Other
     private final AppCompatActivity context;
-    private HashMap<AssetID, Bitmap> assets;
 
 
     //Other
@@ -85,8 +79,8 @@ public class Game extends SurfaceView implements Runnable {
         dialogBox = context.findViewById(R.id.combat_dialog);
 
         combat = new Combat(context);
-
         combat.setCombat(true);
+
         scaleX = (float) screenX / SCREENX_CONST;
         scaleY = (float) screenY / SCREENY_CONST;
         System.out.println(scaleX +  ", " + scaleY);
@@ -116,13 +110,11 @@ public class Game extends SurfaceView implements Runnable {
     Sprite tiles;
     public void testRoomVisuals(){
         roomVisual = new RoomVisual(new int[] {7,8,9});
-        tiles = new Sprite(assets.get(AssetID.TILESET), 32, 48, 13);
+        tiles = new Sprite(Assets.AssetID.TILESET, 32, 48, 13);
         RoomVisual.tileVisuals = tiles;
         roomVisual.generateBaseRoom();
         roomVisual.setEntrances(true, true, true, true);
         roomVisual.fixEntrances();
-
-
         roomVisual.generateVisual();
 
     }
@@ -131,7 +123,7 @@ public class Game extends SurfaceView implements Runnable {
     public void run() {
 
 
-        test = new Sprite(assets.get(AssetID.PLAYER), 32, 32, 4);
+        test = new Sprite(Assets.AssetID.PLAYER, 32, 32, 4);
 
         animationTest = new Animation("Idle", 0, 4, new int[]{84, 84, 124, 400});
         animationTest.setRepeat(true);
@@ -147,7 +139,7 @@ public class Game extends SurfaceView implements Runnable {
 
         player.playCurrentAnimation();
 
-        AnimatedSprite slimeTestAnim = new AnimatedSprite(new Sprite(assets.get(AssetID.ENEMY_SLIME), 32, 32, 9));
+        AnimatedSprite slimeTestAnim = new AnimatedSprite(new Sprite(Assets.AssetID.ENEMY_SLIME, 32, 32, 9));
         slimeTestAnim.addAnimation(new Animation("idle", 0, 9, new int[] {150, 94, 74, 94, 300, 94, 74, 94, 150}));
         slimeTestAnim.setCurrentAnimation("idle");
         slimeTestAnim.setCurrentRepeat(true);
@@ -177,7 +169,7 @@ public class Game extends SurfaceView implements Runnable {
                 }
 
             }
-            doGameLoop = true; //REMOVE LATER //TODO REMOVE WHEN DONE TESTING
+
         }
 
     }
@@ -189,10 +181,6 @@ public class Game extends SurfaceView implements Runnable {
     public void setSurfaceHolder(SurfaceHolder holder){
         surfaceHolder = holder;
     }
-
-
-
-    public void setAssets(HashMap assets) { this.assets = assets; }
 
     /**
     Draw instructions for all visuals relevant to the game
@@ -223,6 +211,11 @@ public class Game extends SurfaceView implements Runnable {
         player.drawAnimation(canvas, 600, 200, 20, 20);
         combat.run();
         context.runOnUiThread(this::runOnUiThread);
+
+        int pHP = combat.getPlayer().getHealth();
+        int pMAXHP = combat.getPlayer().getMaxHealth();
+
+        drawHealthBar(canvas, 600, 900, pHP, pMAXHP, 300, 30);
 
         DrawInstructions.drawAll(canvas);
 
@@ -260,6 +253,25 @@ public class Game extends SurfaceView implements Runnable {
 
     public void onResume(){
         userPaused = false;
+    }
+
+
+    /**
+     * Helper for visualization of hp
+     * @param c - canvas
+     * @param x - positionX
+     * @param y - positionY
+     * @param currentHP - Current Hp of entity
+     * @param maxHP - Max hp of entity
+     */
+    private void drawHealthBar(Canvas c, int x, int y, int currentHP, int maxHP, int barWidth, int barHeight){
+        float currentPercent = ((float) currentHP/ (float) maxHP);
+
+        Paint p = new Paint();
+        p.setColor(Color.RED);
+        c.drawRect(x, y, x + barWidth, y + barHeight, p);
+        p.setColor(Color.GREEN);
+        c.drawRect(x, y, x + barWidth * currentPercent, y + barHeight, p);
     }
 
 }

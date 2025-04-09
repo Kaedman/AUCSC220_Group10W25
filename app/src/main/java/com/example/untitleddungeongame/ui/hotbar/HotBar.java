@@ -1,4 +1,4 @@
-package com.example.untitleddungeongame.ui.items;
+package com.example.untitleddungeongame.ui.hotbar;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -36,9 +36,8 @@ public class HotBar<T extends HotBarInfo> extends LinearLayout {
 
         for (int i = 0; i < hotBarOptions.length; i++) {
             int finalI = i;
-            hotBarOptions[i].setOnClickListener(_v -> {
+            hotBarOptions[i].setOnClick(() -> {
                 if (onClick != null) {
-                    System.out.printf("Item %d clicked\n", finalI);
                     onClick.run(finalI);
                 }
             });

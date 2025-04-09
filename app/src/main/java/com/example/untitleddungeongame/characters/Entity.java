@@ -1,5 +1,7 @@
 package com.example.untitleddungeongame.characters;
 
+import android.util.Pair;
+
 import com.example.untitleddungeongame.hotbar.attacks.Attack;
 import com.example.untitleddungeongame.hotbar.items.Item;
 import com.example.untitleddungeongame.stats.Stat;
@@ -15,9 +17,11 @@ public class Entity {
     protected int attack;
     protected int defense;
     protected int speed;
+    protected boolean alive = true;
     protected Item[] equipped = new Item[4];
     protected Attack[] attacks = new Attack[4];
     public List<Stat> statusEffects = new ArrayList<>();
+
 
     int maxHealth; // Controls max health
 
@@ -32,7 +36,24 @@ public class Entity {
     }
 
     public String takeDamage(Attack attack) {
-        return name + " took " + attack.getInfo() + " damage!";
+        Pair<Integer, Stat> info = attack.use();
+        Stat stat = getStatModifier(StatType.DEFENSE);
+        int damage = info.first;
+        if (stat != null) {
+            damage -= stat.getValue();
+            if (damage < 0) {
+                damage = 1;
+            }
+        }
+        health -= damage;
+        if (health <= 0) {
+            health = 0;
+            alive = false;
+        }
+        if (info.second != null) {
+            statusEffects.add(info.second);
+        }
+        return attack.getName() + " dealt " + damage + " damage to " + name;
     }
 
     public boolean heal(int heal) {
@@ -67,9 +88,7 @@ public class Entity {
         return health;
     }
 
-    public int getMaxHealth() {
-        return maxHealth;
-    }
+    public int getMaxHealth() {return maxHealth;}
 
     public String getName() {
         return name;

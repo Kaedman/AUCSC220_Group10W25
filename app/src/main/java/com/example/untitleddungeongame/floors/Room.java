@@ -1,5 +1,7 @@
 package com.example.untitleddungeongame.floors;
 
+import com.example.untitleddungeongame.ui.RoomVisual;
+
 import android.util.Log;
 
 import androidx.annotation.NonNull;

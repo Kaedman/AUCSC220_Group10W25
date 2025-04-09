@@ -78,7 +78,7 @@
         app:layout_constraintHorizontal_bias="0.428"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <com.example.untitleddungeongame.ui.items.HotBar
+    <com.example.untitleddungeongame.ui.hotbar.HotBar
         android:id="@+id/item_bar"
         android:layout_width="334dp"
         android:layout_height="0dp"
@@ -89,7 +89,7 @@
 
         app:layout_constraintHorizontal_bias="0.415"
         app:layout_constraintStart_toStartOf="parent" />
-    <com.example.untitleddungeongame.ui.items.HotBar
+    <com.example.untitleddungeongame.ui.hotbar.HotBar
         android:id="@+id/attack_bar"
         android:layout_width="334dp"
         android:layout_height="0dp"

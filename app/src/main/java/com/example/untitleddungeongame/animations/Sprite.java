@@ -5,6 +5,8 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 
+import com.example.untitleddungeongame.Assets;
+
 public class Sprite {
     public Bitmap resource;
 
@@ -17,9 +19,9 @@ public class Sprite {
     private int collumnAmount;
     private int currentIndex;
 
-    public Sprite(Bitmap imageResource, int spriteWidth, int spriteHeight, int numberOfCollumns){
+    public Sprite(Assets.AssetID id, int spriteWidth, int spriteHeight, int numberOfCollumns){
 
-        resource = imageResource;
+        resource = Assets.getAsset(id);
 
         spriteX = spriteWidth;
         spriteY = spriteHeight;

@@ -5,25 +5,25 @@
     android:layout_height="match_parent"
     android:orientation="horizontal">
 
-    <com.example.untitleddungeongame.ui.items.HotBarOption
+    <com.example.untitleddungeongame.ui.hotbar.HotBarOption
         android:id="@+id/item_bar_1"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight=".25" />
 
-    <com.example.untitleddungeongame.ui.items.HotBarOption
+    <com.example.untitleddungeongame.ui.hotbar.HotBarOption
         android:id="@+id/item_bar_2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight=".25" />
 
-    <com.example.untitleddungeongame.ui.items.HotBarOption
+    <com.example.untitleddungeongame.ui.hotbar.HotBarOption
         android:id="@+id/item_bar_3"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight=".25" />
 
-    <com.example.untitleddungeongame.ui.items.HotBarOption
+    <com.example.untitleddungeongame.ui.hotbar.HotBarOption
         android:id="@+id/item_bar_4"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

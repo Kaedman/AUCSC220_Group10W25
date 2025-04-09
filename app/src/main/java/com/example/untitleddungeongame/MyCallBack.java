@@ -10,10 +10,7 @@ import android.view.SurfaceView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.untitleddungeongame.animations.AssetID;
 import com.example.untitleddungeongame.handlers.Game;
-
-import java.util.HashMap;
 
 public class MyCallBack implements SurfaceHolder.Callback {
 
@@ -22,12 +19,9 @@ public class MyCallBack implements SurfaceHolder.Callback {
     private AppCompatActivity activity;
     Thread gameThread;
 
-    private HashMap<AssetID, Bitmap> assets;
-
-    public MyCallBack(AppCompatActivity activity, SurfaceView gameView, HashMap assets){
+    public MyCallBack(AppCompatActivity activity, SurfaceView gameView){
         this.gameView = gameView;
         this.activity = activity;
-        this.assets = assets;
 
     }
 
@@ -43,7 +37,6 @@ public class MyCallBack implements SurfaceHolder.Callback {
 
             game = new Game(activity, holder, size, gameView);
             game.setDoGameLoop(true);
-            game.setAssets(assets);
 
             gameThread = new Thread(game);
             gameThread.start();
