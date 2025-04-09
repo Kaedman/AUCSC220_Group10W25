@@ -1,4 +1,4 @@
-package com.example.untitleddungeongame.Floors;
+package com.example.untitleddungeongame.floors;
 
 import com.example.untitleddungeongame.Enemy;
 

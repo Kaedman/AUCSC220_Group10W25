@@ -9,7 +9,7 @@ import android.widget.ImageView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 
-import com.example.untitleddungeongame.Floors.RoomMaster;
+import com.example.untitleddungeongame.floors.RoomMaster;
 import com.example.untitleddungeongame.R;
 
 public class Arrows extends androidx.constraintlayout.widget.ConstraintLayout {
@@ -43,7 +43,7 @@ public class Arrows extends androidx.constraintlayout.widget.ConstraintLayout {
         downArrow.setOnClickListener(this :: moveDown);
     }
 
-    public void setArrowActivated(ImageView v, boolean activated) {
+    public void setArrowVisible(ImageView v, boolean activated) {
         if (activated) {
             v.setVisibility(VISIBLE);
 
@@ -81,20 +81,24 @@ public class Arrows extends androidx.constraintlayout.widget.ConstraintLayout {
         }
     }
 
+    /**
+     * Shows or hides the arrows depending on whether or not the currentRoom has associated
+     * neighbouring rooms
+     */
     public void setArrows() {
         Log.d("floorMap", roomMaster.toString());
         Log.d("currentId", roomMaster.getCurrentRoom().toString());
-        setArrowActivated(leftArrow, roomMaster.getCurrentRoom().getLeft() != null);
+        setArrowVisible(leftArrow, roomMaster.getCurrentRoom().getLeft() != null);
 
-        setArrowActivated(rightArrow, roomMaster.getCurrentRoom().getRight() != null);
+        setArrowVisible(rightArrow, roomMaster.getCurrentRoom().getRight() != null);
 
-        setArrowActivated(upArrow, roomMaster.getCurrentRoom().getUp() != null);
+        setArrowVisible(upArrow, roomMaster.getCurrentRoom().getUp() != null);
 
-        setArrowActivated(downArrow, roomMaster.getCurrentRoom().getDown() != null);
+        setArrowVisible(downArrow, roomMaster.getCurrentRoom().getDown() != null);
     }
 
     public void moveLeft(View v) {
-        setArrowActivated(leftArrow,false);
+        setArrowVisible(leftArrow,false);
         Log.d("previousRoom", roomMaster.getCurrentRoom().toString());
         roomMaster.moveToRoom(roomMaster.getCurrentRoom().getLeft());
         Log.d("currentRoom", roomMaster.getCurrentRoom().toString());
@@ -102,7 +106,7 @@ public class Arrows extends androidx.constraintlayout.widget.ConstraintLayout {
     }
 
     public void moveRight(View v) {
-        setArrowActivated(rightArrow,false);
+        setArrowVisible(rightArrow,false);
         Log.d("previousRoom", roomMaster.getCurrentRoom().toString());
         roomMaster.moveToRoom(roomMaster.getCurrentRoom().getRight());
         Log.d("currentRoom", roomMaster.getCurrentRoom().toString());
@@ -110,7 +114,7 @@ public class Arrows extends androidx.constraintlayout.widget.ConstraintLayout {
     }
 
     public void moveUp(View v) {
-        setArrowActivated(upArrow,false);
+        setArrowVisible(upArrow,false);
         Log.d("previousRoom", roomMaster.getCurrentRoom().toString());
         roomMaster.moveToRoom(roomMaster.getCurrentRoom().getUp());
         Log.d("currentRoom", roomMaster.getCurrentRoom().toString());
@@ -118,14 +122,32 @@ public class Arrows extends androidx.constraintlayout.widget.ConstraintLayout {
     }
 
     public void moveDown(View v) {
-        setArrowActivated(downArrow,false);
+        setArrowVisible(downArrow,false);
         Log.d("previousRoom", roomMaster.getCurrentRoom().toString());
         roomMaster.moveToRoom(roomMaster.getCurrentRoom().getDown());
         Log.d("currentRoom", roomMaster.getCurrentRoom().toString());
         setArrows();
     }
 
+    /**
+     * Used to give Arrows access to a passed roomMaster instance
+     * @param roomMaster the roomMaster instance Arrows will utilize
+     */
     public void setRoomMaster(RoomMaster roomMaster) {
         this.roomMaster = roomMaster;
+    }
+
+    public void hideArrows() {
+        setArrowVisible(leftArrow, false);
+        setArrowVisible(rightArrow, false);
+        setArrowVisible(upArrow, false);
+        setArrowVisible(downArrow, false);
+    }
+
+    public void showArrows() {
+        setArrowVisible(leftArrow, true);
+        setArrowVisible(rightArrow, true);
+        setArrowVisible(upArrow, true);
+        setArrowVisible(downArrow, true);
     }
 }

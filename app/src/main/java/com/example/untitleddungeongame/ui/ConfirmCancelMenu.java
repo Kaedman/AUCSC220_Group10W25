@@ -7,9 +7,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
-import com.example.untitleddungeongame.Floors.Boss;
-import com.example.untitleddungeongame.Floors.Rest;
-import com.example.untitleddungeongame.Floors.RoomMaster;
+import com.example.untitleddungeongame.floors.Boss;
+import com.example.untitleddungeongame.floors.Rest;
+import com.example.untitleddungeongame.floors.RoomMaster;
 import com.example.untitleddungeongame.R;
 
 public class ConfirmCancelMenu extends LinearLayout {

@@ -1,6 +1,4 @@
-package com.example.untitleddungeongame.Floors;
-
-import android.util.Log;
+package com.example.untitleddungeongame.floors;
 
 import com.example.untitleddungeongame.Enemy;
 import com.example.untitleddungeongame.characters.Player;
@@ -15,6 +13,7 @@ public class RoomMaster {
     private int floorRows;
     private int floorCols;
     private int currentFloor = 1;
+    public int count = 0;
     private Player player;
 
     // 0 is no room, 1 is origin, 2 is boss, 3 is encounter, 4 is rest
@@ -52,7 +51,6 @@ public class RoomMaster {
     public void generateRooms(int maxRows, int maxCols, int roomThreshold) {
         generateRoomArray(maxRows, maxCols, roomThreshold);
         headRoom = createFloor();
-        Log.d("headId", headRoom.toString());
         currentRoom = headRoom;
     }
 
@@ -277,6 +275,7 @@ public class RoomMaster {
                 }
             }
             //Move aboveRoom down a row
+
             aboveRowHead = cursorRowHead;
         }//row for loop
 
@@ -287,6 +286,7 @@ public class RoomMaster {
                 aboveRoomCursor.getLeft().setRightRoom(null);
                 aboveRoomCursor.setLeftRoom(null);
             }
+            aboveRoomCursor.setUpLooks();
             aboveRoomCursor = aboveRoomCursor.getRight();
         }
 

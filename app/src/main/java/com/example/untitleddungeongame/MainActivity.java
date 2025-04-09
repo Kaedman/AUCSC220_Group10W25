@@ -7,12 +7,10 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Display;
 import android.view.SurfaceView;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,14 +18,12 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.example.untitleddungeongame.Floors.Boss;
-import com.example.untitleddungeongame.Floors.Rest;
-import com.example.untitleddungeongame.Floors.RoomMaster;
+import com.example.untitleddungeongame.floors.Boss;
+import com.example.untitleddungeongame.floors.RoomMaster;
 import com.example.untitleddungeongame.animations.AssetID;
 import com.example.untitleddungeongame.characters.Player;
 import com.example.untitleddungeongame.handlers.Game;
 import com.example.untitleddungeongame.ui.Arrows;
-import com.example.untitleddungeongame.ui.CustomDialog;
 import com.example.untitleddungeongame.ui.PauseMenu;
 
 import java.util.HashMap;
@@ -46,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
     Player player;
     Game gameControl;
     static boolean userPause;
+    Arrows arrows;
 
     HashMap<AssetID, Bitmap> assets;
     RoomMaster roomMaster;
@@ -91,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
         roomMaster = new RoomMaster(player);
         roomMaster.generateRooms(STARTING_ROWS, STARTING_COLS, STARTING_THRESHOLD);
 
-        Arrows arrows = findViewById(R.id.arrows);
+        arrows = findViewById(R.id.arrows);
         arrows.setRoomMaster(roomMaster);
         arrows.setArrows();
 
@@ -101,18 +98,24 @@ public class MainActivity extends AppCompatActivity {
         pauseMenu.disable(true);
 
         pauseMenu.setOnQuitClickListener(this::onQuit);
-        pauseMenu.setOnResumeClickListener(this::onResume);
+        pauseMenu.setOnResumeClickListener(this::onUserResume);
 
     }
 
+    /**
+     * Note that this is when the user minimizes the game, i.e. presses home
+     */
     @Override
     protected void onPause(){
         Game.isPaused = true;
         pauseMenu.disable(false);
         super.onPause();
-
     }
 
+    /**
+     * Note that this is when the user reopons the game, i.e. navigates back to the game from the
+     * overview button
+     */
     @Override
     protected void onResume(){
         Game.isPaused = false;
@@ -150,15 +153,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void onResume(View v){
+    public void onUserResume(View v){
         Game.userPaused = false;
         pauseMenu.disable(true);
+        arrows.setArrows();
         pauseButton.setVisibility(View.VISIBLE);
         System.out.println("Resumed");
     }
-    public void onPause(View v){
+    public void onUserPause(View v){
         Game.userPaused = true;
         pauseMenu.disable(false);
+        arrows.hideArrows();
         pauseButton.setVisibility(View.GONE);
         System.out.println("Paused");
     }
