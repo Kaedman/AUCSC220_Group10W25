@@ -16,6 +16,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 
+import com.example.untitleddungeongame.Floors.Room;
+import com.example.untitleddungeongame.Floors.RoomMaster;
 import com.example.untitleddungeongame.animations.AssetID;
 import com.example.untitleddungeongame.GameTouchListener;
 import com.example.untitleddungeongame.R;
@@ -141,7 +143,6 @@ public class Game extends SurfaceView implements Runnable {
 
     @Override
     public void run() {
-
 
         test = new Sprite(assets.get(AssetID.PLAYER), 32, 32, 4);
 

@@ -5,20 +5,26 @@ public class Room {
     private Room right;
     private Room up;
     private Room down;
+    //Room ids are a 4 digit numbers, the first 2 digits are the row number, the last 2 digits are
+    //the column numbers.
     private int roomId;
 
-    public Room(Room left, Room right, Room up, Room down) {
+    public Room(int roomId) {
         this.left = null;
         this.right = null;
         this.up = null;
         this.down = null;
         roomId = 0;
+        this.roomId = roomId;
     }
 
     //Getters
-    public Room getLeft() { return left; }
+    public Room getLeft() {
+        return left;
+    }
+
     public Room getRight() {
-        return up;
+        return right;
     }
 
     public Room getUp() {
@@ -28,22 +34,24 @@ public class Room {
     public Room getDown() {
         return down;
     }
+    public int getRoomId(){
+        return roomId;
+    }
 
     public int getRoomId(){ return roomId; }
 
     //Setters
-    public void setLeft (Room adjacentRoom) {
+    public void setLeftRoom(Room adjacentRoom){
         this.left = adjacentRoom;
     }
-    public void setRight (Room adjacentRoom) {
+    public void setRightRoom(Room adjacentRoom){
         this.right = adjacentRoom;
     }
-    //Not named set as something else was named it
-    public void linkUp (Room adjacentRoom) {
-        this.up = adjacentRoom;
-    }
-    public void setDown (Room adjacentRoom) {
+    public void setDownRoom(Room adjacentRoom){
         this.down = adjacentRoom;
+    }
+    public void setUpRoom(Room adjacentRoom){
+        this.up = adjacentRoom;
     }
     public void setRoomId (int id){
         this.roomId = id;
