@@ -120,8 +120,6 @@ public class Game extends SurfaceView implements Runnable {
         roomVisual.generateBaseRoom();
         roomVisual.setEntrances(true, true, true, true);
         roomVisual.fixEntrances();
-
-
         roomVisual.generateVisual();
 
     }
@@ -255,6 +253,19 @@ public class Game extends SurfaceView implements Runnable {
 
     public void onResume(){
         userPaused = false;
+    }
+
+
+    /**
+     * Helper for visualization of hp
+     * @param c
+     * @param x
+     * @param y
+     * @param currentHP
+     * @param maxHP
+     */
+    private void drawHealthBar(Canvas c, int x, int y, int currentHP, int maxHP){
+
     }
 
 }

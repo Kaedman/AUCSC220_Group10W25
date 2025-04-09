@@ -1,5 +1,7 @@
 package com.example.untitleddungeongame.floors;
 
+import com.example.untitleddungeongame.ui.RoomVisual;
+
 public class Room {
     private Room left;
     private Room right;
@@ -9,6 +11,9 @@ public class Room {
     //the column numbers.
     private int roomId;
 
+    public static int[] currentTileGen = {13, 14, 15}; //Controls which tiles are used in drawing a visual
+    private RoomVisual looks; //The visual itself
+
     public Room(int roomId) {
         this.left = null;
         this.right = null;
@@ -16,6 +21,8 @@ public class Room {
         this.down = null;
         roomId = 0;
         this.roomId = roomId;
+
+        looks = new RoomVisual(currentTileGen);
     }
 
     //Getters
@@ -78,5 +85,9 @@ public class Room {
         }
 
         return false;
+    }
+
+    public RoomVisual getRoomVisual(){
+        return looks;
     }
 }
