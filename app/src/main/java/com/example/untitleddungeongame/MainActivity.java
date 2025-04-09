@@ -19,12 +19,8 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.example.untitleddungeongame.animations.AssetID;
 import com.example.untitleddungeongame.handlers.Game;
-import com.example.untitleddungeongame.ui.CustomDialog;
 import com.example.untitleddungeongame.ui.PauseMenu;
-
-import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -40,13 +36,12 @@ public class MainActivity extends AppCompatActivity {
     Game gameControl;
     static boolean userPause;
 
-    HashMap<AssetID, Bitmap> assets;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
+        importAssets();
         setContentView(R.layout.activity_main);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -60,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart(){
         super.onStart();
 
-        importAssets();
+
         setContentView(R.layout.activity_main);
 
         Display display = getWindowManager().getDefaultDisplay();
@@ -70,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
         //Initializations Work Goes here
         gameView = findViewById(R.id.gameView);
 
-        myCallBack = new MyCallBack(this, gameView, assets);
+        myCallBack = new MyCallBack(this, gameView);
         gameView.getHolder().addCallback(myCallBack);
 
         gameLaunched = true;
@@ -110,28 +105,25 @@ public class MainActivity extends AppCompatActivity {
 
     @SuppressLint("UseCompatLoadingForDrawables")
     private void importAssets() {
-
-        assets = new HashMap<AssetID, Bitmap>(10);
         Resources resources = getResources();
 
         //TODO: Migrate keys and image values to a json or xml file, then loop through to create assets
-        assets.put(AssetID.PLAYER, BitmapFactory.decodeResource(resources, R.drawable.playerrouge));
-        assets.put(AssetID.ENEMY_SLIME, BitmapFactory.decodeResource(resources, R.drawable.enemyslime));
-        assets.put(AssetID.TILESET, BitmapFactory.decodeResource(resources, R.drawable.tiles));
+        Assets.addAsset(Assets.AssetID.PLAYER, BitmapFactory.decodeResource(resources, R.drawable.playerrouge));
+        Assets.addAsset(Assets.AssetID.ENEMY_SLIME, BitmapFactory.decodeResource(resources, R.drawable.enemyslime));
+        Assets.addAsset(Assets.AssetID.TILESET, BitmapFactory.decodeResource(resources, R.drawable.tiles));
 
-        assets.put(AssetID.CHESTS, BitmapFactory.decodeResource(resources, R.drawable.chests)); //chests may be updated to show opened state
-        assets.put(AssetID.ITEM_HEAL, BitmapFactory.decodeResource(resources, R.drawable.itemsheals));
-        assets.put(AssetID.ITEM_OFFENSE, BitmapFactory.decodeResource(resources, R.drawable.itemsoffense));
-        assets.put(AssetID.ITEM_SLOT, BitmapFactory.decodeResource(resources, R.drawable.itemslot));
+        Assets.addAsset(Assets.AssetID.CHESTS, BitmapFactory.decodeResource(resources, R.drawable.chests)); //chests may be updated to show opened state
+        Assets.addAsset(Assets.AssetID.ITEM_HEAL, BitmapFactory.decodeResource(resources, R.drawable.itemsheals));
+        Assets.addAsset(Assets.AssetID.ITEM_OFFENSE, BitmapFactory.decodeResource(resources, R.drawable.itemsoffense));
+        Assets.addAsset(Assets.AssetID.ITEM_SLOT, BitmapFactory.decodeResource(resources, R.drawable.itemslot));
 
-        assets.put(AssetID.BUTTON_PAUSE, BitmapFactory.decodeResource(resources, R.drawable.buttonpause));
-        assets.put(AssetID.BUTTON_INVENTORY, BitmapFactory.decodeResource(resources, R.drawable.buttoninventory));
+        Assets.addAsset(Assets.AssetID.BUTTON_PAUSE, BitmapFactory.decodeResource(resources, R.drawable.buttonpause));
+        Assets.addAsset(Assets.AssetID.BUTTON_INVENTORY, BitmapFactory.decodeResource(resources, R.drawable.buttoninventory));
 
-        assets.put(AssetID.HEALTH_BAR, BitmapFactory.decodeResource(resources, R.drawable.healthbar));
-        assets.put(AssetID.CONFIRM_ARROWS, BitmapFactory.decodeResource(resources, R.drawable.confrimationarrows));
-        assets.put(AssetID.DIALOG_FRAME, BitmapFactory.decodeResource(resources, R.drawable.dialog_frame));
+        Assets.addAsset(Assets.AssetID.DIALOG_FRAME, BitmapFactory.decodeResource(resources, R.drawable.dialog_frame));
+        Assets.addAsset(Assets.AssetID.HEALTH_BAR, BitmapFactory.decodeResource(resources, R.drawable.healthbar));
+        Assets.addAsset(Assets.AssetID.CONFIRM_ARROWS, BitmapFactory.decodeResource(resources, R.drawable.confrimationarrows));
     }
-
 
     public void onResume(View v){
         Game.userPaused = false;

@@ -6,7 +6,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import com.example.untitleddungeongame.Floors.RoomMaster;
+import com.example.untitleddungeongame.floors.RoomMaster;
 
 import java.util.ArrayList;
 
