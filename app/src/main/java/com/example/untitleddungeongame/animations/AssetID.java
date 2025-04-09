@@ -18,6 +18,7 @@ public enum AssetID {
     BUTTON_INVENTORY,
 
     HEALTH_BAR,
-    CONFIRM_ARROWS
+    CONFIRM_ARROWS,
+    DIALOG_FRAME
 
 }
