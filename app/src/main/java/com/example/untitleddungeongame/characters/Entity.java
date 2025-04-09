@@ -1,41 +1,38 @@
 package com.example.untitleddungeongame.characters;
 
-import com.example.untitleddungeongame.items.Item;
+import com.example.untitleddungeongame.hotbar.attacks.Attack;
+import com.example.untitleddungeongame.hotbar.items.Item;
 import com.example.untitleddungeongame.stats.Stat;
 import com.example.untitleddungeongame.stats.StatType;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Character {
-    private String name;
+public class Entity {
+    private final String name;
 
     protected int health;
     protected int attack;
     protected int defense;
     protected int speed;
-    public Item[] equipped = new Item[4];
+    protected Item[] equipped = new Item[4];
+    protected Attack[] attacks = new Attack[4];
     public List<Stat> statusEffects = new ArrayList<>();
 
     int maxHealth; // Controls max health
 
-    public Character(int health, int attack, int defense, int speed) {
+    public Entity(String name, int health, int attack, int defense, int speed) {
         this.health = health;
         this.attack = attack;
         this.defense = defense;
         this.speed = speed;
+        this.name = name;
 
         maxHealth = health;
     }
 
-
-
-    public void attack(int damage) {
-        if (health - damage < 0) {
-            health = 0;
-        } else {
-            health -= damage;
-        }
+    public String takeDamage(Attack attack) {
+        return name + " took " + attack.getInfo() + " damage!";
     }
 
     public boolean heal(int heal) {
@@ -70,6 +67,14 @@ public class Character {
         return health;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public Item[] getEquipped() {
+        return equipped;
+    }
+    public Attack[] getAttacks() { return attacks; }
     protected Stat getStatModifier(StatType stateType) {
         for (Stat stat: statusEffects) {
             if (stat.getType() == stateType){

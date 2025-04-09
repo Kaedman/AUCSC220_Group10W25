@@ -16,8 +16,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 
-import com.example.untitleddungeongame.Floors.Room;
-import com.example.untitleddungeongame.Floors.RoomMaster;
 import com.example.untitleddungeongame.animations.AssetID;
 import com.example.untitleddungeongame.GameTouchListener;
 import com.example.untitleddungeongame.R;
@@ -26,7 +24,8 @@ import com.example.untitleddungeongame.animations.Animation;
 import com.example.untitleddungeongame.animations.Sprite;
 import com.example.untitleddungeongame.misc.ElapseTime;
 import com.example.untitleddungeongame.ui.ItemBar;
-
+import com.example.untitleddungeongame.ui.CustomDialog;
+import com.example.untitleddungeongame.ui.OutputText;
 import com.example.untitleddungeongame.ui.RoomVisual;
 
 
@@ -44,6 +43,7 @@ public class Game extends SurfaceView implements Runnable {
     //Graphics
     private Canvas canvas; //drawing happens here
     private SurfaceHolder surfaceHolder; //Actual visual
+    protected final CustomDialog dialogBox;
 
     private Paint paint;
     private final Paint fill; //https://stackoverflow.com/questions/36717782/how-to-fill-canvas-with-a-color
@@ -60,8 +60,6 @@ public class Game extends SurfaceView implements Runnable {
     Bitmap bitmap;
     Combat combat;
 
-    private final TextView playerHealth;
-    private final TextView enemyHealth;
 
     //Other
     private final AppCompatActivity context;
@@ -88,16 +86,9 @@ public class Game extends SurfaceView implements Runnable {
         screenX = size.x;
         screenY = size.y;
         paint = new Paint();
+        dialogBox = context.findViewById(R.id.combat_dialog);
 
-        Button itemsButton = context.findViewById(R.id.items_button);
-        Button attackButton = context.findViewById(R.id.attack_button);
-        playerHealth = context.findViewById(R.id.player_health);
-        enemyHealth = context.findViewById(R.id.enemy_health);
-
-        attackButton.setText("Attack");
-        itemsButton.setText("Items");
-
-        combat = new Combat(attackButton, itemsButton);
+        combat = new Combat(context);
 
         combat.setCombat(true);
         scaleX = (float) screenX / SCREENX_CONST;
@@ -123,7 +114,6 @@ public class Game extends SurfaceView implements Runnable {
         isPaused = false; //pausing controlled by leaving app, etc.
         userPaused = false; //Pausing controlled by pause button
 
-        itemBar = new ItemBar(context);
     }
 
     RoomVisual roomVisual;
@@ -144,6 +134,7 @@ public class Game extends SurfaceView implements Runnable {
     @Override
     public void run() {
 
+
         test = new Sprite(assets.get(AssetID.PLAYER), 32, 32, 4);
 
         animationTest = new Animation("Idle", 0, 4, new int[]{84, 84, 124, 400});
@@ -159,10 +150,6 @@ public class Game extends SurfaceView implements Runnable {
         player.setCurrentAnimation("idle");
 
         player.playCurrentAnimation();
-
-        itemBar.setOnClick(pos -> {
-            combat.useItem(pos);
-        });
 
         AnimatedSprite slimeTestAnim = new AnimatedSprite(new Sprite(assets.get(AssetID.ENEMY_SLIME), 32, 32, 9));
         slimeTestAnim.addAnimation(new Animation("idle", 0, 9, new int[] {150, 94, 74, 94, 300, 94, 74, 94, 150}));
@@ -225,9 +212,7 @@ public class Game extends SurfaceView implements Runnable {
     public void draw(){
 
         if (!surfaceHolder.getSurface().isValid()) return;//check surface is correct
-
         canvas = surfaceHolder.lockCanvas(); //get the current surface as a canvas object, prevent changes to surface
-
         ElapseTime.update(); // Update the current time
         //Drawing
         canvas.drawPaint(fill); //Refresh the canvas
@@ -235,44 +220,27 @@ public class Game extends SurfaceView implements Runnable {
         roomVisual.draw(canvas, (int)(-RoomVisual.getScaleX() * RoomVisual.getTilePixelWidth() * 0.5), 0);
 
         paint.setColor(Color.RED);
-
-
         test.setCurrentSprite(animationTest.updateFrame());
         test.drawScaled(canvas, paint,300, 400, 4, 4);
 
         player.updateCurrentAnimation();
         player.drawAnimation(canvas, 600, 200, 20, 20);
-        if (combat.isInCombat()) {
-              combat.runCombat();
-              context.runOnUiThread(() -> {
-                  itemBar.displayButtons(combat.showItems);
-                  if (combat.showItems || combat.updateItems) {
-                      itemBar.setItemButtons(combat.player.equipped);
-                      combat.updateItems = false;
-                  }
-                  playerHealth.setText("pH: " + combat.player.getHealth());
-                  enemyHealth.setText("eH: " + combat.enemy.getHealth());
-              });
-        } else {
-            context.runOnUiThread(() -> {
-//                playerHealth.setText("pH: " + combat.player.getHealth());
-//                enemyHealth.setText("eH: " + combat.enemy.getHealth());
-                itemBar.displayButtons(false);
-            });
-        }
-
+        combat.run();
+        context.runOnUiThread(this::runOnUiThread);
 
         DrawInstructions.drawAll(canvas);
 
         //Final Image updates
 
-        if (!surfaceHolder.getSurface().isValid()) return;//check surface is correct
-
         surfaceHolder.unlockCanvasAndPost(canvas); //update the surface
     }
 
     public void onTouchEvent(float touchX, float touchY){
-        System.out.println("Touch at : " + touchX + ", " + touchY);
+        if (dialogBox.isTextFinishedUpdating()) {
+            dialogBox.closeDialog();
+            OutputText.setInDialog(false);
+        }
+        combat.screenTappedOn(touchX, touchY);
     }
 
     public void onPause(){
@@ -281,6 +249,17 @@ public class Game extends SurfaceView implements Runnable {
 
     public void onQuit(){
 
+    }
+    public void setDialogText(String text) {
+        dialogBox.setText(text);
+        OutputText.setInDialog(true);
+    }
+
+    private void runOnUiThread() {
+        dialogBox.updateText();
+        if (OutputText.isNewText()) {
+            setDialogText(OutputText.getOutputText());
+        }
     }
 
     public void onResume(){
