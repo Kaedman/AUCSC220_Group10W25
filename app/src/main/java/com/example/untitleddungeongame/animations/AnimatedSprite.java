@@ -85,4 +85,10 @@ public class AnimatedSprite {
     public Sprite getSprite() {
         return sprite;
     }
+
+    public Animation getCurrentAnimation() {
+        if (isCurNull())
+            return null;
+        return current;
+    }
 }

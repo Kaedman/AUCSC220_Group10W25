@@ -61,9 +61,12 @@ public class Game extends SurfaceView implements Runnable {
 
     private SurfaceView  viewToDrawOn;
     Bitmap bitmap;
+    //Gameplay
     Combat combat;
 
     Player player = new Player(50);
+    private DrawInstructions playerDrawInstructions;
+
     Enemy enemy = new Enemy("Enemy", 50);
 
 
@@ -83,11 +86,11 @@ public class Game extends SurfaceView implements Runnable {
         this.activity = activity;
         this.surfaceHolder = surfaceHolder;
 
+        //Screen and UI
         fps = 1000/60;
 
         screenX = size.x;
         screenY = size.y;
-        paint = new Paint();
         dialogBox = activity.findViewById(R.id.combat_dialog);
 
         combat = new Combat(activity, player, enemy);
@@ -116,19 +119,29 @@ public class Game extends SurfaceView implements Runnable {
         isPaused = false; //pausing controlled by leaving app, etc.
         userPaused = false; //Pausing controlled by pause button
 
+    }
+
+
+    public void preparePlayer(){
+        //Looks
+        playerSprite = new AnimatedSprite(new Sprite(Assets.AssetID.PLAYER, 32, 32, 4));
+        playerSprite.addAnimation(new Animation("Idle", 0, 3, new int[]{84, 84, 124, 400}));
+        playerSprite.setCurrentAnimation("Idle");
+        playerSprite.setCurrentRepeat(true);
+        playerSprite.playCurrentAnimation();
+
+        playerDrawInstructions = new DrawInstructions(300, 600, playerSprite,10, 10);
+
+        //Gameplay
         Apple apple = new Apple();
         Potion potion = new Potion();
 
         QuickAttack quickAttack = new QuickAttack();
         player.addAttack(quickAttack);
-        player.addItem(apple);
-        player.addItem(apple);
-        player.addItem(apple);
+        for (int i = 0; i < 5; i++){
+            player.addItem(apple);
+        }
         player.addItem(potion);
-        player.addItem(apple);
-        player.addItem(apple);
-        player.addItem(potion);
-
     }
 
     RoomVisual roomVisual;
@@ -147,22 +160,7 @@ public class Game extends SurfaceView implements Runnable {
     @Override
     public void run() {
 
-
-        test = new Sprite(Assets.AssetID.PLAYER, 32, 32, 4);
-
-        animationTest = new Animation("Idle", 0, 4, new int[]{84, 84, 124, 400});
-        animationTest.setRepeat(true);
-        animationTest.startAnimation();
-
-        playerSprite = new AnimatedSprite(test);
-        playerSprite.addAnimation(new Animation("idle", 0, 4, new int[] {400, 84, 124, 84}));
-        playerSprite.setCurrentAnimation("idle");
-        playerSprite.setCurrentRepeat(true);
-
-        playerSprite.addAnimation(new Animation("static", 0, 0, new int[1]));
-        playerSprite.setCurrentAnimation("idle");
-
-        playerSprite.playCurrentAnimation();
+        preparePlayer();
 
         AnimatedSprite slimeTestAnim = new AnimatedSprite(new Sprite(Assets.AssetID.ENEMY_SLIME, 32, 32, 9));
         slimeTestAnim.addAnimation(new Animation("idle", 0, 9, new int[] {150, 94, 74, 94, 300, 94, 74, 94, 150}));
@@ -227,16 +225,8 @@ public class Game extends SurfaceView implements Runnable {
         //Drawing
         canvas.drawPaint(fill); //Refresh the canvas
 
-
-
         roomVisual.draw(canvas, (int)(-RoomVisual.getScaleX() * RoomVisual.getTilePixelWidth() * 0.5), 0);
 
-        paint.setColor(Color.RED);
-        test.setCurrentSprite(animationTest.updateFrame());
-        test.drawScaled(canvas, paint,300, 400, 4, 4);
-
-        playerSprite.updateCurrentAnimation();
-        playerSprite.drawAnimation(canvas, 600, 200, 20, 20);
         combat.run();
         activity.runOnUiThread(this::runOnUiThread);
 
@@ -244,6 +234,8 @@ public class Game extends SurfaceView implements Runnable {
         int pMAXHP = player.getMaxHealth();
 
         drawHealthBar(canvas, 600, 900, pHP, pMAXHP, 300, 30);
+
+        drawHealthBarAbove(canvas, playerDrawInstructions, pHP, pMAXHP);
 
         DrawInstructions.drawAll(canvas);
 
@@ -302,6 +294,12 @@ public class Game extends SurfaceView implements Runnable {
         c.drawRect(x, y, x + barWidth, y + barHeight, p);
         p.setColor(Color.GREEN);
         c.drawRect(x, y, x + barWidth * currentPercent, y + barHeight, p);
+    }
+
+    public void drawHealthBarAbove(Canvas c, DrawInstructions target, int currentHP, int maxHP){
+        int magicWidth = 300; int magicHeight = 30;
+        int magicYDisplace = -30; int magicXDisplace = -5;
+        drawHealthBar(c, target.getX() + magicXDisplace, target.getY() + magicYDisplace, currentHP, maxHP, magicWidth, magicHeight);
     }
 
 }

@@ -11,7 +11,7 @@ public class Room {
     //the column numbers.
     private int roomId;
 
-    public static int[] currentTileGen = {13, 14, 15}; //Controls which tiles are used in drawing a visual
+    public static int[] currentTileGen = {13, 14, 15}; //Controls which tiles are selected in drawing a visual
     private RoomVisual looks; //The visual itself
 
     public Room(int roomId) {
@@ -21,8 +21,6 @@ public class Room {
         this.down = null;
         roomId = 0;
         this.roomId = roomId;
-
-        setUpLooks();
 
     }
 

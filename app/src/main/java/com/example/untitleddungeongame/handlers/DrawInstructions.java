@@ -96,4 +96,11 @@ public class DrawInstructions {
         thingsToDraw = new ArrayList<DrawInstructions>();
     }
 
+    public int getY() {
+        return y;
+    }
+
+    public int getX() {
+        return x;
+    }
 }
