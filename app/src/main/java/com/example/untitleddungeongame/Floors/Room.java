@@ -1,5 +1,7 @@
 package com.example.untitleddungeongame.Floors;
 
+import androidx.annotation.NonNull;
+
 public class Room {
     private Room left;
     private Room right;
@@ -14,7 +16,6 @@ public class Room {
         this.right = null;
         this.up = null;
         this.down = null;
-        roomId = 0;
         this.roomId = roomId;
     }
 
@@ -78,5 +79,11 @@ public class Room {
         }
 
         return false;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return String.valueOf(roomId);
     }
 }

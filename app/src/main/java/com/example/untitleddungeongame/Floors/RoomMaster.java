@@ -52,6 +52,8 @@ public class RoomMaster {
     public void generateRooms(int maxRows, int maxCols, int roomThreshold) {
         generateRoomArray(maxRows, maxCols, roomThreshold);
         headRoom = createFloor();
+        Log.d("headId", headRoom.toString());
+        currentRoom = headRoom;
     }
 
     /**
@@ -294,6 +296,11 @@ public class RoomMaster {
     public Room getHead(){
         return headRoom;
     }
+
+    /**
+     * Nice
+     * @param newHead
+     */
     public void setHead(Room newHead){
         headRoom = newHead;
     }

@@ -93,6 +93,7 @@ public class MainActivity extends AppCompatActivity {
 
         Arrows arrows = findViewById(R.id.arrows);
         arrows.setRoomMaster(roomMaster);
+        arrows.setArrows();
 
         pauseButton = findViewById(R.id.pause);
         pauseButton.setAlpha(0.0f);

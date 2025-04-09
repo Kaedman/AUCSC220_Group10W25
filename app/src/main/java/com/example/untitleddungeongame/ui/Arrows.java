@@ -7,10 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.constraintlayout.widget.Constraints;
 
 import com.example.untitleddungeongame.Floors.RoomMaster;
 import com.example.untitleddungeongame.R;
@@ -37,17 +34,20 @@ public class Arrows extends androidx.constraintlayout.widget.ConstraintLayout {
         LayoutInflater.from(context).inflate(R.layout.arrow_container, this, true);
         rootView = findViewById(R.id.arrow_container);
         leftArrow = findViewById(R.id.left_arrow);
+        leftArrow.setOnClickListener(this :: moveLeft);
         rightArrow = findViewById(R.id.right_arrow);
+        rightArrow.setOnClickListener(this :: moveRight);
         upArrow = findViewById(R.id.up_arrow);
+        upArrow.setOnClickListener(this :: moveUp);
         downArrow = findViewById(R.id.down_arrow);
+        downArrow.setOnClickListener(this :: moveDown);
     }
 
     public void setArrowActivated(ImageView v, boolean activated) {
-        Log.d("arrowId", v.getResources().getResourceName(v.getId()));
         if (activated) {
-            v.setEnabled(true);
+            v.setVisibility(VISIBLE);
 
-            switch (v.getResources().getResourceName(v.getId())) {
+            /*switch (v.getResources().getResourceName(v.getId())) {
                 case "com.example.untitleddungeongame:id/left_arrow":
                     v.setImageResource(R.drawable.confirmationarrow3);
                     break;
@@ -60,11 +60,11 @@ public class Arrows extends androidx.constraintlayout.widget.ConstraintLayout {
                 case "com.example.untitleddungeongame:id/down_arrow":
                     v.setImageResource(R.drawable.confirmationarrow2);
                     break;
-            }
+            }*/
         } else {
-            v.setEnabled(false);
+            v.setVisibility(GONE);
 
-            switch (v.getResources().getResourceName(v.getId())) {
+            /*switch (v.getResources().getResourceName(v.getId())) {
                 case "com.example.untitleddungeongame:id/left_arrow":
                     v.setImageResource(R.drawable.shadedarrow3);
                     break;
@@ -77,11 +77,13 @@ public class Arrows extends androidx.constraintlayout.widget.ConstraintLayout {
                 case "com.example.untitleddungeongame:id/down_arrow":
                     v.setImageResource(R.drawable.shadedarrow2);
                     break;
-            }
+            }*/
         }
     }
 
     public void setArrows() {
+        Log.d("floorMap", roomMaster.toString());
+        Log.d("currentId", roomMaster.getCurrentRoom().toString());
         setArrowActivated(leftArrow, roomMaster.getCurrentRoom().getLeft() != null);
 
         setArrowActivated(rightArrow, roomMaster.getCurrentRoom().getRight() != null);
@@ -93,24 +95,35 @@ public class Arrows extends androidx.constraintlayout.widget.ConstraintLayout {
 
     public void moveLeft(View v) {
         setArrowActivated(leftArrow,false);
+        Log.d("previousRoom", roomMaster.getCurrentRoom().toString());
         roomMaster.moveToRoom(roomMaster.getCurrentRoom().getLeft());
+        Log.d("currentRoom", roomMaster.getCurrentRoom().toString());
+        setArrows();
     }
 
     public void moveRight(View v) {
         setArrowActivated(rightArrow,false);
+        Log.d("previousRoom", roomMaster.getCurrentRoom().toString());
         roomMaster.moveToRoom(roomMaster.getCurrentRoom().getRight());
+        Log.d("currentRoom", roomMaster.getCurrentRoom().toString());
+        setArrows();
     }
 
     public void moveUp(View v) {
         setArrowActivated(upArrow,false);
+        Log.d("previousRoom", roomMaster.getCurrentRoom().toString());
         roomMaster.moveToRoom(roomMaster.getCurrentRoom().getUp());
+        Log.d("currentRoom", roomMaster.getCurrentRoom().toString());
+        setArrows();
     }
 
     public void moveDown(View v) {
         setArrowActivated(downArrow,false);
+        Log.d("previousRoom", roomMaster.getCurrentRoom().toString());
         roomMaster.moveToRoom(roomMaster.getCurrentRoom().getDown());
+        Log.d("currentRoom", roomMaster.getCurrentRoom().toString());
+        setArrows();
     }
-
 
     public void setRoomMaster(RoomMaster roomMaster) {
         this.roomMaster = roomMaster;
