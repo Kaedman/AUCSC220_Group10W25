@@ -77,22 +77,19 @@ public class MainActivity extends AppCompatActivity {
         System.out.println(gameControl);
 
         pauseButton = findViewById(R.id.pause);
+        pauseButton.setAlpha(0.0f);
         pauseMenu = findViewById(R.id.pause_menu_main);
-        pauseMenu.setVisibility(View.GONE);
+        pauseMenu.disable(true);
 
-        pauseMenu.setOnQuitClickListener(v -> {
-            System.out.println("Quit");
-        });
-
-        pauseMenu.setOnResumeClickListener(v -> {
-            System.out.println("Resume");
-        });
+        pauseMenu.setOnQuitClickListener(this::onQuit);
+        pauseMenu.setOnResumeClickListener(this::onResume);
 
     }
 
     @Override
     protected void onPause(){
         Game.isPaused = true;
+        pauseMenu.disable(false);
         super.onPause();
 
     }
@@ -100,6 +97,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume(){
         Game.isPaused = false;
+        pauseMenu.disable(true);
         super.onResume();
     }
 
@@ -107,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy(){
         super.onDestroy();
         System.out.println("DESTROYED GAME");
-
+        pauseMenu.setVisibility(View.GONE);
     }
 
     @SuppressLint("UseCompatLoadingForDrawables")

@@ -9,11 +9,11 @@
         android:id="@+id/resume_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Pause" />
+        android:text="resume" />
 
     <Button
         android:id="@+id/quit_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Button" />
+        android:text="quit" />
 </LinearLayout>

@@ -14,7 +14,6 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.view.View;
-import android.widget.Button;
 
 import com.example.untitleddungeongame.animations.AssetID;
 import com.example.untitleddungeongame.GameTouchListener;
@@ -22,8 +21,8 @@ import com.example.untitleddungeongame.R;
 import com.example.untitleddungeongame.animations.AnimatedSprite;
 import com.example.untitleddungeongame.animations.Animation;
 import com.example.untitleddungeongame.animations.Sprite;
+import com.example.untitleddungeongame.combat.Combat;
 import com.example.untitleddungeongame.misc.ElapseTime;
-import com.example.untitleddungeongame.ui.ItemBar;
 import com.example.untitleddungeongame.ui.CustomDialog;
 import com.example.untitleddungeongame.ui.OutputText;
 import com.example.untitleddungeongame.ui.RoomVisual;
@@ -68,9 +67,6 @@ public class Game extends SurfaceView implements Runnable {
 
     //Other
     private GameTouchListener touchListener;
-    private ItemBar itemBar;
-
-
     Sprite test;
     Animation animationTest;
     AnimatedSprite player;
