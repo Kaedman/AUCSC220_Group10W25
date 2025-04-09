@@ -124,27 +124,27 @@ public class Game extends SurfaceView implements Runnable {
 
         itemBar = new ItemBar(context);
         map = new MapVisuals(5, 5);
-        map.loadFloor1Assets();
-        map.paintBitmap();
+        //map.loadFloor1Assets();
+        //map.paintBitmap();
     }
 
 
     RoomMaster floor;
     int roomX = 5;
     int roomY = 5;
-    public void floorGenerationTest(){
+    /*public void floorGenerationTest(){
 //        floor.setFloorMap(new int[roomX][roomY]);
         floor = new RoomMaster();
         floor.generateRoomArray(roomX, roomY, 10);
         System.out.println(floor);
-    }
+    }*/
 
 
 
 
     @Override
     public void run() {
-        floorGenerationTest();
+        //floorGenerationTest();
 
         test = new Sprite(assets.get(AssetID.PLAYER), 32, 32, 4);
 

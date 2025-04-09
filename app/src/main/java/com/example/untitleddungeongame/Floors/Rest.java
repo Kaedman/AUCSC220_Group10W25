@@ -1,6 +1,7 @@
 package com.example.untitleddungeongame.Floors;
 
 import com.example.untitleddungeongame.Enemy;
+import com.example.untitleddungeongame.characters.Player;
 
 
 public class Rest extends Room {
@@ -11,12 +12,14 @@ public class Rest extends Room {
         this.restUsed = false;
     }
 
-    public boolean useRest() {
+    public void useRest(Player player) {
         if (!restUsed) {
-            //player.setHp(player.getMaxHp);
+            player.heal(player.getMaxHealth() - player.getHealth());
             restUsed = true;
         }
+    }
 
+    public boolean usedRest() {
         return restUsed;
     }
 }

@@ -5,6 +5,7 @@ import com.example.untitleddungeongame.Enemy;
 public class Boss extends Room {
     private Enemy boss = null;
     private boolean isCleared;
+    RoomMaster nextFloor;
 
     public Boss(int roomId, Enemy boss) {
         super(roomId);
@@ -19,9 +20,15 @@ public class Boss extends Room {
 
         return isCleared;
     }
-    RoomMaster nextFloor;
+
     private RoomMaster getNewFloor() {
         nextFloor.generateRoomArray(5, 5, 10);
         return nextFloor;
+    }
+
+    public void updateRoom() {
+        if (checkCleared()) {
+            //showFloorMenu();
+        }
     }
 }

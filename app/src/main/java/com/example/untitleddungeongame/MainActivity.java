@@ -24,7 +24,9 @@ import com.example.untitleddungeongame.Floors.Boss;
 import com.example.untitleddungeongame.Floors.Rest;
 import com.example.untitleddungeongame.Floors.RoomMaster;
 import com.example.untitleddungeongame.animations.AssetID;
+import com.example.untitleddungeongame.characters.Player;
 import com.example.untitleddungeongame.handlers.Game;
+import com.example.untitleddungeongame.ui.Arrows;
 
 import java.util.HashMap;
 
@@ -36,13 +38,15 @@ public class MainActivity extends AppCompatActivity {
     public Button resumeButton;
     public Button quitButton;
     public Button pauseButton;
+    public Button confirmButton;
+    public Button cancelButton;
     public ImageView leftArrow;
     public ImageView rightArrow;
     public ImageView upArrow;
     public ImageView downArrow;
 
     MyCallBack myCallBack;
-
+    Player player;
     Game gameControl;
     static boolean userPause;
 
@@ -85,8 +89,14 @@ public class MainActivity extends AppCompatActivity {
         gameLaunched = true;
         System.out.println(gameControl);
 
-        roomMaster = new RoomMaster();
+        player = new Player(10);
+
+        roomMaster = new RoomMaster(player);
+
         //roomMaster.generateRooms(STARTING_ROWS, STARTING_COLS, STARTING_THRESHOLD);
+
+        Arrows arrows = findViewById(R.id.arrows);
+        arrows.setRoomMaster(roomMaster);
 
         resumeButton = findViewById(R.id.resume);
         quitButton = findViewById(R.id.quit);
@@ -94,12 +104,6 @@ public class MainActivity extends AppCompatActivity {
 
         resumeButton.setVisibility(View.GONE);
         quitButton.setVisibility(View.GONE);
-
-        leftArrow = findViewById(R.id.left_arrow);
-        rightArrow = findViewById(R.id.right_arrow);
-        upArrow = findViewById(R.id.up_arrow);
-        downArrow = findViewById(R.id.down_arrow);
-        //setArrows();
     }
 
     @Override
@@ -144,17 +148,6 @@ public class MainActivity extends AppCompatActivity {
         assets.put(AssetID.HEALTH_BAR, BitmapFactory.decodeResource(resources, R.drawable.healthbar));
     }
 
-    public void setArrows() {
-        Log.d("currroom", roomMaster.getCurrentRoom().getLeft().toString());
-        setArrowActivated(leftArrow, roomMaster.getCurrentRoom().getLeft() != null);
-
-        setArrowActivated(rightArrow, roomMaster.getCurrentRoom().getRight() != null);
-
-        setArrowActivated(upArrow, roomMaster.getCurrentRoom().getUp() != null);
-
-        setArrowActivated(downArrow, roomMaster.getCurrentRoom().getDown() != null);
-    }
-
     public void onResume(View v){
         Game.userPaused = false;
         resumeButton.setVisibility(View.GONE);
@@ -176,70 +169,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void onConfirm(View v) {
-        if (roomMaster.getCurrentRoom() instanceof Rest) {
-            ((Rest) roomMaster.getCurrentRoom()).useRest();
-        } else if (roomMaster.getCurrentRoom() instanceof Boss) {
-
-        }
-    }
-
-    public void moveLeft(View v) {
-        setArrowActivated(leftArrow,false);
-        //roomMaster.moveToRoom(roomMaster.getCurrentRoom().getLeft());
-    }
-
-    public void moveRight(View v) {
-        setArrowActivated(rightArrow,false);
-        roomMaster.moveToRoom(roomMaster.getCurrentRoom().getRight());
-    }
-
-    public void moveUp(View v) {
-        setArrowActivated(upArrow,false);
-        roomMaster.moveToRoom(roomMaster.getCurrentRoom().getUp());
-    }
-
-    public void moveDown(View v) {
-        setArrowActivated(downArrow,false);
-        roomMaster.moveToRoom(roomMaster.getCurrentRoom().getDown());
-    }
-
-    public void setArrowActivated(ImageView v, boolean activated) {
-        Log.d("arrowId", v.getResources().getResourceName(v.getId()));
-        if (activated) {
-            v.setEnabled(true);
-
-            switch (v.getResources().getResourceName(v.getId())) {
-                case "com.example.untitleddungeongame:id/left_arrow":
-                    v.setImageResource(R.drawable.confirmationarrow3);
-                    break;
-                case "com.example.untitleddungeongame:id/right_arrow":
-                    v.setImageResource(R.drawable.confirmationarrow1);
-                    break;
-                case "com.example.untitleddungeongame:id/up_arrow":
-                    v.setImageResource(R.drawable.confirmationarrow4);
-                    break;
-                case "com.example.untitleddungeongame:id/down_arrow":
-                    v.setImageResource(R.drawable.confirmationarrow2);
-                    break;
-            }
-        } else {
-            v.setEnabled(false);
-
-            switch (v.getResources().getResourceName(v.getId())) {
-                case "com.example.untitleddungeongame:id/left_arrow":
-                    v.setImageResource(R.drawable.shadedarrow3);
-                    break;
-                case "com.example.untitleddungeongame:id/right_arrow":
-                    v.setImageResource(R.drawable.shadedarrow1);
-                    break;
-                case "com.example.untitleddungeongame:id/up_arrow":
-                    v.setImageResource(R.drawable.shadedarrow4);
-                    break;
-                case "com.example.untitleddungeongame:id/down_arrow":
-                    v.setImageResource(R.drawable.shadedarrow2);
-                    break;
-            }
-        }
+    public void enterBoss() {
+        ((Boss) roomMaster.getCurrentRoom()).updateRoom();
     }
 }

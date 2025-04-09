@@ -70,6 +70,10 @@ public class Character {
         return health;
     }
 
+    public int getMaxHealth() {
+        return maxHealth;
+    }
+
     protected Stat getStatModifier(StatType stateType) {
         for (Stat stat: statusEffects) {
             if (stat.getType() == stateType){

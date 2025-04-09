@@ -3,6 +3,7 @@ package com.example.untitleddungeongame.Floors;
 import android.util.Log;
 
 import com.example.untitleddungeongame.Enemy;
+import com.example.untitleddungeongame.characters.Player;
 
 import java.util.ArrayList;
 
@@ -14,11 +15,16 @@ public class RoomMaster {
     private int floorRows;
     private int floorCols;
     private int currentFloor = 1;
+    private Player player;
 
     // 0 is no room, 1 is origin, 2 is boss, 3 is encounter, 4 is rest
     // This array simply indicates which rooms can be randomly chosen from during room generation
     // (where the origin and boss rooms are reserved)
     private final int[] roomIntList = {3, 4};
+
+    public RoomMaster(Player player) {
+        this.player = player;
+    }
 
     /**
      * Finds and returns all currentLoc adjacent values in the floorMap array that have not been
@@ -284,6 +290,10 @@ public class RoomMaster {
             }
         }
         return returnRoom;
+    }
+
+    public void useRest() {
+        ((Rest) currentRoom).useRest(player);
     }
 
     /**
