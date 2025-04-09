@@ -1,4 +1,4 @@
-package com.example.untitleddungeongame.combat;
+package com.example.untitleddungeongame.handlers.combat;
 
 import android.annotation.SuppressLint;
 import android.widget.Button;
@@ -6,13 +6,12 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.untitleddungeongame.ui.OutputText;
+import com.example.untitleddungeongame.misc.OutputText;
 import com.example.untitleddungeongame.R;
 import com.example.untitleddungeongame.characters.Entity;
 import com.example.untitleddungeongame.hotbar.attacks.Attack;
 import com.example.untitleddungeongame.hotbar.items.Item;
-import com.example.untitleddungeongame.ui.CustomDialog;
-import com.example.untitleddungeongame.ui.items.HotBar;
+import com.example.untitleddungeongame.ui.hotbar.HotBar;
 
 @SuppressLint("SetTextI18n")
 public class Presenter {

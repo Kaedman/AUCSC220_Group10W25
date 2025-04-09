@@ -1,7 +1,6 @@
 package com.example.untitleddungeongame.handlers;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -9,8 +8,7 @@ import android.graphics.Paint;
 import android.graphics.Point;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.widget.Button;
-import android.widget.TextView;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.view.View;
@@ -21,14 +19,11 @@ import com.example.untitleddungeongame.R;
 import com.example.untitleddungeongame.animations.AnimatedSprite;
 import com.example.untitleddungeongame.animations.Animation;
 import com.example.untitleddungeongame.animations.Sprite;
-import com.example.untitleddungeongame.combat.Combat;
+import com.example.untitleddungeongame.handlers.combat.Combat;
 import com.example.untitleddungeongame.misc.ElapseTime;
 import com.example.untitleddungeongame.ui.CustomDialog;
-import com.example.untitleddungeongame.ui.OutputText;
+import com.example.untitleddungeongame.misc.OutputText;
 import com.example.untitleddungeongame.ui.RoomVisual;
-
-
-import java.util.HashMap;
 
 public class Game extends SurfaceView implements Runnable {
     //Refering to this tutorial: https://gamecodeschool.com/android/coding-a-snake-game-for-android/
@@ -270,7 +265,7 @@ public class Game extends SurfaceView implements Runnable {
      * @param maxHP - Max hp of entity
      */
     private void drawHealthBar(Canvas c, int x, int y, int currentHP, int maxHP, int barWidth, int barHeight){
-        float currentPercent = ((float)currentHP)/maxHP;
+        float currentPercent = ((float) currentHP/ (float) maxHP);
 
         Paint p = new Paint();
         p.setColor(Color.RED);

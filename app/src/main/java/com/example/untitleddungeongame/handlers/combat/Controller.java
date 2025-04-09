@@ -1,7 +1,6 @@
-package com.example.untitleddungeongame.combat;
+package com.example.untitleddungeongame.handlers.combat;
 
-import com.example.untitleddungeongame.characters.Entity;
-import com.example.untitleddungeongame.ui.OutputText;
+import com.example.untitleddungeongame.misc.OutputText;
 import com.example.untitleddungeongame.characters.NPC;
 import com.example.untitleddungeongame.characters.Player;
 import com.example.untitleddungeongame.hotbar.attacks.Attack;

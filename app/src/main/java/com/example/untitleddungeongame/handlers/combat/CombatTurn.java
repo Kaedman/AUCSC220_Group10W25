@@ -1,4 +1,4 @@
-package com.example.untitleddungeongame.combat;
+package com.example.untitleddungeongame.handlers.combat;
 
 public class CombatTurn {
     private State currentTurn;

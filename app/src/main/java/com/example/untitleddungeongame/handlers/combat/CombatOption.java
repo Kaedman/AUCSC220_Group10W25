@@ -1,4 +1,4 @@
-package com.example.untitleddungeongame.combat;
+package com.example.untitleddungeongame.handlers.combat;
 
 import com.example.untitleddungeongame.hotbar.HotBarInfo;
 import com.example.untitleddungeongame.hotbar.attacks.Attack;
