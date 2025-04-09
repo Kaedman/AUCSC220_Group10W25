@@ -47,20 +47,19 @@ public class Game extends SurfaceView implements Runnable {
     private Canvas canvas; //drawing happens here
     private SurfaceHolder surfaceHolder; //Actual visual
     protected final CustomDialog dialogBox;
+    //Rooms and Stuff
+    Sprite tiles = new Sprite(Assets.AssetID.TILESET, 32, 48, 13);
+    RoomVisual currentRoom;
 
-    private Paint paint;
     private final Paint fill; //https://stackoverflow.com/questions/36717782/how-to-fill-canvas-with-a-color
     //Used for "refreshing" a canvas
     public static int screenX, screenY;
 
     //Used for adaptive scaling. Testing on the given screen resolution,
-    //Canvas should scale down or up respectivly
     private final int SCREENX_CONST = 1440;
     private final int SCREENY_CONST = 3120;
     private float scaleX, scaleY;
 
-    private SurfaceView  viewToDrawOn;
-    Bitmap bitmap;
     //Gameplay
     Combat combat;
 
@@ -76,9 +75,10 @@ public class Game extends SurfaceView implements Runnable {
 
     //Other
     private GameTouchListener touchListener;
-    Sprite test;
-    Animation animationTest;
+    //AnimatedSprites
     AnimatedSprite playerSprite;
+    AnimatedSprite[] enemies;
+
     @SuppressLint("SetTextI18n")
 
     public Game(AppCompatActivity activity, SurfaceHolder surfaceHolder, Point size, View gameView){
@@ -99,11 +99,12 @@ public class Game extends SurfaceView implements Runnable {
         scaleX = (float) screenX / SCREENX_CONST;
         scaleY = (float) screenY / SCREENY_CONST;
         System.out.println(scaleX +  ", " + scaleY);
+
         //Fixed screen Scaling on smaller devices
         this.surfaceHolder.setFixedSize((SCREENX_CONST),(SCREENY_CONST)); //This fixed the scaling issue for smaller devices
 
 
-        paint = new Paint();
+
         fill = new Paint();
         fill.setStyle(Paint.Style.FILL);
         fill.setColor(Color.BLACK);
@@ -145,10 +146,8 @@ public class Game extends SurfaceView implements Runnable {
     }
 
     RoomVisual roomVisual;
-    Sprite tiles;
     public void testRoomVisuals(){
         roomVisual = new RoomVisual(new int[] {7,8,9});
-        tiles = new Sprite(Assets.AssetID.TILESET, 32, 48, 13);
         RoomVisual.tileVisuals = tiles;
         roomVisual.generateBaseRoom();
         roomVisual.setEntrances(true, true, true, true);
@@ -176,15 +175,12 @@ public class Game extends SurfaceView implements Runnable {
         //GameLoop happens Here
         while (doGameLoop){
             if (!isPaused && !userPaused) {
-                try {
 
-                    draw();
-                }
-                catch (Error e){
-//                    isPaused = true; //Surface seems to be not available, meaning it either changed or was destroyed
-                    //Due to user likley exiting the app momentarly
+                combat.run();
+                activity.runOnUiThread(this::runOnUiThread);
 
-                }
+                draw();
+
                 try {
                     Thread.sleep(fps);
                 }
@@ -200,10 +196,6 @@ public class Game extends SurfaceView implements Runnable {
 
     public void setDoGameLoop(boolean state){
         doGameLoop = state;
-    }
-
-    public void setSurfaceHolder(SurfaceHolder holder){
-        surfaceHolder = holder;
     }
 
     /**
@@ -227,19 +219,14 @@ public class Game extends SurfaceView implements Runnable {
 
         roomVisual.draw(canvas, (int)(-RoomVisual.getScaleX() * RoomVisual.getTilePixelWidth() * 0.5), 0);
 
-        combat.run();
-        activity.runOnUiThread(this::runOnUiThread);
+
 
         int pHP = player.getHealth();
         int pMAXHP = player.getMaxHealth();
 
-        drawHealthBar(canvas, 600, 900, pHP, pMAXHP, 300, 30);
-
         drawHealthBarAbove(canvas, playerDrawInstructions, pHP, pMAXHP);
 
-        DrawInstructions.drawAll(canvas);
-
-
+        DrawInstructions.drawAll(canvas); //Entity Drawing
 
         //Final Image updates
 
@@ -254,13 +241,6 @@ public class Game extends SurfaceView implements Runnable {
         combat.screenTappedOn(touchX, touchY);
     }
 
-    public void onPause(){
-        userPaused = true;
-    }
-
-    public void onQuit(){
-
-    }
     public void setDialogText(String text) {
         dialogBox.setText(text);
         OutputText.setInDialog(true);
@@ -272,11 +252,6 @@ public class Game extends SurfaceView implements Runnable {
             setDialogText(OutputText.getOutputText());
         }
     }
-
-    public void onResume(){
-        userPaused = false;
-    }
-
 
     /**
      * Helper for visualization of hp

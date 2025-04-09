@@ -12,8 +12,6 @@ public class Player extends Entity {
         super("Player", health, 10, 10, 10);
     }
 
-
-    //Should we super these???
     public boolean addItem(Item item) {
         boolean itemEquipped = false;
         for (int i = 0; i < equipped.length; i++) {

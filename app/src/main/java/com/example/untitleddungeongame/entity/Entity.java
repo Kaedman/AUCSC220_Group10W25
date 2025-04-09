@@ -57,12 +57,15 @@ public class Entity {
     }
 
     public boolean heal(int heal) {
+        if (health == maxHealth)
+            return false; //Failed to heal
+
         if (health + heal < maxHealth) {
             health += heal;
             return true;
         }
         health = maxHealth;
-        return false;
+        return true; //Maxed out health
     }
 
     public boolean useItem(int position) {
@@ -88,7 +91,9 @@ public class Entity {
         return health;
     }
 
-    public int getMaxHealth() {return maxHealth;}
+    public int getMaxHealth() {
+        return maxHealth;
+    }
 
     public String getName() {
         return name;
