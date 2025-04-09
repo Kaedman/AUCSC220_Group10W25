@@ -20,7 +20,6 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.untitleddungeongame.floors.Boss;
 import com.example.untitleddungeongame.floors.RoomMaster;
-//import com.example.untitleddungeongame.animations.AssetID;
 import com.example.untitleddungeongame.characters.Player;
 import com.example.untitleddungeongame.handlers.Game;
 import com.example.untitleddungeongame.ui.Arrows;
@@ -65,7 +64,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart(){
         super.onStart();
 
-
         setContentView(R.layout.activity_main);
 
         Display display = getWindowManager().getDefaultDisplay();
@@ -83,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
 
         player = new Player(10);
 
-        roomMaster = new RoomMaster(player);
+        roomMaster = new RoomMaster(player, myCallBack.getGame());
         roomMaster.generateRooms(STARTING_ROWS, STARTING_COLS, STARTING_THRESHOLD);
 
         arrows = findViewById(R.id.arrows);

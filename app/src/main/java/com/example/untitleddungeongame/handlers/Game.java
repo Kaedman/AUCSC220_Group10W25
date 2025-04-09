@@ -121,8 +121,6 @@ public class Game extends SurfaceView implements Runnable {
 
     @Override
     public void run() {
-
-
         test = new Sprite(Assets.AssetID.PLAYER, 32, 32, 4);
 
         animationTest = new Animation("Idle", 0, 4, new int[]{84, 84, 124, 400});
@@ -274,4 +272,7 @@ public class Game extends SurfaceView implements Runnable {
         c.drawRect(x, y, x + barWidth * currentPercent, y + barHeight, p);
     }
 
+    public void setRoomVisual(RoomVisual roomVisual) {
+        this.roomVisual = roomVisual;
+    }
 }

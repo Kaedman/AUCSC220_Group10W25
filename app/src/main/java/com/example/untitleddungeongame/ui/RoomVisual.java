@@ -6,7 +6,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 
-import com.example.untitleddungeongame.animations.AssetID;
+import com.example.untitleddungeongame.Assets;
 import com.example.untitleddungeongame.animations.Sprite;
 
 import java.util.Arrays;
@@ -20,7 +20,7 @@ import java.util.Random;
  * Room Visual - Contains tile sprite index data for a indivdual room, as well as a visual bitmap to be drawn to canvas
  */
 public class RoomVisual {
-    public static Sprite tileVisuals = new Sprite(Assets.AssetID.TILESET), 32, 48, 13);;
+    public static Sprite tileVisuals = new Sprite(Assets.AssetID.TILESET, 32, 48, 13);
     private Bitmap looks;
     private Canvas drawer;
     //Dimensions fo the room

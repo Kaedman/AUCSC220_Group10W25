@@ -59,4 +59,7 @@ public class MyCallBack implements SurfaceHolder.Callback {
     Allows for external control of the game
      */
 
+    public Game getGame() {
+        return game;
+    }
 }

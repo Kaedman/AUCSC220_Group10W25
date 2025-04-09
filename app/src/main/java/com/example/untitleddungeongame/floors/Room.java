@@ -6,8 +6,6 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.example.untitleddungeongame.ui.RoomVisual;
-
 public class Room {
     private Room left;
     private Room right;
@@ -66,12 +64,23 @@ public class Room {
     }
 
     public void setUpLooks(){
-        Log.d("looksCount", this.toString());
         looks = new RoomVisual(currentTileGen);
         looks.setEntrances((up != null), (left != null), (right != null), (down != null));
         looks.generateBaseRoom();
         looks.fixEntrances();
         looks.generateVisual();
+    }
+
+    public void setUpAllLooks() {
+        if (looks != null) {
+            setUpLooks();
+        }
+
+        for (Room nextRoom : getAllAdjacent()) {
+            if (nextRoom != null && nextRoom.getLooks() != null) {
+                nextRoom.setUpAllLooks();
+            }
+        }
     }
 
     /**
@@ -104,7 +113,7 @@ public class Room {
         return String.valueOf(roomId);
     }
 
-    public RoomVisual getRoomVisual(){
+    public RoomVisual getLooks(){
         return looks;
     }
 }
