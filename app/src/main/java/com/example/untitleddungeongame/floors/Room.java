@@ -1,6 +1,11 @@
 package com.example.untitleddungeongame.floors;
 
+import android.util.Log;
+
 import com.example.untitleddungeongame.ui.RoomVisual;
+
+
+import androidx.annotation.NonNull;
 
 public class Room {
     private Room left;
@@ -10,8 +15,7 @@ public class Room {
     //Room ids are a 4 digit numbers, the first 2 digits are the row number, the last 2 digits are
     //the column numbers.
     private int roomId;
-
-    public static int[] currentTileGen = {13, 14, 15}; //Controls which tiles are selected in drawing a visual
+    public static int[] currentTileGen = {12, 13, 14};
     private RoomVisual looks; //The visual itself
 
     public Room(int roomId) {
@@ -19,7 +23,6 @@ public class Room {
         this.right = null;
         this.up = null;
         this.down = null;
-        roomId = 0;
         this.roomId = roomId;
 
     }
@@ -70,6 +73,19 @@ public class Room {
         this.roomId = id;
     }
 
+
+    public void setUpAllLooks() {
+        if (looks == null) {
+            setUpLooks();
+        }
+
+        for (Room nextRoom : getAllAdjacent()) {
+            if (nextRoom != null && nextRoom.getLooks() == null) {
+                nextRoom.setUpAllLooks();
+            }
+        }
+    }
+
     /**
      * Gets each of a rooms adjacent rooms (left, right, up, down) and returns them in the form of
      * an array of Rooms
@@ -94,7 +110,13 @@ public class Room {
         return false;
     }
 
-    public RoomVisual getRoomVisual(){
+    @NonNull
+    @Override
+    public String toString() {
+        return String.valueOf(roomId);
+    }
+
+    public RoomVisual getLooks(){
         return looks;
     }
 }

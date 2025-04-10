@@ -1,10 +1,11 @@
 package com.example.untitleddungeongame.floors;
 
 import com.example.untitleddungeongame.Enemy;
-
-public class Boss extends Room {
-    private Enemy boss = null;
+import com.example.untitleddungeongame.floors.Room;
+public class Boss extends Room{
+    private final Enemy boss;
     private boolean isCleared;
+    RoomMaster nextFloor;
 
     public Boss(int roomId, Enemy boss) {
         super(roomId);
@@ -12,14 +13,14 @@ public class Boss extends Room {
         this.isCleared = false;
     }
 
-    public boolean checkCleared() {
+    /*public boolean checkCleared() {
         if (boss.getHp() <= 0) {
             isCleared = true;
         }
 
         return isCleared;
-    }
-    RoomMaster nextFloor;
+    }*/
+
     private RoomMaster getNewFloor() {
         nextFloor.generateRoomArray(5, 5, 10);
         return nextFloor;

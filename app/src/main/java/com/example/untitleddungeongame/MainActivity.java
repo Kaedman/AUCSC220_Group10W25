@@ -1,3 +1,12 @@
+/**
+ * To Do for deployment:
+ *      TestCases (Meaningful)
+ *      Bug Documentation
+ *
+ */
+
+
+
 package com.example.untitleddungeongame;
 
 import android.annotation.SuppressLint;
@@ -7,7 +16,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.os.Bundle;
-import android.telecom.Call;
+import android.util.Log;
 import android.view.Display;
 import android.view.SurfaceView;
 import android.view.View;
@@ -19,7 +28,11 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.untitleddungeongame.floors.Boss;
+import com.example.untitleddungeongame.floors.RoomMaster;
+import com.example.untitleddungeongame.entity.Player;
 import com.example.untitleddungeongame.handlers.Game;
+import com.example.untitleddungeongame.ui.Arrows;
 import com.example.untitleddungeongame.ui.PauseMenu;
 
 public class MainActivity extends AppCompatActivity {
@@ -32,10 +45,16 @@ public class MainActivity extends AppCompatActivity {
     PauseMenu pauseMenu;
 
     MyCallBack myCallBack;
-
+    Player player;
     Game gameControl;
     static boolean userPause;
+    Arrows arrows;
 
+    //HashMap<AssetID, Bitmap> assets;
+    RoomMaster roomMaster;
+    final int STARTING_ROWS = 5;
+    final int STARTING_COLS = 5;
+    final int STARTING_THRESHOLD = (int) (STARTING_ROWS * STARTING_COLS * 0.8);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +74,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart(){
         super.onStart();
 
-
         setContentView(R.layout.activity_main);
 
         Display display = getWindowManager().getDefaultDisplay();
@@ -64,12 +82,21 @@ public class MainActivity extends AppCompatActivity {
 
         //Initializations Work Goes here
         gameView = findViewById(R.id.gameView);
-
         myCallBack = new MyCallBack(this, gameView);
+        //myCallBack = new MyCallBack(this, gameView, assets);
         gameView.getHolder().addCallback(myCallBack);
 
         gameLaunched = true;
-        System.out.println(gameControl);
+        //Log.d("gameMain", myCallBack.getGame().toString());
+
+        player = new Player(10);
+        roomMaster = new RoomMaster(player);
+        myCallBack.setRoomMaster(roomMaster);
+        roomMaster.generateRooms(STARTING_ROWS, STARTING_COLS, STARTING_THRESHOLD);
+
+        arrows = findViewById(R.id.arrows);
+        arrows.setRoomMaster(roomMaster);
+        arrows.setArrows();
 
         pauseButton = findViewById(R.id.pause);
         pauseButton.setAlpha(0.0f);
@@ -77,18 +104,23 @@ public class MainActivity extends AppCompatActivity {
         pauseMenu.disable(true);
 
         pauseMenu.setOnQuitClickListener(this::onQuit);
-        pauseMenu.setOnResumeClickListener(this::onResume);
-
+        pauseMenu.setOnResumeClickListener(this::onUserResume);
     }
 
+    /**
+     * Note that this is when the user minimizes the game, i.e. presses home
+     */
     @Override
     protected void onPause(){
         Game.isPaused = true;
         pauseMenu.disable(false);
         super.onPause();
-
     }
 
+    /**
+     * Note that this is when the user reopons the game, i.e. navigates back to the game from the
+     * overview button
+     */
     @Override
     protected void onResume(){
         Game.isPaused = false;
@@ -105,6 +137,8 @@ public class MainActivity extends AppCompatActivity {
 
     @SuppressLint("UseCompatLoadingForDrawables")
     private void importAssets() {
+
+        //assets = new HashMap<AssetID, Bitmap>(10);
         Resources resources = getResources();
 
         //TODO: Migrate keys and image values to a json or xml file, then loop through to create assets
@@ -122,18 +156,20 @@ public class MainActivity extends AppCompatActivity {
 
         Assets.addAsset(Assets.AssetID.DIALOG_FRAME, BitmapFactory.decodeResource(resources, R.drawable.dialog_frame));
         Assets.addAsset(Assets.AssetID.HEALTH_BAR, BitmapFactory.decodeResource(resources, R.drawable.healthbar));
-        Assets.addAsset(Assets.AssetID.CONFIRM_ARROWS, BitmapFactory.decodeResource(resources, R.drawable.confrimationarrows));
+        //Assets.addAsset(Assets.AssetID.CONFIRM_ARROWS, BitmapFactory.decodeResource(resources, R.drawable.confrimationarrows));
     }
 
-    public void onResume(View v){
+    public void onUserResume(View v){
         Game.userPaused = false;
         pauseMenu.disable(true);
+        arrows.setArrows();
         pauseButton.setVisibility(View.VISIBLE);
         System.out.println("Resumed");
     }
-    public void onPause(View v){
+    public void onUserPause(View v){
         Game.userPaused = true;
         pauseMenu.disable(false);
+        arrows.hideArrows();
         pauseButton.setVisibility(View.GONE);
         System.out.println("Paused");
     }
@@ -141,7 +177,9 @@ public class MainActivity extends AppCompatActivity {
     public void onQuit(View v){
         Intent intent = new Intent(this, MainMenu.class);
         startActivity(intent);
-
     }
 
+    public void setRoomMasterGame(Game game) {
+        roomMaster.setGame(game);
+    }
 }

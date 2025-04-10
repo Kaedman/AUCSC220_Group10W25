@@ -1,6 +1,11 @@
 package com.example.untitleddungeongame.floors;
 
+import android.util.Log;
+
 import com.example.untitleddungeongame.Enemy;
+import com.example.untitleddungeongame.entity.Player;
+import com.example.untitleddungeongame.handlers.Game;
+import com.example.untitleddungeongame.floors.Room;
 
 import java.util.ArrayList;
 
@@ -12,16 +17,24 @@ public class RoomMaster {
     private int floorRows;
     private int floorCols;
     private int currentFloor = 1;
+    public int count = 0;
+    private Player player;
+    private Game game;
 
     // 0 is no room, 1 is origin, 2 is boss, 3 is encounter, 4 is rest
     // This array simply indicates which rooms can be randomly chosen from during room generation
     // (where the origin and boss rooms are reserved)
     private final int[] roomIntList = {3, 4};
 
+    public RoomMaster(Player player) {
+        this.player = player;
+    }
+
     /**
      * Finds and returns all currentLoc adjacent values in the floorMap array that have not been
      * set to a room
-     * @param currentLoc - the [row, col] location the program is currently focused on
+     *
+     * @param currentLoc the [row, col] location the program is currently focused on
      * @return emptyPaths - the possible undefined rooms or paths that the can be moved to from
      * currentLoc in [row, col] pairs
      */
@@ -39,9 +52,12 @@ public class RoomMaster {
         return emptyPaths;
     }
 
+
     public void generateRooms(int maxRows, int maxCols, int roomThreshold) {
         generateRoomArray(maxRows, maxCols, roomThreshold);
         headRoom = createFloor();
+        currentRoom = headRoom;
+        currentRoom.setUpAllLooks();
     }
 
     /**
@@ -125,6 +141,7 @@ public class RoomMaster {
     public void moveToRoom(Room destination) {
         if (destination.isAdjacent(currentRoom)) {
             currentRoom = destination;
+            game.setRoomVisual(currentRoom.getLooks());
         } else {
             throw new java.lang.RuntimeException("Room destination is not adjacent to current room");
         }
@@ -181,6 +198,14 @@ public class RoomMaster {
 
     public int getRoomCount() {
         return roomCount;
+    }
+
+    public Room getCurrentRoom() {
+        return currentRoom;
+    }
+
+    public int getCurrentFloor() {
+        return currentFloor;
     }
 
     @Override
@@ -257,6 +282,7 @@ public class RoomMaster {
                 }
             }
             //Move aboveRoom down a row
+
             aboveRowHead = cursorRowHead;
         }//row for loop
 
@@ -276,7 +302,16 @@ public class RoomMaster {
     public Room getHead(){
         return headRoom;
     }
+
+    /**
+     * Nice
+     * @param newHead
+     */
     public void setHead(Room newHead){
         headRoom = newHead;
+    }
+
+    public void setGame(Game game) {
+        this.game = game;
     }
 }

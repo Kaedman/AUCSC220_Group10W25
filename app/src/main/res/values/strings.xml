@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">UntitledDungeonGame</string>
     <string name="title_activity_game_main">game_main</string>
+    <string name="down_arrow">Down Arrow</string>
+    <string name="up_arrow">Up Arrow</string>
+    <string name="right_arrow">Right Arrow</string>
+    <string name="left_arrow">Left Arrow</string>
 </resources>

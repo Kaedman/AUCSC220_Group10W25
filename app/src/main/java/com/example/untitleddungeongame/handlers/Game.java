@@ -47,9 +47,6 @@ public class Game extends SurfaceView implements Runnable {
     private Canvas canvas; //drawing happens here
     private SurfaceHolder surfaceHolder; //Actual visual
     protected final CustomDialog dialogBox;
-    //Rooms and Stuff
-    Sprite tiles = new Sprite(Assets.AssetID.TILESET, 32, 48, 13);
-    RoomVisual currentRoom;
 
     private final Paint fill; //https://stackoverflow.com/questions/36717782/how-to-fill-canvas-with-a-color
     //Used for "refreshing" a canvas
@@ -62,6 +59,7 @@ public class Game extends SurfaceView implements Runnable {
 
     //Gameplay
     Combat combat;
+    public RoomVisual roomVisual;
 
     Player player = new Player(50);
     private DrawInstructions playerDrawInstructions;
@@ -145,16 +143,7 @@ public class Game extends SurfaceView implements Runnable {
         player.addItem(potion);
     }
 
-    RoomVisual roomVisual;
-    public void testRoomVisuals(){
-        roomVisual = new RoomVisual(new int[] {13, 14, 15});
-        RoomVisual.tileVisuals = tiles;
-        roomVisual.generateBaseRoom();
-        roomVisual.setEntrances(true, true, true, true);
-        roomVisual.fixEntrances();
-        roomVisual.generateVisual();
 
-    }
 
     @Override
     public void run() {
@@ -168,8 +157,6 @@ public class Game extends SurfaceView implements Runnable {
         slimeTestAnim.playCurrentAnimation();
 
         DrawInstructions slimeInstruction = new DrawInstructions(0, 500, slimeTestAnim, 20, 20);
-
-        testRoomVisuals();
 
 
         //GameLoop happens Here
@@ -216,8 +203,8 @@ public class Game extends SurfaceView implements Runnable {
         ElapseTime.update(); // Update the current time
         //Drawing
         canvas.drawPaint(fill); //Refresh the canvas
-
-        roomVisual.draw(canvas, (int)(-RoomVisual.getScaleX() * RoomVisual.getTilePixelWidth() * 0.5), 0);
+        if (roomVisual != null)
+            roomVisual.draw(canvas, (int)(-RoomVisual.getScaleX() * RoomVisual.getTilePixelWidth() * 0.5), 0);
 
 
 
@@ -277,4 +264,7 @@ public class Game extends SurfaceView implements Runnable {
         drawHealthBar(c, target.getX() + magicXDisplace, target.getY() + magicYDisplace, currentHP, maxHP, magicWidth, magicHeight);
     }
 
+    public void setRoomVisual(RoomVisual roomVisual) {
+        this.roomVisual = roomVisual;
+    }
 }
