@@ -40,6 +40,7 @@ public class MyCallBack implements SurfaceHolder.Callback {
 
             game = new Game(activity, holder, size, gameView);
             game.setDoGameLoop(true);
+            game.setRoomMaster(roomMaster);
             roomMaster.setGame(game);
             game.setRoomVisual(roomMaster.getCurrentRoom().getLooks());
             //Log.d("looks", )

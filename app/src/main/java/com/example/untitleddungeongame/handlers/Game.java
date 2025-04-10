@@ -23,6 +23,7 @@ import com.example.untitleddungeongame.animations.Animation;
 import com.example.untitleddungeongame.animations.Sprite;
 import com.example.untitleddungeongame.entity.Enemy;
 import com.example.untitleddungeongame.entity.Player;
+import com.example.untitleddungeongame.floors.RoomMaster;
 import com.example.untitleddungeongame.handlers.combat.Combat;
 import com.example.untitleddungeongame.hotbar.attacks.QuickAttack;
 import com.example.untitleddungeongame.hotbar.items.heals.Apple;
@@ -60,6 +61,7 @@ public class Game extends SurfaceView implements Runnable {
     //Gameplay
     Combat combat;
     public RoomVisual roomVisual;
+    private RoomMaster roomMaster;
 
     Player player = new Player(50);
     private DrawInstructions playerDrawInstructions;
@@ -200,11 +202,6 @@ public class Game extends SurfaceView implements Runnable {
     int healthBarMaxHPColor = Color.BLACK;
     int healthBarCurrentColor = Color.RED;
 
-
-
-
-
-
     /**
     Draw instructions for all visuals relevant to the game
      */
@@ -303,5 +300,9 @@ public class Game extends SurfaceView implements Runnable {
 
     public void setRoomVisual(RoomVisual roomVisual) {
         this.roomVisual = roomVisual;
+    }
+
+    public void setRoomMaster(RoomMaster roomMaster) {
+        this.roomMaster = roomMaster;
     }
 }
