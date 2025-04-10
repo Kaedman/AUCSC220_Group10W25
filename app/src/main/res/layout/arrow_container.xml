@@ -6,11 +6,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.untitleddungeongame.ui.Arrows">
-    
+
     <ImageView
         android:id="@+id/left_arrow"
         android:layout_width="@dimen/arrow_width"
         android:layout_height="@dimen/arrow_height"
+        android:layout_marginLeft="35dp"
+        android:layout_marginTop="90dp"
         android:contentDescription="@string/left_arrow"
         android:onClick="moveLeft"
         android:padding="0dp"
@@ -25,6 +27,8 @@
         android:layout_width="@dimen/arrow_width"
         android:layout_height="@dimen/arrow_height"
         android:layout_centerVertical="true"
+        android:layout_marginTop="90dp"
+        android:layout_marginRight="35dp"
         android:contentDescription="@string/right_arrow"
         android:onClick="moveRight"
         android:padding="0dp"
@@ -38,7 +42,7 @@
         android:id="@+id/up_arrow"
         android:layout_width="@dimen/arrow_height"
         android:layout_height="@dimen/arrow_width"
-        android:layout_marginTop="@dimen/top_bottom_arrow_margin"
+        android:layout_marginTop="100dp"
         android:contentDescription="@string/up_arrow"
         android:onClick="moveUp"
         android:padding="0dp"
@@ -52,7 +56,7 @@
         android:id="@+id/down_arrow"
         android:layout_width="@dimen/arrow_height"
         android:layout_height="@dimen/arrow_width"
-        android:layout_marginBottom="@dimen/top_bottom_arrow_margin"
+        android:layout_marginBottom="75dp"
         android:contentDescription="@string/down_arrow"
         android:onClick="moveDown"
         android:padding="0dp"
