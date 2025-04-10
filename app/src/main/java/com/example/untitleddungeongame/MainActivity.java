@@ -178,7 +178,6 @@ public class MainActivity extends AppCompatActivity {
 
         Assets.addAsset(Assets.AssetID.DIALOG_FRAME, BitmapFactory.decodeResource(resources, R.drawable.dialog_frame));
         Assets.addAsset(Assets.AssetID.HEALTH_BAR, BitmapFactory.decodeResource(resources, R.drawable.healthbar));
-        //Assets.addAsset(Assets.AssetID.CONFIRM_ARROWS, BitmapFactory.decodeResource(resources, R.drawable.confrimationarrows));
     }
 
     public void onUserResume(View v){

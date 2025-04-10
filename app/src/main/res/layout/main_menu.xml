@@ -42,6 +42,29 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
+    <ImageView
+        android:id="@+id/playVisual"
+        android:layout_width="150dp"
+        android:layout_height="88dp"
+        android:scaleType="fitXY"
+        app:layout_constraintBottom_toBottomOf="@+id/play_button"
+        app:layout_constraintEnd_toEndOf="@+id/play_button"
+        app:layout_constraintStart_toStartOf="@+id/pause_menu_main"
+        app:layout_constraintTop_toTopOf="@+id/play_button"
+        app:srcCompat="@drawable/button" />
+
+    <TextView
+        android:id="@+id/play_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Play"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="@+id/play_button"
+        app:layout_constraintEnd_toEndOf="@+id/play_button"
+        app:layout_constraintStart_toStartOf="@+id/play_button"
+        app:layout_constraintTop_toTopOf="@+id/play_button"
+        tools:textSize="24sp" />
+
     <Button
         android:id="@+id/newRun"
         android:layout_width="150dp"
@@ -53,6 +76,28 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/play_button"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+    <ImageView
+        android:id="@+id/newVisual"
+        android:layout_width="150dp"
+        android:layout_height="88dp"
+        android:scaleType="fitXY"
+        app:layout_constraintBottom_toBottomOf="@+id/newRun"
+        app:layout_constraintEnd_toEndOf="@+id/newRun"
+        app:layout_constraintStart_toStartOf="@+id/newRun"
+        app:srcCompat="@drawable/button" />
+
+    <TextView
+        android:id="@+id/new_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New Run"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="@+id/newRun"
+        app:layout_constraintEnd_toEndOf="@+id/newRun"
+        app:layout_constraintStart_toStartOf="@+id/newRun"
+        app:layout_constraintTop_toTopOf="@+id/newRun"
+        tools:textSize="24sp" />
 
     <Button
         android:id="@+id/settings"
@@ -66,6 +111,40 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/play_button" />
+
+    <ImageView
+        android:id="@+id/settingsVisual"
+        android:layout_width="345dp"
+        android:layout_height="88dp"
+        android:scaleType="fitXY"
+        app:layout_constraintEnd_toEndOf="@+id/settings"
+        app:layout_constraintStart_toStartOf="@+id/settings"
+        app:layout_constraintTop_toTopOf="@+id/settings"
+        app:srcCompat="@drawable/button" />
+
+    <TextView
+        android:id="@+id/settings_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Settings"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="@+id/settings"
+        app:layout_constraintEnd_toEndOf="@+id/settings"
+        app:layout_constraintStart_toStartOf="@+id/settings"
+        app:layout_constraintTop_toTopOf="@+id/settings"
+        tools:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/loading_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="60dp"
+        android:text="Loading..."
+        android:textColor="@color/white"
+        android:textSize="34sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
