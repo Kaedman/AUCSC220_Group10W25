@@ -31,6 +31,7 @@ import com.example.untitleddungeongame.hotbar.items.heals.Potion;
 import com.example.untitleddungeongame.misc.ElapseTime;
 import com.example.untitleddungeongame.ui.CustomDialog;
 import com.example.untitleddungeongame.misc.OutputText;
+import com.example.untitleddungeongame.ui.MiniMap;
 import com.example.untitleddungeongame.ui.Particle;
 import com.example.untitleddungeongame.ui.RoomVisual;
 
@@ -147,7 +148,13 @@ public class Game extends SurfaceView implements Runnable {
         player.addItem(potion);
     }
 
+    MiniMap test;
+    public void testMini(){
 
+        test = new MiniMap(new int[][] {{0,1,0}, {0,1,1}, {0,0,0}}, 600, 600);
+        test.updateExploredMap(1,1);
+        test.makeMapVisual();
+    }
 
     @Override
     public void run() {
@@ -162,6 +169,7 @@ public class Game extends SurfaceView implements Runnable {
 
         DrawInstructions slimeInstruction = new DrawInstructions(0, 500, slimeTestAnim, 20, 20);
 
+        testMini();
 
         //GameLoop happens Here
         while (doGameLoop){
@@ -223,7 +231,7 @@ public class Game extends SurfaceView implements Runnable {
         if (roomVisual != null)
             roomVisual.draw(canvas, (int)(-RoomVisual.getScaleX() * RoomVisual.getTilePixelWidth() * 0.5), 0);
 
-
+        test.drawToCanvas(canvas, 400, 400);
 
         int pHP = player.getHealth();
         int pMAXHP = player.getMaxHealth();
