@@ -98,9 +98,9 @@ public class Sprite {
         int offsetY = 0;
         int index = currentIndex;
         //Correct the choosen position by offsetting the y position bound
-        while (index > collumnAmount){
+        while (index >= collumnAmount){
             index -= collumnAmount;
-            offsetY++;
+            offsetY ++;
 
 
         }

@@ -147,7 +147,7 @@ public class Game extends SurfaceView implements Runnable {
 
     RoomVisual roomVisual;
     public void testRoomVisuals(){
-        roomVisual = new RoomVisual(new int[] {7,8,9});
+        roomVisual = new RoomVisual(new int[] {13, 14, 15});
         RoomVisual.tileVisuals = tiles;
         roomVisual.generateBaseRoom();
         roomVisual.setEntrances(true, true, true, true);
