@@ -1,6 +1,7 @@
 package com.example.untitleddungeongame.floors;
 
 import com.example.untitleddungeongame.characters.Player;
+import com.example.untitleddungeongame.floors.Room;
 
 public class Rest extends Room {
     private boolean restUsed;

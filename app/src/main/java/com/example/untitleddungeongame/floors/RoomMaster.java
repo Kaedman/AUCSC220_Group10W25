@@ -5,6 +5,7 @@ import android.util.Log;
 import com.example.untitleddungeongame.Enemy;
 import com.example.untitleddungeongame.characters.Player;
 import com.example.untitleddungeongame.handlers.Game;
+import com.example.untitleddungeongame.floors.Room;
 
 import java.util.ArrayList;
 
@@ -25,9 +26,8 @@ public class RoomMaster {
     // (where the origin and boss rooms are reserved)
     private final int[] roomIntList = {3, 4};
 
-    public RoomMaster(Player player, Game game) {
+    public RoomMaster(Player player) {
         this.player = player;
-        this.game = game;
     }
 
     /**
@@ -141,7 +141,6 @@ public class RoomMaster {
     public void moveToRoom(Room destination) {
         if (destination.isAdjacent(currentRoom)) {
             currentRoom = destination;
-            Log.d("looks", currentRoom.getLooks().toString());
             game.setRoomVisual(currentRoom.getLooks());
         } else {
             throw new java.lang.RuntimeException("Room destination is not adjacent to current room");
@@ -310,5 +309,9 @@ public class RoomMaster {
      */
     public void setHead(Room newHead){
         headRoom = newHead;
+    }
+
+    public void setGame(Game game) {
+        this.game = game;
     }
 }

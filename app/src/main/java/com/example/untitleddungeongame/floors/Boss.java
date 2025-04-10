@@ -1,6 +1,7 @@
 package com.example.untitleddungeongame.floors;
 
 import com.example.untitleddungeongame.Enemy;
+import com.example.untitleddungeongame.floors.Room;
 
 public class Boss extends Room {
     private final Enemy boss;

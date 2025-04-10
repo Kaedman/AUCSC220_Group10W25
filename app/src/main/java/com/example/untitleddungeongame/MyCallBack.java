@@ -3,6 +3,7 @@ package com.example.untitleddungeongame;
 
 import android.graphics.Bitmap;
 import android.graphics.Point;
+import android.util.Log;
 import android.view.Display;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -10,6 +11,7 @@ import android.view.SurfaceView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.untitleddungeongame.floors.RoomMaster;
 import com.example.untitleddungeongame.handlers.Game;
 
 public class MyCallBack implements SurfaceHolder.Callback {
@@ -18,11 +20,11 @@ public class MyCallBack implements SurfaceHolder.Callback {
     private SurfaceView gameView;
     private AppCompatActivity activity;
     Thread gameThread;
+    private RoomMaster roomMaster;
 
     public MyCallBack(AppCompatActivity activity, SurfaceView gameView){
         this.gameView = gameView;
         this.activity = activity;
-
     }
 
     @Override
@@ -37,10 +39,10 @@ public class MyCallBack implements SurfaceHolder.Callback {
 
             game = new Game(activity, holder, size, gameView);
             game.setDoGameLoop(true);
+            roomMaster.setGame(game);
 
             gameThread = new Thread(game);
             gameThread.start();
-
         }
     }
 
@@ -61,5 +63,9 @@ public class MyCallBack implements SurfaceHolder.Callback {
 
     public Game getGame() {
         return game;
+    }
+
+    public void setRoomMaster(RoomMaster roomMaster) {
+        this.roomMaster = roomMaster;
     }
 }

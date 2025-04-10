@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Display;
 import android.view.SurfaceView;
 import android.view.View;
@@ -77,11 +78,11 @@ public class MainActivity extends AppCompatActivity {
         gameView.getHolder().addCallback(myCallBack);
 
         gameLaunched = true;
-        System.out.println(gameControl);
+        //Log.d("gameMain", myCallBack.getGame().toString());
 
         player = new Player(10);
-
-        roomMaster = new RoomMaster(player, myCallBack.getGame());
+        roomMaster = new RoomMaster(player);
+        myCallBack.setRoomMaster(roomMaster);
         roomMaster.generateRooms(STARTING_ROWS, STARTING_COLS, STARTING_THRESHOLD);
 
         arrows = findViewById(R.id.arrows);
@@ -95,7 +96,6 @@ public class MainActivity extends AppCompatActivity {
 
         pauseMenu.setOnQuitClickListener(this::onQuit);
         pauseMenu.setOnResumeClickListener(this::onUserResume);
-
     }
 
     /**
@@ -168,10 +168,9 @@ public class MainActivity extends AppCompatActivity {
     public void onQuit(View v){
         Intent intent = new Intent(this, MainMenu.class);
         startActivity(intent);
-
     }
 
-    public void enterBoss() {
-        ((Boss) roomMaster.getCurrentRoom()).updateRoom();
+    public void setRoomMasterGame(Game game) {
+        roomMaster.setGame(game);
     }
 }

@@ -1,8 +1,9 @@
 package com.example.untitleddungeongame.floors;
 
+import android.util.Log;
+
 import com.example.untitleddungeongame.ui.RoomVisual;
 
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 
@@ -72,12 +73,12 @@ public class Room {
     }
 
     public void setUpAllLooks() {
-        if (looks != null) {
+        if (looks == null) {
             setUpLooks();
         }
 
         for (Room nextRoom : getAllAdjacent()) {
-            if (nextRoom != null && nextRoom.getLooks() != null) {
+            if (nextRoom != null && nextRoom.getLooks() == null) {
                 nextRoom.setUpAllLooks();
             }
         }
