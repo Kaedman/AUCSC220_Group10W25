@@ -21,6 +21,8 @@ import android.view.Display;
 import android.view.SurfaceView;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -43,6 +45,15 @@ public class MainActivity extends AppCompatActivity {
     public Button pauseButton;
 
     PauseMenu pauseMenu;
+    ImageView resumeVisual;
+    ImageView quitVisual;
+    ImageView attacksVisual;
+    ImageView itemsVisual;
+
+    TextView resumeText;
+    TextView quitText;
+    TextView attacksText;
+    TextView itemsText;
 
     MyCallBack myCallBack;
     Player player;
@@ -97,6 +108,17 @@ public class MainActivity extends AppCompatActivity {
         arrows = findViewById(R.id.arrows);
         arrows.setRoomMaster(roomMaster);
         arrows.setArrows();
+
+        resumeVisual = findViewById(R.id.resumeVisual);
+        quitVisual = findViewById(R.id.quitVisual);
+        attacksVisual = findViewById(R.id.attacksVisual);
+        itemsVisual = findViewById(R.id.itemsVisual);
+
+        resumeText = findViewById(R.id.resume_text);
+        quitText = findViewById(R.id.quit_text);
+        attacksText = findViewById(R.id.attacks_text);
+        itemsText = findViewById(R.id.items_text);
+        hidePauseMenuVisuals(resumeText);
 
         pauseButton = findViewById(R.id.pause);
         pauseButton.setAlpha(0.0f);
@@ -164,6 +186,7 @@ public class MainActivity extends AppCompatActivity {
         pauseMenu.disable(true);
         arrows.setArrows();
         pauseButton.setVisibility(View.VISIBLE);
+        hidePauseMenuVisuals(v);
         System.out.println("Resumed");
     }
     public void onUserPause(View v){
@@ -171,6 +194,7 @@ public class MainActivity extends AppCompatActivity {
         pauseMenu.disable(false);
         arrows.hideArrows();
         pauseButton.setVisibility(View.GONE);
+        showPauseMenuVisuals(v);
         System.out.println("Paused");
     }
 
@@ -181,5 +205,19 @@ public class MainActivity extends AppCompatActivity {
 
     public void setRoomMasterGame(Game game) {
         roomMaster.setGame(game);
+    }
+
+    public void hidePauseMenuVisuals(View v) {
+        resumeVisual.setVisibility(v.GONE);
+        quitVisual.setVisibility(v.GONE);
+        resumeText.setVisibility(v.GONE);
+        quitText.setVisibility(v.GONE);
+    }
+
+    public void showPauseMenuVisuals(View v) {
+        resumeVisual.setVisibility(v.VISIBLE);
+        quitVisual.setVisibility(v.VISIBLE);
+        resumeText.setVisibility(v.VISIBLE);
+        quitText.setVisibility(v.VISIBLE);
     }
 }

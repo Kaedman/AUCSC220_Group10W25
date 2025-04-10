@@ -22,8 +22,7 @@
     <com.example.untitleddungeongame.ui.Arrows
         android:id="@+id/arrows"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone">
+        android:layout_height="match_parent">
 
     </com.example.untitleddungeongame.ui.Arrows>
 
@@ -138,9 +137,56 @@
         android:layout_width="219dp"
         android:layout_height="193dp"
         android:layout_marginBottom="32dp"
+        android:alpha="0"
         app:layout_constraintBottom_toTopOf="@+id/item_bar"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent">
+
+    </com.example.untitleddungeongame.ui.PauseMenu>
+
+    <ImageView
+        android:id="@+id/resumeVisual"
+        android:layout_width="225dp"
+        android:layout_height="48dp"
+        android:scaleType="fitXY"
+        app:layout_constraintEnd_toEndOf="@+id/pause_menu_main"
+        app:layout_constraintStart_toStartOf="@+id/pause_menu_main"
+        app:layout_constraintTop_toTopOf="@+id/pause_menu_main"
+        app:srcCompat="@drawable/button" />
+
+    <TextView
+        android:id="@+id/resume_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Resume"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="@+id/resumeVisual"
+        app:layout_constraintEnd_toEndOf="@+id/resumeVisual"
+        app:layout_constraintStart_toStartOf="@+id/resumeVisual"
+        app:layout_constraintTop_toTopOf="@+id/pause_menu_main"
+        tools:textSize="20sp" />
+
+    <ImageView
+        android:id="@+id/quitVisual"
+        android:layout_width="225dp"
+        android:layout_height="48dp"
+        android:scaleType="fitXY"
+        app:layout_constraintEnd_toEndOf="@+id/pause_menu_main"
+        app:layout_constraintStart_toStartOf="@+id/pause_menu_main"
+        app:layout_constraintTop_toBottomOf="@+id/resumeVisual"
+        app:srcCompat="@drawable/button" />
+
+    <TextView
+        android:id="@+id/quit_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Quit"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="@+id/quitVisual"
+        app:layout_constraintEnd_toEndOf="@+id/quitVisual"
+        app:layout_constraintStart_toStartOf="@+id/quitVisual"
+        app:layout_constraintTop_toBottomOf="@+id/resumeVisual"
+        tools:textSize="20sp" />
 
     <ImageView
         android:id="@+id/pauseVisual"
