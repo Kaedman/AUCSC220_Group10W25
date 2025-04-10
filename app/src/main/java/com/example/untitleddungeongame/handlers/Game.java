@@ -1,16 +1,13 @@
 package com.example.untitleddungeongame.handlers;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.widget.Button;
-import android.widget.TextView;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.view.View;
@@ -32,7 +29,6 @@ import com.example.untitleddungeongame.misc.ElapseTime;
 import com.example.untitleddungeongame.ui.CustomDialog;
 import com.example.untitleddungeongame.misc.OutputText;
 import com.example.untitleddungeongame.ui.MiniMap;
-import com.example.untitleddungeongame.ui.Particle;
 import com.example.untitleddungeongame.ui.RoomVisual;
 
 @SuppressLint("ViewConstructor")
@@ -71,6 +67,9 @@ public class Game extends SurfaceView implements Runnable {
     //Sprites and stuff
     private Sprite healthBar = new Sprite(Assets.AssetID.HEALTH_BAR, 128, 32, 1);
 
+    private int oldX, oldY; //For player tracking and miniMap updates
+    private MiniMap miniMap;
+    public static boolean showMiniMap = false;
 
     //Other
     private final AppCompatActivity activity;
@@ -148,12 +147,34 @@ public class Game extends SurfaceView implements Runnable {
         player.addItem(potion);
     }
 
-    MiniMap test;
-    public void testMini(){
 
-        test = new MiniMap(new int[][] {{0,1,0}, {0,1,1}, {0,0,0}}, 600, 600);
-        test.updateExploredMap(1,1);
-        test.makeMapVisual();
+
+    public void prepMiniMap(){
+
+        miniMap = new MiniMap(roomMaster.getFloorMap(), 1000, 1000);
+        int[] playerPos = RoomMaster.getStartPositionIndexs(roomMaster.getFloorMap());
+
+        MiniMap.playerX = playerPos[0];
+        MiniMap.playerY = playerPos[1];
+        oldX = MiniMap.playerX;
+        oldY = MiniMap.playerY;
+
+        miniMap.updateExploredMap(MiniMap.playerY,MiniMap.playerX);
+        miniMap.makeMapVisual();
+    }
+
+    private boolean hasPlayerMoved(){
+        if (oldX != MiniMap.playerX || oldY != MiniMap.playerY)
+            return true;
+        return false;
+    }
+    private void mapUpdate(){
+        if (hasPlayerMoved()){
+            oldX = MiniMap.playerX;
+            oldY = MiniMap.playerY;
+            miniMap.updateCurrentMapWithPlayerPosition();
+            miniMap.makeMapVisual();
+        }
     }
 
     @Override
@@ -169,12 +190,12 @@ public class Game extends SurfaceView implements Runnable {
 
         DrawInstructions slimeInstruction = new DrawInstructions(0, 500, slimeTestAnim, 20, 20);
 
-        testMini();
+        prepMiniMap();
 
         //GameLoop happens Here
         while (doGameLoop){
             if (!isPaused && !userPaused) {
-
+                mapUpdate();
                 combat.run();
                 activity.runOnUiThread(this::runOnUiThread);
 
@@ -231,7 +252,7 @@ public class Game extends SurfaceView implements Runnable {
         if (roomVisual != null)
             roomVisual.draw(canvas, (int)(-RoomVisual.getScaleX() * RoomVisual.getTilePixelWidth() * 0.5), 0);
 
-        test.drawToCanvas(canvas, 400, 400);
+
 
         int pHP = player.getHealth();
         int pMAXHP = player.getMaxHealth();
@@ -243,6 +264,9 @@ public class Game extends SurfaceView implements Runnable {
 
         drawHealthBar(canvas, actualBarX, actualBarY, player.getHealth(), player.getMaxHealth(),actualBarWidth, actualBarHeight, healthBarMaxHPColor, healthBarCurrentColor);
         healthBar.drawScaled(canvas, magicHealthBarPositionX, magicHealthBarPositionY, magicHealthBarScaleX, magicHealthBarScaleY);
+        if (showMiniMap)
+            miniMap.drawToCanvas(canvas, 200, 800);
+
 
         //Final Image updates
 

@@ -314,4 +314,18 @@ public class RoomMaster {
     public void setGame(Game game) {
         this.game = game;
     }
+
+    public int[][] getFloorMap() {
+        return floorMap;
+    }
+
+    public static int[] getStartPositionIndexs(int[][] floorMap){
+        for (int y = 0; y < floorMap.length; y ++){
+            for (int x = 0; x < floorMap[y].length; x ++){
+                if (floorMap[y][x] == 1)
+                    return new int[]{x, y};
+            }
+        }
+        return new int[]{-1,-1};
+    }
 }

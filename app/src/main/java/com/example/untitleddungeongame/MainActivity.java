@@ -105,6 +105,9 @@ public class MainActivity extends AppCompatActivity {
 
         pauseMenu.setOnQuitClickListener(this::onQuit);
         pauseMenu.setOnResumeClickListener(this::onUserResume);
+
+        Button mapButton = findViewById(R.id.buttonMap);
+        mapButton.setAlpha(0);
     }
 
     /**
@@ -181,5 +184,9 @@ public class MainActivity extends AppCompatActivity {
 
     public void setRoomMasterGame(Game game) {
         roomMaster.setGame(game);
+    }
+
+    public void mapButton(View v){
+        Game.showMiniMap = !Game.showMiniMap;
     }
 }

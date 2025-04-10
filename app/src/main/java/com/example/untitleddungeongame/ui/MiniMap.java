@@ -15,7 +15,7 @@ public class MiniMap {
     private Paint paint;
 
     private int bitmapWidth, bitmapHeight;
-    int playerX, playerY;
+    public static int playerX, playerY = -1;
 
     public MiniMap(int[][] actualMap, int visualWidth, int visualHeight){
         fullMap = actualMap;
@@ -39,10 +39,10 @@ public class MiniMap {
 
         drawer.drawPaint(refreshPaint);
 
-        int gapY = bitmapHeight / fullMap.length; //Displacers
-        int gapX = bitmapWidth / fullMap[0].length;
+        int cellWidth = bitmapWidth / fullMap[0].length;
+        int cellHeight = bitmapHeight / fullMap.length;
 
-        Rect drawRect = new Rect(gapX, gapY, gapX, gapY);
+        Rect drawRect = new Rect(0, 0, cellWidth, cellHeight);
 
         Paint outline = new Paint();
         outline.setStyle(Paint.Style.STROKE);
@@ -57,17 +57,22 @@ public class MiniMap {
                     paint.setColor(Color.GRAY);
                     drawer.drawRect(drawRect, paint);
 
-
-                    outline.setColor(Color.GREEN);
-                    if (currentRoom == 1)
-                        outline.setColor(Color.BLUE);
+                    outline.setColor(Color.BLACK);
                     drawer.drawRect(drawRect, outline);
+
                 }
-                drawRect.left += gapX;
+                drawRect.left += cellWidth; //Shift the drawing area right
+                drawRect.right += cellWidth;
             }
-            drawRect.left = gapX;
-            drawRect.top += gapY;
+            //Shift the drawing area down and to the left side
+            drawRect.left = 0;
+            drawRect.right = cellWidth;
+            drawRect.top += cellHeight;
+            drawRect.bottom += cellHeight;
         }
+        //Draw player current position
+        outline.setColor(Color.GREEN);
+        drawer.drawCircle(playerX * cellWidth + cellWidth/2, playerY * cellHeight + cellHeight/2, cellWidth/4, outline);
     }
     public void drawToCanvas(Canvas c, int positionX, int positionY){
         c.drawBitmap(mapLooks, positionX, positionY, null);
@@ -78,4 +83,27 @@ public class MiniMap {
 
     }
 
+
+
+    @Override
+    public String toString(){
+        StringBuilder construct = new StringBuilder();
+
+        for (int y = 0; y < exploredMap.length; y ++){
+            for (int x = 0; x < exploredMap[y].length; x++){
+                construct.append(" " + exploredMap[y][x] + " ");
+            }
+            construct.append('\n');
+
+        }
+        return construct.toString();
+    }
+
+    public void setExploredMap(int[][] exploredMap) {
+        this.exploredMap = exploredMap;
+    }
+
+    public void updateCurrentMapWithPlayerPosition(){
+        exploredMap[playerY][playerX] = fullMap[playerY][playerX];
+    }
 }

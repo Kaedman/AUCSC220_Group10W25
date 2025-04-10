@@ -103,6 +103,7 @@ public class Arrows extends androidx.constraintlayout.widget.ConstraintLayout {
         roomMaster.moveToRoom(roomMaster.getCurrentRoom().getLeft());
         Log.d("currentRoom", roomMaster.getCurrentRoom().toString());
         setArrows();
+        MiniMap.playerX --;
     }
 
     public void moveRight(View v) {
@@ -111,6 +112,7 @@ public class Arrows extends androidx.constraintlayout.widget.ConstraintLayout {
         roomMaster.moveToRoom(roomMaster.getCurrentRoom().getRight());
         Log.d("currentRoom", roomMaster.getCurrentRoom().toString());
         setArrows();
+        MiniMap.playerX ++;
     }
 
     public void moveUp(View v) {
@@ -119,6 +121,7 @@ public class Arrows extends androidx.constraintlayout.widget.ConstraintLayout {
         roomMaster.moveToRoom(roomMaster.getCurrentRoom().getUp());
         Log.d("currentRoom", roomMaster.getCurrentRoom().toString());
         setArrows();
+        MiniMap.playerY --;
     }
 
     public void moveDown(View v) {
@@ -127,6 +130,7 @@ public class Arrows extends androidx.constraintlayout.widget.ConstraintLayout {
         roomMaster.moveToRoom(roomMaster.getCurrentRoom().getDown());
         Log.d("currentRoom", roomMaster.getCurrentRoom().toString());
         setArrows();
+        MiniMap.playerY ++;
     }
 
     /**

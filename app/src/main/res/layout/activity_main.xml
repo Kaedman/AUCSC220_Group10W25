@@ -109,7 +109,9 @@
         android:layout_marginBottom="32dp"
         app:layout_constraintBottom_toTopOf="@+id/item_bar"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent" >
+
+    </com.example.untitleddungeongame.ui.PauseMenu>
 
     <ImageView
         android:id="@+id/pauseVisual"
@@ -124,6 +126,33 @@
     <com.example.untitleddungeongame.ui.Arrows
         android:id="@+id/arrows"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:visibility="visible"
+        tools:layout_editor_absoluteX="315dp"
+        tools:layout_editor_absoluteY="299dp"
+        tools:visibility="gone">
+
+    </com.example.untitleddungeongame.ui.Arrows>
+
+    <Button
+        android:id="@+id/buttonMap"
+        android:layout_width="60dp"
+        android:layout_height="56dp"
+        android:layout_marginTop="140dp"
+        android:layout_marginEnd="36dp"
+        android:onClick="mapButton"
+        android:text="Map"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="59dp"
+        android:layout_height="56dp"
+        android:layout_marginTop="140dp"
+        android:layout_marginEnd="36dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/minimapbutton" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
