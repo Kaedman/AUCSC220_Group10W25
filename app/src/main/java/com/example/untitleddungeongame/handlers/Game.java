@@ -145,8 +145,6 @@ public class Game extends SurfaceView implements Runnable {
 
         DrawInstructions slimeInstruction = new DrawInstructions(0, 500, slimeTestAnim, 20, 20);
 
-        testRoomVisuals();
-
 
         //GameLoop happens Here
         while (doGameLoop){
