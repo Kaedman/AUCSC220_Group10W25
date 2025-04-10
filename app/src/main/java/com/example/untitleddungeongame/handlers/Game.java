@@ -53,6 +53,7 @@ public class Game extends SurfaceView implements Runnable {
     private SurfaceView  viewToDrawOn;
     Bitmap bitmap;
     Combat combat;
+    public RoomVisual roomVisual;
 
 
     //Other
@@ -106,18 +107,8 @@ public class Game extends SurfaceView implements Runnable {
 
     }
 
-    RoomVisual roomVisual;
-    Sprite tiles;
-    public void testRoomVisuals(){
-        roomVisual = new RoomVisual(new int[] {7,8,9});
-        tiles = new Sprite(Assets.AssetID.TILESET, 32, 48, 13);
-        RoomVisual.tileVisuals = tiles;
-        roomVisual.generateBaseRoom();
-        roomVisual.setEntrances(true, true, true, true);
-        roomVisual.fixEntrances();
-        roomVisual.generateVisual();
 
-    }
+
 
     @Override
     public void run() {
@@ -196,8 +187,8 @@ public class Game extends SurfaceView implements Runnable {
         ElapseTime.update(); // Update the current time
         //Drawing
         canvas.drawPaint(fill); //Refresh the canvas
-
-        roomVisual.draw(canvas, (int)(-RoomVisual.getScaleX() * RoomVisual.getTilePixelWidth() * 0.5), 0);
+        if (roomVisual != null)
+            roomVisual.draw(canvas, (int)(-RoomVisual.getScaleX() * RoomVisual.getTilePixelWidth() * 0.5), 0);
 
         paint.setColor(Color.RED);
         test.setCurrentSprite(animationTest.updateFrame());

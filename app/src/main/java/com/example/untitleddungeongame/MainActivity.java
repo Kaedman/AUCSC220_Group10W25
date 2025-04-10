@@ -1,3 +1,12 @@
+/**
+ * To Do for deployment:
+ *      TestCases (Meaningful)
+ *      Bug Documentation
+ *
+ */
+
+
+
 package com.example.untitleddungeongame;
 
 import android.annotation.SuppressLint;

@@ -11,6 +11,7 @@ import android.view.SurfaceView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.untitleddungeongame.floors.Room;
 import com.example.untitleddungeongame.floors.RoomMaster;
 import com.example.untitleddungeongame.handlers.Game;
 
