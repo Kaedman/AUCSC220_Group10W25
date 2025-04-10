@@ -15,7 +15,7 @@ public class Room {
     //Room ids are a 4 digit numbers, the first 2 digits are the row number, the last 2 digits are
     //the column numbers.
     private int roomId;
-    public static int[] currentTileGen = {12, 13, 14};
+    public static int[] currentTileGen = {15, 13, 14};
     private RoomVisual looks; //The visual itself
 
     public Room(int roomId) {

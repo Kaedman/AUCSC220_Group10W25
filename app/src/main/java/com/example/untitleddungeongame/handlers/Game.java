@@ -65,6 +65,8 @@ public class Game extends SurfaceView implements Runnable {
     private DrawInstructions playerDrawInstructions;
 
     Enemy enemy = new Enemy("Enemy", 50);
+    //Sprites and stuff
+    private Sprite healthBar = new Sprite(Assets.AssetID.HEALTH_BAR, 128, 32, 1);
 
 
     //Other
@@ -129,7 +131,7 @@ public class Game extends SurfaceView implements Runnable {
         playerSprite.setCurrentRepeat(true);
         playerSprite.playCurrentAnimation();
 
-        playerDrawInstructions = new DrawInstructions(300, 600, playerSprite,10, 10);
+        playerDrawInstructions = new DrawInstructions(300, 1500, playerSprite,10, 10);
 
         //Gameplay
         Apple apple = new Apple();
@@ -185,6 +187,24 @@ public class Game extends SurfaceView implements Runnable {
         doGameLoop = state;
     }
 
+    //Draw variables
+    //HealthBar
+    int magicHealthBarPositionX = 50;
+    int magicHealthBarPositionY = 200;
+    int magicHealthBarScaleX = 5;
+    int magicHealthBarScaleY = 5;
+    int actualBarX = magicHealthBarPositionX + 35 * magicHealthBarScaleX;
+    int actualBarY = magicHealthBarPositionY + 6 * magicHealthBarScaleY;
+    int actualBarWidth = 82 * magicHealthBarScaleY;
+    int actualBarHeight = 20 * magicHealthBarScaleY;
+    int healthBarMaxHPColor = Color.BLACK;
+    int healthBarCurrentColor = Color.RED;
+
+
+
+
+
+
     /**
     Draw instructions for all visuals relevant to the game
      */
@@ -214,6 +234,10 @@ public class Game extends SurfaceView implements Runnable {
         drawHealthBarAbove(canvas, playerDrawInstructions, pHP, pMAXHP);
 
         DrawInstructions.drawAll(canvas); //Entity Drawing
+
+
+        drawHealthBar(canvas, actualBarX, actualBarY, player.getHealth(), player.getMaxHealth(),actualBarWidth, actualBarHeight, healthBarMaxHPColor, healthBarCurrentColor);
+        healthBar.drawScaled(canvas, magicHealthBarPositionX, magicHealthBarPositionY, magicHealthBarScaleX, magicHealthBarScaleY);
 
         //Final Image updates
 
@@ -247,21 +271,34 @@ public class Game extends SurfaceView implements Runnable {
      * @param y - positionY
      * @param currentHP - Current Hp of entity
      * @param maxHP - Max hp of entity
+     * @param barWidth - Width of bar
+     * @param barHeight - Height of bar
+     * @param color1 - Color for Max Health
+     * @param color2 - Color for Current Health
      */
-    private void drawHealthBar(Canvas c, int x, int y, int currentHP, int maxHP, int barWidth, int barHeight){
+
+    private void drawHealthBar(Canvas c, int x, int y, int currentHP, int maxHP, int barWidth, int barHeight, int color1, int color2){
         float currentPercent = ((float)currentHP)/maxHP;
 
         Paint p = new Paint();
-        p.setColor(Color.RED);
+        p.setColor(color1);
         c.drawRect(x, y, x + barWidth, y + barHeight, p);
-        p.setColor(Color.GREEN);
+        p.setColor(color2);
         c.drawRect(x, y, x + barWidth * currentPercent, y + barHeight, p);
     }
 
-    public void drawHealthBarAbove(Canvas c, DrawInstructions target, int currentHP, int maxHP){
+    private void drawHealthBar(Canvas c, int x, int y, int currentHP, int maxHP, int barWidth, int barHeight){
+        drawHealthBar(c, x, y, currentHP, maxHP, barWidth, barHeight, Color.RED, Color.GREEN);
+    }
+    public void drawHealthBarAbove(Canvas c, DrawInstructions target, int currentHP, int maxHP, int color1, int color2){
         int magicWidth = 300; int magicHeight = 30;
         int magicYDisplace = -30; int magicXDisplace = -5;
-        drawHealthBar(c, target.getX() + magicXDisplace, target.getY() + magicYDisplace, currentHP, maxHP, magicWidth, magicHeight);
+        drawHealthBar(c, target.getX() + magicXDisplace, target.getY() + magicYDisplace, currentHP, maxHP, magicWidth, magicHeight, color1, color2);
+    }
+
+    public void drawHealthBarAbove(Canvas c, DrawInstructions target, int currentHP, int maxHP){
+        drawHealthBarAbove(c, target, currentHP, maxHP, Color.RED, Color.GREEN);
+
     }
 
     public void setRoomVisual(RoomVisual roomVisual) {
