@@ -18,6 +18,7 @@ public class Combat {
     private final Player player;
     Enemy enemy;
     private final AppCompatActivity activity;
+    private boolean isDisabled = false;
 
      public Combat(AppCompatActivity activity, Player player, Enemy enemy) {
          this.activity = activity;
@@ -26,15 +27,12 @@ public class Combat {
          presentor = new Presenter(activity);
          controller = new Controller(player, enemy);
 
-         presentor.attackButton.setOnClickListener(this::attackButtonPressed);
-         presentor.itemsButton.setOnClickListener(this::itemsButtonPressed);
+         presentor.itemAttackButton.setAttackButtonClickListener(this::attackButtonPressed);
+         presentor.itemAttackButton.setItemButtonClickListener(this::itemsButtonPressed);
          presentor.itemBar.setOnClick(this::useItem);
          presentor.attackBar.setOnClick(this::useAttack);
          presentor.setItemBar(player.getEquipped());
          presentor.setAttackBar(player.getAttacks());
-
-         inCombat = true;
-
      }
 
      public void setCombat(boolean state) {
@@ -42,11 +40,26 @@ public class Combat {
      }
 
      public void run() {
+         if (!inCombat) {
+             if (!isDisabled) {
+                 activity.runOnUiThread(() -> {
+                     presentor.itemAttackButton.disable(true);
+                     presentor.attackBar.disable(true);
+                     presentor.itemBar.disable(true);
+                 });
+                    isDisabled = true;
+             } else {
+                 isDisabled = false;
+             }
+             controller.reset();
+             return;
+         }
          controller.run();
          activity.runOnUiThread(() -> {
-                presentor.updateHealth(player, enemy);
-                presentor.updateHotBars();
+            presentor.updateHotBars();
+            presentor.itemAttackButton.disable(false);
          });
+         isDisabled = false;
      }
 
      public void attackButtonPressed(View button) {

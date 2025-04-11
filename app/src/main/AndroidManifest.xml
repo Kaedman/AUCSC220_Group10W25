@@ -11,17 +11,24 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.UntitledDungeonGame"
+
         tools:targetApi="31">
         <activity
             android:name=".SettingsActivity"
+            android:screenOrientation="userPortrait"
+            android:configChanges="orientation|keyboardHidden"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
+            android:screenOrientation="userPortrait"
+            android:configChanges="orientation|keyboardHidden"
             android:exported="true">
 
         </activity>
         <activity
             android:name=".MainMenu"
+            android:screenOrientation="userPortrait"
+            android:configChanges="orientation|keyboardHidden"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

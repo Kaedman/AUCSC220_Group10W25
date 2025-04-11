@@ -9,7 +9,6 @@ public class Enemy extends Entity {
 
 
     public Enemy(String name, int health) {
-
         super(name, health, 10, 10, 10);
         attacks[0] = new QuickAttack();
     }

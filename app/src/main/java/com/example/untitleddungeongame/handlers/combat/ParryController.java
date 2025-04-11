@@ -31,4 +31,9 @@ public class ParryController {
         }
         return false;
     }
+    public void reset() {
+        playerParrying = false;
+        playerParrySet = false;
+        screenTapped = false;
+    }
 }

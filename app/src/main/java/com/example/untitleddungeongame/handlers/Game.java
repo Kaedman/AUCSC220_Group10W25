@@ -98,7 +98,6 @@ public class Game extends SurfaceView implements Runnable {
         dialogBox = activity.findViewById(R.id.combat_dialog);
 
         combat = new Combat(activity, player, enemy);
-        combat.setCombat(true);
 
         scaleX = (float) screenX / SCREENX_CONST;
         scaleY = (float) screenY / SCREENY_CONST;
@@ -202,9 +201,8 @@ public class Game extends SurfaceView implements Runnable {
         while (doGameLoop){
             if (!isPaused && !userPaused) {
                 mapUpdate();
-                if (roomMaster.getCurrentRoom().getRoomCleared() == false) {
-                    combat.run();
-                }
+                combat.setCombat(roomMaster.getCurrentRoom().getRoomCleared());
+                combat.run();
                 activity.runOnUiThread(this::runOnUiThread);
 
                 draw();
