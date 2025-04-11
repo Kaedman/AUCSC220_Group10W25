@@ -103,4 +103,20 @@ public class DrawInstructions {
     public int getX() {
         return x;
     }
+
+    public void setScaleY(int scaleY) {
+        this.scaleY = scaleY;
+    }
+
+    public void setScaleX(int scaleX) {
+        this.scaleX = scaleX;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
 }
