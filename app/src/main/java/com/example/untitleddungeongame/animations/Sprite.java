@@ -19,6 +19,8 @@ public class Sprite {
     private int collumnAmount;
     private int currentIndex;
 
+    public static int universalSpriteScale = 10;
+
     public Sprite(Assets.AssetID id, int spriteWidth, int spriteHeight, int numberOfCollumns){
 
         resource = Assets.getAsset(id);

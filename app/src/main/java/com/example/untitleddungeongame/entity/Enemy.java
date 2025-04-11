@@ -1,8 +1,12 @@
 package com.example.untitleddungeongame.entity;
 
+import com.example.untitleddungeongame.Assets;
+import com.example.untitleddungeongame.animations.Sprite;
 import com.example.untitleddungeongame.hotbar.attacks.QuickAttack;
 
 public class Enemy extends Entity {
+
+
 
     public Enemy(String name, int health) {
 

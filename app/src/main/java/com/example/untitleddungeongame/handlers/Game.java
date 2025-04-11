@@ -20,6 +20,7 @@ import com.example.untitleddungeongame.animations.Animation;
 import com.example.untitleddungeongame.animations.Sprite;
 import com.example.untitleddungeongame.entity.Enemy;
 import com.example.untitleddungeongame.entity.Player;
+import com.example.untitleddungeongame.entity.Slime;
 import com.example.untitleddungeongame.floors.RoomMaster;
 import com.example.untitleddungeongame.handlers.combat.Combat;
 import com.example.untitleddungeongame.hotbar.attacks.QuickAttack;
@@ -64,6 +65,7 @@ public class Game extends SurfaceView implements Runnable {
     private DrawInstructions playerDrawInstructions;
 
     Enemy enemy = new Enemy("Enemy", 50);
+    Slime testSlime = new Slime("Jerry", 30);
     //Sprites and stuff
     private Sprite healthBar = new Sprite(Assets.AssetID.HEALTH_BAR, 128, 32, 1);
 
@@ -134,7 +136,7 @@ public class Game extends SurfaceView implements Runnable {
         playerSprite.setCurrentRepeat(true);
         playerSprite.playCurrentAnimation();
 
-        playerDrawInstructions = new DrawInstructions(300, 1500, playerSprite,10, 10);
+        playerDrawInstructions = new DrawInstructions(300, 1500, playerSprite,Sprite.universalSpriteScale, Sprite.universalSpriteScale);
 
         //Gameplay
         Apple apple = new Apple();
@@ -191,6 +193,8 @@ public class Game extends SurfaceView implements Runnable {
         slimeTestAnim.playCurrentAnimation();
 
         DrawInstructions slimeInstruction = new DrawInstructions(0, 500, slimeTestAnim, 20, 20);
+
+        testSlime.makeDrawInstructions(200,200);
 
         prepMiniMap();
 
