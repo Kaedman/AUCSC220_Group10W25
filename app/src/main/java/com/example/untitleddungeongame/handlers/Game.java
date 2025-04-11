@@ -299,7 +299,7 @@ public class Game extends SurfaceView implements Runnable {
         if (OutputText.isNewText()) {
             setDialogText(OutputText.getOutputText());
         }
-        arrows.disable((!currentRoom.getRoomCleared() && currentRoom.getEnemy() != null) || Game.isPaused || Game.showMiniMap || Game.userPaused);
+        arrows.disable((!currentRoom.getRoomCleared() && currentRoom.getEnemy() != null) || Game.isPaused || Game.showMiniMap || Game.userPaused || OutputText.isInDialog());
     }
 
     /**
