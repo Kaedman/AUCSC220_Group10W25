@@ -109,20 +109,12 @@ public class MainActivity extends AppCompatActivity {
         arrows.setRoomMaster(roomMaster);
         arrows.setArrows();
 
-        resumeVisual = findViewById(R.id.resumeVisual);
-        quitVisual = findViewById(R.id.quitVisual);
-        attacksVisual = findViewById(R.id.attacksVisual);
-        itemsVisual = findViewById(R.id.itemsVisual);
-
-        resumeText = findViewById(R.id.resume_text);
-        quitText = findViewById(R.id.quit_text);
         attacksText = findViewById(R.id.attacks_text);
         itemsText = findViewById(R.id.items_text);
-        hidePauseMenuVisuals();
 
         pauseButton = findViewById(R.id.pause);
         pauseButton.setAlpha(0.0f);
-        pauseMenu = findViewById(R.id.pause_menu_main);
+        pauseMenu = findViewById(R.id.pause_menu);
         pauseMenu.disable(true);
 
         pauseMenu.setOnQuitClickListener(this::onQuit);
@@ -187,15 +179,12 @@ public class MainActivity extends AppCompatActivity {
         pauseMenu.disable(true);
         arrows.setArrows();
         pauseButton.setVisibility(View.VISIBLE);
-        hidePauseMenuVisuals();
         System.out.println("Resumed");
     }
     public void onUserPause(View v){
         Game.userPaused = true;
         pauseMenu.disable(false);
         arrows.hideArrows();
-        pauseButton.setVisibility(View.GONE);
-        showPauseMenuVisuals();
         System.out.println("Paused");
     }
 
@@ -206,19 +195,5 @@ public class MainActivity extends AppCompatActivity {
 
     public void setRoomMasterGame(Game game) {
         roomMaster.setGame(game);
-    }
-
-    public void hidePauseMenuVisuals() {
-        resumeVisual.setVisibility(View.GONE);
-        quitVisual.setVisibility(View.GONE);
-        resumeText.setVisibility(View.GONE);
-        quitText.setVisibility(View.GONE);
-    }
-
-    public void showPauseMenuVisuals() {
-        resumeVisual.setVisibility(View.VISIBLE);
-        quitVisual.setVisibility(View.VISIBLE);
-        resumeText.setVisibility(View.VISIBLE);
-        quitText.setVisibility(View.VISIBLE);
     }
 }

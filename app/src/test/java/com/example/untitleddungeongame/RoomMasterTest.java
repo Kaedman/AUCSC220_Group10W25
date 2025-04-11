@@ -6,6 +6,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
+import com.example.untitleddungeongame.characters.Player;
 import com.example.untitleddungeongame.floors.RoomMaster;
 
 import java.util.ArrayList;
@@ -18,7 +19,7 @@ import java.util.ArrayList;
 public class RoomMasterTest {
     @Test
     public void testGetEmptyPathsNoEmpty() {
-        RoomMaster roomMaster = new RoomMaster();
+        RoomMaster roomMaster = new RoomMaster(new Player(60));
         roomMaster.setFloorMap(new int[][] {{0, 0, 0, 0},
                                             {0, 0, 0, 0},
                                             {0, 3, 0, 0},
@@ -29,7 +30,7 @@ public class RoomMasterTest {
 
     @Test
     public void testGetEmptyPathLDEmpty() {
-        RoomMaster roomMaster = new RoomMaster();
+        RoomMaster roomMaster = new RoomMaster(new Player(60));
         roomMaster.setFloorMap(new int[][] {{0, 0, 0, 0},
                                             {0, 0, 3, 0},
                                             {0, 0, 1, 5},
@@ -45,7 +46,7 @@ public class RoomMasterTest {
 
     @Test
     public void testFindEmptyPathLastEmpty() {
-        RoomMaster roomMaster = new RoomMaster();
+        RoomMaster roomMaster = new RoomMaster(new Player(60));
         roomMaster.setFloorMap(new int[][] {{0, 6, 3, 5},
                                             {0, 5, 3, 4},
                                             {0, 0, 1, 5},
@@ -69,14 +70,14 @@ public class RoomMasterTest {
 
     @Test
     public void testViewFloorMap() {
-        RoomMaster roomMaster = new RoomMaster();
+        RoomMaster roomMaster = new RoomMaster(new Player(60));
         roomMaster.generateRoomArray(6, 6, 30);
         assertTrue(roomMaster.getRoomCount() >= 15);
     }
 
     @Test
     public void TestRoomGenOrigin(){
-        RoomMaster roomMaster = new RoomMaster();
+        RoomMaster roomMaster = new RoomMaster(new Player(60));
         roomMaster.setFloorMap(new int[][] {{4, 3, 0, 1},
                                             {0, 3, 0, 4},
                                             {2, 4, 1, 2},

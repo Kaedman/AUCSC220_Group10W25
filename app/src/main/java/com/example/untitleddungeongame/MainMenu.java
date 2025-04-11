@@ -14,9 +14,9 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 public class MainMenu extends AppCompatActivity {
-    Button playButton;
-    Button newButton;
-    Button settingsButton;
+    ImageView playButton;
+    ImageView newButton;
+    ImageView settingsButton;
     TextView loadingText;
 
     @Override
@@ -34,10 +34,6 @@ public class MainMenu extends AppCompatActivity {
         playButton = findViewById(R.id.play_button);
         newButton = findViewById(R.id.newRun);
         settingsButton = findViewById(R.id.settings);
-
-        playButton.setAlpha(0);
-        newButton.setAlpha(0);
-        settingsButton.setAlpha(0);
 
         loadingText = findViewById(R.id.loading_text);
         loadingText.setVisibility(View.GONE);

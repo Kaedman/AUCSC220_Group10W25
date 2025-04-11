@@ -4,16 +4,19 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
+
 import com.example.untitleddungeongame.R;
 
 
-public class PauseMenu extends LinearLayout {
-    private LinearLayout rootView;
-    private Button quitButton;
-    private Button resumeButton;
+public class PauseMenu extends androidx.constraintlayout.widget.ConstraintLayout {
+    private ConstraintLayout rootView;
+    private ImageView quitButton;
+    private ImageView resumeButton;
     public PauseMenu(Context context) {
         super(context);
     }

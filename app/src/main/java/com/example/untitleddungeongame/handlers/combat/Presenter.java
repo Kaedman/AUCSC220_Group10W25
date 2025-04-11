@@ -2,6 +2,7 @@ package com.example.untitleddungeongame.handlers.combat;
 
 import android.annotation.SuppressLint;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,7 +17,7 @@ import com.example.untitleddungeongame.ui.hotbar.HotBar;
 @SuppressLint("SetTextI18n")
 public class Presenter {
     protected final AppCompatActivity activity;
-    protected final Button attackButton, itemsButton;
+    protected final ImageView attackButton, itemsButton;
     private final TextView playerHealth, enemyHealth;
 
     protected final HotBar<Item> itemBar;
@@ -39,9 +40,6 @@ public class Presenter {
 
         attackBar.disable(true);
         itemBar.disable(true);
-
-        attackButton.setText("Attack");
-        itemsButton.setText("Items");
     }
 
 
