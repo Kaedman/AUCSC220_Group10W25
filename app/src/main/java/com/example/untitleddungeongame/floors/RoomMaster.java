@@ -169,7 +169,7 @@ public class RoomMaster {
                 //REPLACE WITH CREATE NEW ENEMY FUNCTION
                 enemy = new Enemy("Generic", 5, 5, 1);
 
-                newRoom = new Encounter(((row * 100) + (col)), enemy);
+                newRoom = new Encounter(((row * 100) + (col)), enemy, player);
                 break;
 
             case 4:
