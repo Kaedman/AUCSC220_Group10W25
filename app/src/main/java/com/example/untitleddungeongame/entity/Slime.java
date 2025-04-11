@@ -11,10 +11,11 @@ public class Slime extends Enemy{
 
     private AnimatedSprite animatedSprite;
     public DrawInstructions drawInstructions;
+    private int posX;
+    private int posY;
     public Slime(String name, int hp){
         super(name, hp, 1, 0, 1);
         setUpAnimation();
-
     }
     private void setUpAnimation(){
         animatedSprite = new AnimatedSprite(sprite);
@@ -33,19 +34,24 @@ public class Slime extends Enemy{
      */
     public void makeDrawInstructions(int posX, int posY, int scaleX, int scaleY){
         drawInstructions = new DrawInstructions(posX, posY, animatedSprite, scaleX, scaleY);
+        this.posX = posX;
+        this.posY = posY;
     }
 
     public void makeDrawInstructions(int posX, int posY){
         makeDrawInstructions(posX, posY, Sprite.universalSpriteScale, Sprite.universalSpriteScale);
-
     }
 
     /**
      * Get that enemy out of my sight!
      */
-    public void yeetEnemy(){
+    public void yeetEnemy(boolean isDead){
         if (drawInstructions != null){
-            drawInstructions.setY(200000);
+            if (isDead) {
+                drawInstructions.setY(200000);
+            } else {
+                drawInstructions.setY(posY);
+            }
         }
     }
 

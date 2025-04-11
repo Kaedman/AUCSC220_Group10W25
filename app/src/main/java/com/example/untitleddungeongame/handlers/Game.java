@@ -66,6 +66,7 @@ public class Game extends SurfaceView implements Runnable {
     private DrawInstructions playerDrawInstructions;
     private final Arrows arrows;
     Slime testSlime = new Slime("Jerry", 30);
+    AnimatedSprite slimeTestAnim;
     //Sprites and stuff
     private Sprite healthBar = new Sprite(Assets.AssetID.HEALTH_BAR, 128, 32, 1);
 
@@ -122,12 +123,12 @@ public class Game extends SurfaceView implements Runnable {
         userPaused = false; //Pausing controlled by pause button
         showMiniMap = false;
 
+        playerSprite = new AnimatedSprite(new Sprite(Assets.AssetID.PLAYER, 32, 32, 4));
     }
 
 
     public void preparePlayer(){
         //Looks
-        playerSprite = new AnimatedSprite(new Sprite(Assets.AssetID.PLAYER, 32, 32, 4));
         playerSprite.addAnimation(new Animation("Idle", 0, 3, new int[]{84, 84, 124, 400}));
         playerSprite.setCurrentAnimation("Idle");
         playerSprite.setCurrentRepeat(true);
@@ -193,7 +194,7 @@ public class Game extends SurfaceView implements Runnable {
 
         preparePlayer();
 
-        AnimatedSprite slimeTestAnim = new AnimatedSprite(new Sprite(Assets.AssetID.ENEMY_SLIME, 32, 32, 9));
+        slimeTestAnim = new AnimatedSprite(new Sprite(Assets.AssetID.ENEMY_SLIME, 32, 32, 9));
         slimeTestAnim.addAnimation(new Animation("idle", 0, 9, new int[] {150, 94, 74, 94, 300, 94, 74, 94, 150}));
         slimeTestAnim.setCurrentAnimation("idle");
         slimeTestAnim.setCurrentRepeat(true);
@@ -264,7 +265,7 @@ public class Game extends SurfaceView implements Runnable {
         canvas.drawPaint(fill); //Refresh the canvas
         if (roomVisual != null) //Room Drawing
             roomVisual.draw(canvas, (int)(-RoomVisual.getScaleX() * RoomVisual.getTilePixelWidth() * 0.5), 0);
-//        particleSystem.drawAllParticles(canvas);
+        testSlime.yeetEnemy(currentRoom.getRoomCleared() || currentRoom.getEnemy() == null);
         DrawInstructions.drawAll(canvas, !currentRoom.getRoomCleared() && currentRoom.getEnemy() != null); //Entity Drawing
 
 
