@@ -217,7 +217,7 @@ public class Game extends SurfaceView implements Runnable {
             if (!isPaused && !userPaused) {
                 mapUpdate();
                 combat.setCombat(roomMaster.getCurrentRoom().getRoomCleared());
-                particleSystem.updateParticles();
+//                particleSystem.updateParticles();
                 combat.run();
                 activity.runOnUiThread(this::runOnUiThread);
 
@@ -273,7 +273,7 @@ public class Game extends SurfaceView implements Runnable {
         canvas.drawPaint(fill); //Refresh the canvas
         if (roomVisual != null) //Room Drawing
             roomVisual.draw(canvas, (int)(-RoomVisual.getScaleX() * RoomVisual.getTilePixelWidth() * 0.5), 0);
-        particleSystem.drawAllParticles(canvas);
+//        particleSystem.drawAllParticles(canvas);
         DrawInstructions.drawAll(canvas); //Entity Drawing
 
 
