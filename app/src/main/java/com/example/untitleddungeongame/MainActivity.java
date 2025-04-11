@@ -118,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
         quitText = findViewById(R.id.quit_text);
         attacksText = findViewById(R.id.attacks_text);
         itemsText = findViewById(R.id.items_text);
-        hidePauseMenuVisuals(resumeText);
+        hidePauseMenuVisuals();
 
         pauseButton = findViewById(R.id.pause);
         pauseButton.setAlpha(0.0f);
@@ -173,6 +173,8 @@ public class MainActivity extends AppCompatActivity {
         Assets.addAsset(Assets.AssetID.ITEM_OFFENSE, BitmapFactory.decodeResource(resources, R.drawable.itemsoffense));
         Assets.addAsset(Assets.AssetID.ITEM_SLOT, BitmapFactory.decodeResource(resources, R.drawable.itemslot));
 
+        Assets.addAsset(Assets.AssetID.BUTTON, BitmapFactory.decodeResource(resources, R.drawable.button));
+        Assets.addAsset(Assets.AssetID.BUTTON_PRESSED, BitmapFactory.decodeResource(resources, R.drawable.buttonpressed));
         Assets.addAsset(Assets.AssetID.BUTTON_PAUSE, BitmapFactory.decodeResource(resources, R.drawable.buttonpause));
         Assets.addAsset(Assets.AssetID.BUTTON_INVENTORY, BitmapFactory.decodeResource(resources, R.drawable.buttoninventory));
 
@@ -185,7 +187,7 @@ public class MainActivity extends AppCompatActivity {
         pauseMenu.disable(true);
         arrows.setArrows();
         pauseButton.setVisibility(View.VISIBLE);
-        hidePauseMenuVisuals(v);
+        hidePauseMenuVisuals();
         System.out.println("Resumed");
     }
     public void onUserPause(View v){
@@ -193,7 +195,7 @@ public class MainActivity extends AppCompatActivity {
         pauseMenu.disable(false);
         arrows.hideArrows();
         pauseButton.setVisibility(View.GONE);
-        showPauseMenuVisuals(v);
+        showPauseMenuVisuals();
         System.out.println("Paused");
     }
 
@@ -206,17 +208,17 @@ public class MainActivity extends AppCompatActivity {
         roomMaster.setGame(game);
     }
 
-    public void hidePauseMenuVisuals(View v) {
-        resumeVisual.setVisibility(v.GONE);
-        quitVisual.setVisibility(v.GONE);
-        resumeText.setVisibility(v.GONE);
-        quitText.setVisibility(v.GONE);
+    public void hidePauseMenuVisuals() {
+        resumeVisual.setVisibility(View.GONE);
+        quitVisual.setVisibility(View.GONE);
+        resumeText.setVisibility(View.GONE);
+        quitText.setVisibility(View.GONE);
     }
 
-    public void showPauseMenuVisuals(View v) {
-        resumeVisual.setVisibility(v.VISIBLE);
-        quitVisual.setVisibility(v.VISIBLE);
-        resumeText.setVisibility(v.VISIBLE);
-        quitText.setVisibility(v.VISIBLE);
+    public void showPauseMenuVisuals() {
+        resumeVisual.setVisibility(View.VISIBLE);
+        quitVisual.setVisibility(View.VISIBLE);
+        resumeText.setVisibility(View.VISIBLE);
+        quitText.setVisibility(View.VISIBLE);
     }
 }
