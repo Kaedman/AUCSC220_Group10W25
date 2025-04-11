@@ -23,10 +23,14 @@ public class ParticleSystem {
     private Particle[] particles;
     private Bitmap particleLooks;
     private static Random r = new Random();
-    public ParticleSystem(int maxParticles, int particleFrameMin, int particleFrameMax){
+
+    private int scaleX, scaleY;
+    public ParticleSystem(int maxParticles, int particleFrameMin, int particleFrameMax, int scaleX, int scaleY){
         particleMaxCount = maxParticles;
         this.particleFrameMin = particleFrameMin;
         this.particleFrameMax = particleFrameMax;
+        this.scaleX = scaleX;
+        this.scaleY = scaleY;
 
     }
 
@@ -133,6 +137,12 @@ public class ParticleSystem {
 
         }
 
+    }
+
+    public void drawAllParticles(Canvas c){
+        for (int p = 0; p < particles.length; p++){
+            particles[p].drawVisual(c, null, scaleX, scaleY);
+        }
     }
 
 
