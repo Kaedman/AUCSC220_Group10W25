@@ -1,6 +1,9 @@
 package com.example.untitleddungeongame.ui;
 
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.provider.Telephony;
 
 import java.util.Random;
 
@@ -32,6 +35,18 @@ public class ParticleSystem {
 
     }
 
+    public void createRectBaseParticle(int color, int rectX, int rectY){
+        particleLooks = Bitmap.createBitmap(rectX, rectY, Bitmap.Config.ARGB_8888);
+
+        Canvas drawer = new Canvas(particleLooks);
+        drawer.setBitmap(particleLooks);
+
+        Paint p = new Paint(); p .setColor(color);
+
+        drawer.drawRect(0,0, rectX, rectY, p);
+
+    }
+
     /**
      * This function has violated the principles of clean code
      * Sets the random particle settings ranges for particles generated under this particle system
@@ -60,23 +75,63 @@ public class ParticleSystem {
     }
 
     private Particle getNewParticle(){
+        Particle p = new Particle(0, 0, 0);
+        if (particleLooks != null)
+            p.setVisualBitmap(particleLooks);
+
+        resetParticle(p);
+
+        return p;
+    }
+    private void resetParticle(Particle p){
         //https://stackoverflow.com/questions/363681/how-do-i-generate-random-integers-within-a-specific-range-in-java
         //Random Ranges
         int minX = particlePosMinX + r.nextInt(particlePosMaxX - particlePosMinX + 1);
         int minY = particlePosMinX + r.nextInt(particlePosMaxY - particlePosMinY + 1);
 
-//        Particle p = new Particle(r.nextInt(particlePosMinX, particlePosMaxX), r.nextInt(particlePosMinY, particlePosMaxY),
-//                r.nextInt(particleVelMinX, particleVelMaxX), r.nextInt(particleVelMinY, particleVelMaxY),
-//                r.nextInt(particleVelChangeMinX, particleVelChangeMaxX), r.nextInt(particleVelChangeMinY, particleVelChangeMaxY),
-//                r.nextInt(particleFrameMin, particleFrameMax)
-//                );
-        return null;
-    }
-    private void resetParticle(Particle p){
+        int velX = particleVelMinX + r.nextInt(particleVelMaxX - particleVelMinX + 1);
+        int velY = particleVelMinY + r.nextInt(particleVelMaxY - particleVelMinY + 1);
 
+        int velChangeX = particleVelChangeMinX + r.nextInt(particleVelChangeMaxX - particleVelChangeMinX + 1);
+        int velChangeY = particleVelChangeMinY + r.nextInt(particleVelChangeMaxY - particleVelChangeMinY + 1);
+
+        int lifeTime = particleFrameMin + r.nextInt(particleFrameMax - particleFrameMin + 1);
+
+        p.setPosX(minX); p.setPosY(minY);
+        p.setVelocityX(velX); p.setVelocityY(velY);
+
+        p.setVelocityChangeX(velChangeX); p.setVelocityChangeY(velChangeY);
+
+        p.setMaxLifeTime(lifeTime); p.setCurrentLifeTime(0);
+
+
+    }
+
+    public void createAllParticles(){
+        int randomLifeTimeStart;
+        for (int p = 0; p < particles.length; p++){
+            particles[p] = getNewParticle();
+            randomLifeTimeStart = particleFrameMin + r.nextInt(particleFrameMax - particleFrameMin + 1);
+            particles[p].setCurrentLifeTime(randomLifeTimeStart);
+        }
     }
 
     public void updateParticles(){
+        Particle current;
+        for (int p = 0; p < particles.length; p++){
+
+            current = particles[p];
+
+            if (current == null){
+                particles[p] = getNewParticle();
+                current = particles[p];
+            }
+
+            if (current.alive)
+                resetParticle(current);
+            current.update();
+
+        }
 
     }
 
