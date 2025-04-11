@@ -3,14 +3,15 @@ package com.example.untitleddungeongame.ui.hotbar;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 import com.example.untitleddungeongame.R;
 
 public class ItemAttackButton extends ConstraintLayout {
     private ConstraintLayout rootLayout;
-    private Button attackButton;
-    private Button itemButton;
+    private ImageView attackButton;
+    private ImageView itemButton;
     private boolean isDisabled = false;
 
     public ItemAttackButton(Context context) {
@@ -32,7 +33,7 @@ public class ItemAttackButton extends ConstraintLayout {
         inflate(context, R.layout.attack_items, this);
         rootLayout = findViewById(R.id.item_attack_button);
         attackButton = findViewById(R.id.attack_button);
-        itemButton = findViewById(R.id.item_button);
+        itemButton = findViewById(R.id.items_button);
     }
 
     public void setAttackButtonClickListener(OnClickListener listener) {

@@ -135,7 +135,7 @@ public class Game extends SurfaceView implements Runnable {
         playerSprite.setCurrentRepeat(true);
         playerSprite.playCurrentAnimation();
 
-        playerDrawInstructions = new DrawInstructions(300, 1500, playerSprite,Sprite.universalSpriteScale, Sprite.universalSpriteScale);
+        playerDrawInstructions = new DrawInstructions(575, 1500, playerSprite,Sprite.universalSpriteScale, Sprite.universalSpriteScale);
 
         //Gameplay
         Apple apple = new Apple();
@@ -191,9 +191,9 @@ public class Game extends SurfaceView implements Runnable {
         slimeTestAnim.setCurrentRepeat(true);
         slimeTestAnim.playCurrentAnimation();
 
-        DrawInstructions slimeInstruction = new DrawInstructions(0, 500, slimeTestAnim, 20, 20);
+        //DrawInstructions slimeInstruction = new DrawInstructions(0, 500, slimeTestAnim, 20, 20);
 
-        testSlime.makeDrawInstructions(200,200);
+        testSlime.makeDrawInstructions(550,800);
 
         prepMiniMap();
 
@@ -265,7 +265,7 @@ public class Game extends SurfaceView implements Runnable {
         healthBar.drawScaled(canvas, magicHealthBarPositionX, magicHealthBarPositionY, magicHealthBarScaleX, magicHealthBarScaleY);
 
         if (showMiniMap)
-            miniMap.drawToCanvas(canvas, 200, 800);
+            miniMap.drawToCanvas(canvas, 200, 1000);
 
 
         //Final Image updates

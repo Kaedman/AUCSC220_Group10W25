@@ -109,9 +109,6 @@ public class MainActivity extends AppCompatActivity {
         arrows.setRoomMaster(roomMaster);
         arrows.setArrows();
 
-        attacksText = findViewById(R.id.attacks_text);
-        itemsText = findViewById(R.id.items_text);
-
         pauseButton = findViewById(R.id.pause);
         pauseButton.setAlpha(0.0f);
         pauseMenu = findViewById(R.id.pause_menu);
@@ -199,5 +196,10 @@ public class MainActivity extends AppCompatActivity {
 
     public void mapButton(View v){
         Game.showMiniMap = !Game.showMiniMap;
+        if (Game.showMiniMap) {
+            arrows.hideArrows();
+        } else {
+            arrows.showArrows();
+        }
     }
 }

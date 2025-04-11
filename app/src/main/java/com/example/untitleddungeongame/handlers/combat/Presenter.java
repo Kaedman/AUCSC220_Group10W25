@@ -43,9 +43,6 @@ public class Presenter {
 
         attackBar.disable(true);
         itemBar.disable(true);
-
-        attackButton.setText("Attack");
-        itemsButton.setText("Items");
     }
 
 

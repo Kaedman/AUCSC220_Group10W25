@@ -19,27 +19,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.727" />
 
-    <ImageView
-        android:id="@+id/attack_button"
-        android:layout_width="@dimen/button_default_width"
-        android:layout_height="@dimen/button_default_height"
-        android:layout_marginStart="40dp"
-        android:layout_marginBottom="75dp"
-        android:src="@drawable/button_state"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/combat_dialog" />
-
-    <ImageView
-        android:id="@+id/items_button"
-        android:layout_width="@dimen/button_default_width"
-        android:layout_height="@dimen/button_default_height"
-        android:layout_marginEnd="40dp"
-        android:src="@drawable/button_state"
-        app:layout_constraintBottom_toBottomOf="@+id/attack_button"
-        app:layout_constraintEnd_toEndOf="@+id/combat_dialog"
-        app:layout_constraintTop_toTopOf="@+id/attack_button"
-        app:layout_constraintVertical_bias="0.0" />
-
     <TextView
         android:id="@+id/player_health"
         android:layout_width="wrap_content"
@@ -80,29 +59,28 @@
         app:layout_constraintHorizontal_bias="0.428"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <com.example.untitleddungeongame.ui.hotbar.HotBar
-        android:id="@+id/item_bar"
-        android:layout_width="334dp"
-        android:layout_height="0dp"
-        android:layout_marginBottom="20dp"
-        app:layout_constraintBottom_toTopOf="@+id/items_button"
-        app:layout_constraintDimensionRatio="16:4"
-        app:layout_constraintEnd_toEndOf="parent"
 
-        app:layout_constraintHorizontal_bias="0.415"
-        app:layout_constraintStart_toStartOf="parent" />
     <com.example.untitleddungeongame.ui.hotbar.HotBar
         android:id="@+id/attack_bar"
         android:layout_width="334dp"
         android:layout_height="0dp"
-        android:layout_marginBottom="20dp"
-        app:layout_constraintBottom_toTopOf="@+id/attack_button"
+        app:layout_constraintBottom_toTopOf="@id/itemAttackButton"
         app:layout_constraintDimensionRatio="16:4"
-        app:layout_constraintEnd_toEndOf="parent"
 
-        app:layout_constraintHorizontal_bias="0.415"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.506"
         app:layout_constraintStart_toStartOf="parent" />
 
+    <com.example.untitleddungeongame.ui.hotbar.HotBar
+        android:id="@+id/item_bar"
+        android:layout_width="334dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/itemAttackButton"
+        app:layout_constraintDimensionRatio="16:4"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.506"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <com.example.untitleddungeongame.ui.Arrows
         android:id="@+id/arrows"
@@ -121,30 +99,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/buttonpause" />
-
-    <TextView
-        android:id="@+id/attacks_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Attacks"
-        android:textColor="@color/white"
-        android:textSize="@dimen/button_default_text_size"
-        app:layout_constraintBottom_toBottomOf="@+id/attack_button"
-        app:layout_constraintEnd_toEndOf="@+id/attack_button"
-        app:layout_constraintStart_toStartOf="@+id/attack_button"
-        app:layout_constraintTop_toTopOf="@+id/attack_button" />
-
-    <TextView
-        android:id="@+id/items_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Items"
-        android:textColor="@color/white"
-        android:textSize="@dimen/button_default_text_size"
-        app:layout_constraintBottom_toBottomOf="@+id/items_button"
-        app:layout_constraintEnd_toEndOf="@+id/items_button"
-        app:layout_constraintStart_toStartOf="@+id/items_button"
-        app:layout_constraintTop_toTopOf="@+id/items_button" />
 
     <com.example.untitleddungeongame.ui.PauseMenu
         android:id="@+id/pause_menu"
@@ -168,13 +122,13 @@
 
     <com.example.untitleddungeongame.ui.hotbar.ItemAttackButton
         android:id="@+id/itemAttackButton"
-        android:layout_width="0dp"
-        android:layout_height="48dp"
-        android:layout_marginBottom="84dp"
+        android:layout_width="300dp"
+        android:layout_height="65dp"
+        android:layout_marginTop="500dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.504"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintDimensionRatio="16:3.25"
-        app:layout_constraintHorizontal_bias="0.5"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
