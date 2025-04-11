@@ -97,7 +97,7 @@ public class Game extends SurfaceView implements Runnable {
         screenY = size.y;
         dialogBox = activity.findViewById(R.id.combat_dialog);
 
-        combat = new Combat(activity, player, enemy);
+        combat = new Combat(activity, player, testSlime);
         combat.setCombat(true);
 
         scaleX = (float) screenX / SCREENX_CONST;
