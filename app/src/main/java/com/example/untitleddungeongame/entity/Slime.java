@@ -23,6 +23,14 @@ public class Slime extends Enemy{
         animatedSprite.setCurrentRepeat(true);
         animatedSprite.playCurrentAnimation();
     }
+
+    /**
+     * Creates a new draw instruction for the given enemy, allowing automatic animation
+     * @param posX - position X
+     * @param posY - position Y
+     * @param scaleX - scale X
+     * @param scaleY - scale Y
+     */
     public void makeDrawInstructions(int posX, int posY, int scaleX, int scaleY){
         drawInstructions = new DrawInstructions(posX, posY, animatedSprite, scaleX, scaleY);
     }
@@ -32,12 +40,20 @@ public class Slime extends Enemy{
 
     }
 
+    /**
+     * Get that enemy out of my sight!
+     */
     public void yeetEnemy(){
         if (drawInstructions != null){
             drawInstructions.setY(200000);
         }
     }
 
+    /**
+     * Allows repositioning of the drawInstruction on the enemy if drawInstruction has been made
+     * @param x - new position X
+     * @param y - new position Y
+     */
     public void repositionEnemy(int x, int y){
         if (drawInstructions != null){
             drawInstructions.setX(x);
@@ -45,4 +61,7 @@ public class Slime extends Enemy{
         }
     }
 
+    public AnimatedSprite getAnimatedSprite() {
+        return animatedSprite;
+    }
 }
