@@ -30,6 +30,7 @@ import com.example.untitleddungeongame.misc.ElapseTime;
 import com.example.untitleddungeongame.ui.CustomDialog;
 import com.example.untitleddungeongame.misc.OutputText;
 import com.example.untitleddungeongame.ui.MiniMap;
+import com.example.untitleddungeongame.ui.ParticleSystem;
 import com.example.untitleddungeongame.ui.RoomVisual;
 
 @SuppressLint("ViewConstructor")
@@ -97,7 +98,8 @@ public class Game extends SurfaceView implements Runnable {
         screenY = size.y;
         dialogBox = activity.findViewById(R.id.combat_dialog);
 
-        combat = new Combat(activity, player, enemy);
+        combat = new Combat(activity, player, testSlime);
+        combat.setCombat(true);
 
         scaleX = (float) screenX / SCREENX_CONST;
         scaleY = (float) screenY / SCREENY_CONST;
@@ -180,8 +182,21 @@ public class Game extends SurfaceView implements Runnable {
         }
     }
 
+    ParticleSystem particleSystem;
+    public void testParticlesSystem(){
+        particleSystem = new ParticleSystem(100, 50, 100, 8, 8);
+        particleSystem.createRectBaseParticle(Color.GREEN, 5, 5);
+
+        particleSystem.setParticleSettings(600, 620, 1500, 1500, -3, 3, 5, 10, 0, 0, -1, -1);
+        particleSystem.createParticles();
+        particleSystem.createAllParticles();
+
+    }
+
     @Override
     public void run() {
+
+        testParticlesSystem();
 
         preparePlayer();
 
@@ -202,6 +217,7 @@ public class Game extends SurfaceView implements Runnable {
             if (!isPaused && !userPaused) {
                 mapUpdate();
                 combat.setCombat(roomMaster.getCurrentRoom().getRoomCleared());
+//                particleSystem.updateParticles();
                 combat.run();
                 activity.runOnUiThread(this::runOnUiThread);
 
@@ -257,7 +273,7 @@ public class Game extends SurfaceView implements Runnable {
         canvas.drawPaint(fill); //Refresh the canvas
         if (roomVisual != null) //Room Drawing
             roomVisual.draw(canvas, (int)(-RoomVisual.getScaleX() * RoomVisual.getTilePixelWidth() * 0.5), 0);
-
+//        particleSystem.drawAllParticles(canvas);
         DrawInstructions.drawAll(canvas); //Entity Drawing
 
 
