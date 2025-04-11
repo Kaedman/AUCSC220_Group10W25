@@ -61,5 +61,12 @@ public class CombatTurn {
     public boolean hasEnemyTurnHappened() {
         return enemyTurnHappened;
     }
-
+    public void reset() {
+        if (currentTurn == State.NONE) {
+            return;
+        }
+        currentTurn = State.NONE;
+        playerTurnHappened = false;
+        enemyTurnHappened = false;
+    }
 }

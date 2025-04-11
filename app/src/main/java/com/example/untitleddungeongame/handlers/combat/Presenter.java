@@ -2,22 +2,20 @@ package com.example.untitleddungeongame.handlers.combat;
 
 import android.annotation.SuppressLint;
 import android.widget.Button;
-import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.untitleddungeongame.misc.OutputText;
 import com.example.untitleddungeongame.R;
-import com.example.untitleddungeongame.entity.Entity;
 import com.example.untitleddungeongame.hotbar.attacks.Attack;
 import com.example.untitleddungeongame.hotbar.items.Item;
 import com.example.untitleddungeongame.ui.hotbar.HotBar;
+import com.example.untitleddungeongame.ui.hotbar.ItemAttackButton;
 
 @SuppressLint("SetTextI18n")
 public class Presenter {
     protected final AppCompatActivity activity;
-    protected final Button attackButton, itemsButton;
-    private final TextView playerHealth, enemyHealth;
+    protected final ItemAttackButton itemAttackButton;
 
     protected final HotBar<Item> itemBar;
     protected final HotBar<Attack> attackBar;
@@ -29,26 +27,15 @@ public class Presenter {
     public Presenter(AppCompatActivity activity) {
         this.activity = activity;
 
-        attackButton = activity.findViewById(R.id.attack_button);
-        itemsButton = activity.findViewById(R.id.items_button);
-        playerHealth = activity.findViewById(R.id.player_health);
-        enemyHealth = activity.findViewById(R.id.enemy_health);
-
+        itemAttackButton = activity.findViewById(R.id.itemAttackButton);
         itemBar = activity.findViewById(R.id.item_bar);
         attackBar = activity.findViewById(R.id.attack_bar);
 
         attackBar.disable(true);
         itemBar.disable(true);
-
-        attackButton.setText("Attack");
-        itemsButton.setText("Items");
     }
 
 
-    public void updateHealth(Entity player, Entity enemy) {
-        playerHealth.setText("Player Health: " + player.getHealth());
-        enemyHealth.setText("Enemy Health: " + enemy.getHealth());
-    }
     public void optionPressed() {
        if (showItems) {
            switchItems();

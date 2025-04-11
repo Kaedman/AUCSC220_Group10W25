@@ -4,6 +4,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
+import com.example.untitleddungeongame.entity.Player;
 import com.example.untitleddungeongame.floors.Encounter;
 import com.example.untitleddungeongame.floors.Rest;
 import com.example.untitleddungeongame.floors.Room;
@@ -22,8 +23,9 @@ public class ExampleUnitTest {
     //Just testing room joining.
     @Test
     public void TestRoomJoining() {
+        Player player = new Player(13);
         Enemy enemy = new Enemy("Test", 5, 5, 2);
-        Encounter enemyRoom = new Encounter(0010, enemy);
+        Encounter enemyRoom = new Encounter(0010, enemy, player);
         Rest restRoom = new Rest(0020);
         enemyRoom.setLeftRoom(restRoom);
         restRoom.setRightRoom(enemyRoom);

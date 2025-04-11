@@ -13,6 +13,11 @@ public class Boss extends Room{
         this.isCleared = false;
     }
 
+    @Override
+    public boolean getRoomCleared(){
+        return boss.getHp() <= 0;
+    }
+
     /*public boolean checkCleared() {
         if (boss.getHp() <= 0) {
             isCleared = true;

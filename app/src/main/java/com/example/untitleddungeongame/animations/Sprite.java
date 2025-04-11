@@ -21,6 +21,12 @@ public class Sprite {
 
     public static int universalSpriteScale = 10;
 
+    public enum SpriteRelativePosition {
+        START,
+        CENTER,
+        END
+    }
+
     public Sprite(Assets.AssetID id, int spriteWidth, int spriteHeight, int numberOfCollumns){
 
         resource = Assets.getAsset(id);
@@ -65,8 +71,6 @@ public class Sprite {
         canvasPosition.set(posX, posY, posX + spriteX * scaleX, posY + spriteY* scaleY);
 
         canvas.drawBitmap(resource, currentBound, canvasPosition, paint);
-
-
     }
     /*
     Draws the current sprite at a specified index and scale amount (eg. 2x scale x and y)
@@ -74,6 +78,41 @@ public class Sprite {
      */
     public void drawScaled(Canvas canvas, int posX, int posY, int scaleX, int scaleY){
         drawScaled(canvas, null, posX, posY, scaleX, scaleY);
+    }
+
+    /**
+     * Draws the current sprite at a specified index and scale amount (eg. 2x scale x and y)
+     * @param canvas
+     * @param posX
+     * @param posY
+     * @param scaleX
+     * @param scaleY
+     */
+    public void drawScaled(Canvas canvas, SpriteRelativePosition posX, SpriteRelativePosition posY, int scaleX, int scaleY){
+        int x = 0;
+        int y = 0;
+
+        int canvasWidth = canvas.getWidth();
+        int canvasHeight = canvas.getHeight();
+        switch (posX) {
+            case CENTER:
+                x = canvasWidth/2 - (spriteX * scaleX)/2;
+                break;
+            case END:
+                x = canvasWidth - (spriteX * scaleX);
+                break;
+        }
+
+        switch (posY) {
+            case CENTER:
+                y = canvasHeight/2 - (spriteY * scaleY)/2;
+                break;
+            case END:
+                y = canvasHeight - (spriteY * scaleY);
+                break;
+        }
+
+        drawScaled(canvas, null, x, y, scaleX, scaleY);
     }
 
     public void drawBitmapScaled(Canvas canvas, Bitmap bitmap, int posX, int posY, int scaleX, int scaleY){

@@ -9,7 +9,7 @@ import com.example.untitleddungeongame.misc.ElapseTime;
 
 public class Controller {
 
-    private final CombatState combatState = new CombatState();
+    protected final CombatState combatState = new CombatState();
     private CombatOption combatOption;
     private ParryController parryController = new ParryController();
     private CombatEvent combatEvent = new CombatEvent();
@@ -179,8 +179,11 @@ public class Controller {
     public boolean isPlayerParrying() {
         return parryController.hasParryBeenSet();
     }
-
-
-
-
+    public void reset() {
+        combatState.reset();
+        parryController.reset();
+        elapseTime.reset();
+        combatOption = null;
+        canParry = true;
+    }
 }

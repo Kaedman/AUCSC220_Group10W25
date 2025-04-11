@@ -216,6 +216,7 @@ public class Game extends SurfaceView implements Runnable {
         while (doGameLoop){
             if (!isPaused && !userPaused) {
                 mapUpdate();
+                combat.setCombat(roomMaster.getCurrentRoom().getRoomCleared());
                 particleSystem.updateParticles();
                 combat.run();
                 activity.runOnUiThread(this::runOnUiThread);

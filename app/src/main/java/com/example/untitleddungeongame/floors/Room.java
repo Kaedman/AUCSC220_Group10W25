@@ -15,6 +15,8 @@ public class Room {
     //Room ids are a 4 digit numbers, the first 2 digits are the row number, the last 2 digits are
     //the column numbers.
     private int roomId;
+
+    private boolean roomCleared;
     public static int[] currentTileGen = {15, 13, 14};
     private RoomVisual looks; //The visual itself
 
@@ -24,7 +26,7 @@ public class Room {
         this.up = null;
         this.down = null;
         this.roomId = roomId;
-
+        this.roomCleared = false;
     }
 
     public void setUpLooks(){
@@ -53,6 +55,10 @@ public class Room {
     }
     public int getRoomId(){
         return roomId;
+    }
+
+    public boolean getRoomCleared(){
+        return roomCleared;
     }
 
 
