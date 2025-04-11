@@ -46,38 +46,8 @@ public class Arrows extends androidx.constraintlayout.widget.ConstraintLayout {
     public void setArrowVisible(ImageView v, boolean activated) {
         if (activated) {
             v.setVisibility(VISIBLE);
-
-            /*switch (v.getResources().getResourceName(v.getId())) {
-                case "com.example.untitleddungeongame:id/left_arrow":
-                    v.setImageResource(R.drawable.confirmationarrow3);
-                    break;
-                case "com.example.untitleddungeongame:id/right_arrow":
-                    v.setImageResource(R.drawable.confirmationarrow1);
-                    break;
-                case "com.example.untitleddungeongame:id/up_arrow":
-                    v.setImageResource(R.drawable.confirmationarrow4);
-                    break;
-                case "com.example.untitleddungeongame:id/down_arrow":
-                    v.setImageResource(R.drawable.confirmationarrow2);
-                    break;
-            }*/
         } else {
             v.setVisibility(GONE);
-
-            /*switch (v.getResources().getResourceName(v.getId())) {
-                case "com.example.untitleddungeongame:id/left_arrow":
-                    v.setImageResource(R.drawable.shadedarrow3);
-                    break;
-                case "com.example.untitleddungeongame:id/right_arrow":
-                    v.setImageResource(R.drawable.shadedarrow1);
-                    break;
-                case "com.example.untitleddungeongame:id/up_arrow":
-                    v.setImageResource(R.drawable.shadedarrow4);
-                    break;
-                case "com.example.untitleddungeongame:id/down_arrow":
-                    v.setImageResource(R.drawable.shadedarrow2);
-                    break;
-            }*/
         }
     }
 

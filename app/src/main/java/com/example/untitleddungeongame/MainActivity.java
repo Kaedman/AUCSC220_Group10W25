@@ -21,6 +21,8 @@ import android.view.Display;
 import android.view.SurfaceView;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -43,6 +45,15 @@ public class MainActivity extends AppCompatActivity {
     public Button pauseButton;
 
     PauseMenu pauseMenu;
+    ImageView resumeVisual;
+    ImageView quitVisual;
+    ImageView attacksVisual;
+    ImageView itemsVisual;
+
+    TextView resumeText;
+    TextView quitText;
+    TextView attacksText;
+    TextView itemsText;
 
     MyCallBack myCallBack;
     Player player;
@@ -98,9 +109,12 @@ public class MainActivity extends AppCompatActivity {
         arrows.setRoomMaster(roomMaster);
         arrows.setArrows();
 
+        attacksText = findViewById(R.id.attacks_text);
+        itemsText = findViewById(R.id.items_text);
+
         pauseButton = findViewById(R.id.pause);
         pauseButton.setAlpha(0.0f);
-        pauseMenu = findViewById(R.id.pause_menu_main);
+        pauseMenu = findViewById(R.id.pause_menu);
         pauseMenu.disable(true);
 
         pauseMenu.setOnQuitClickListener(this::onQuit);
@@ -151,12 +165,13 @@ public class MainActivity extends AppCompatActivity {
         Assets.addAsset(Assets.AssetID.ITEM_OFFENSE, BitmapFactory.decodeResource(resources, R.drawable.itemsoffense));
         Assets.addAsset(Assets.AssetID.ITEM_SLOT, BitmapFactory.decodeResource(resources, R.drawable.itemslot));
 
+        Assets.addAsset(Assets.AssetID.BUTTON, BitmapFactory.decodeResource(resources, R.drawable.button));
+        Assets.addAsset(Assets.AssetID.BUTTON_PRESSED, BitmapFactory.decodeResource(resources, R.drawable.buttonpressed));
         Assets.addAsset(Assets.AssetID.BUTTON_PAUSE, BitmapFactory.decodeResource(resources, R.drawable.buttonpause));
         Assets.addAsset(Assets.AssetID.BUTTON_INVENTORY, BitmapFactory.decodeResource(resources, R.drawable.buttoninventory));
 
         Assets.addAsset(Assets.AssetID.DIALOG_FRAME, BitmapFactory.decodeResource(resources, R.drawable.dialog_frame));
         Assets.addAsset(Assets.AssetID.HEALTH_BAR, BitmapFactory.decodeResource(resources, R.drawable.healthbar));
-        //Assets.addAsset(Assets.AssetID.CONFIRM_ARROWS, BitmapFactory.decodeResource(resources, R.drawable.confrimationarrows));
     }
 
     public void onUserResume(View v){
@@ -170,7 +185,6 @@ public class MainActivity extends AppCompatActivity {
         Game.userPaused = true;
         pauseMenu.disable(false);
         arrows.hideArrows();
-        pauseButton.setVisibility(View.GONE);
         System.out.println("Paused");
     }
 
