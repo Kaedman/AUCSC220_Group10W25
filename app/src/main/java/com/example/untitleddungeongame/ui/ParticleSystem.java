@@ -79,7 +79,7 @@ public class ParticleSystem {
     }
 
     private Particle getNewParticle(){
-        Particle p = new Particle(0, 0, 0);
+        Particle p = new Particle(0, 0, 200);
         if (particleLooks != null)
             p.setVisualBitmap(particleLooks);
 
@@ -116,6 +116,7 @@ public class ParticleSystem {
         for (int p = 0; p < particles.length; p++){
             particles[p] = getNewParticle();
             randomLifeTimeStart = particleFrameMin + r.nextInt(particleFrameMax - particleFrameMin + 1);
+
             particles[p].setCurrentLifeTime(randomLifeTimeStart);
         }
     }
@@ -131,8 +132,9 @@ public class ParticleSystem {
                 current = particles[p];
             }
 
-            if (current.alive)
+            if (!current.alive)
                 resetParticle(current);
+
             current.update();
 
         }
