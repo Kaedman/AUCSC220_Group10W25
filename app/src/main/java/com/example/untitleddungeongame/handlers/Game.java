@@ -121,6 +121,7 @@ public class Game extends SurfaceView implements Runnable {
         //Pausing
         isPaused = false; //pausing controlled by leaving app, etc.
         userPaused = false; //Pausing controlled by pause button
+        showMiniMap = false;
 
     }
 
@@ -173,6 +174,7 @@ public class Game extends SurfaceView implements Runnable {
             oldX = MiniMap.playerX;
             oldY = MiniMap.playerY;
             miniMap.updateCurrentMapWithPlayerPosition();
+            miniMap.checkBossAdjacentAndMark();
             miniMap.makeMapVisual();
         }
     }
@@ -249,21 +251,15 @@ public class Game extends SurfaceView implements Runnable {
         ElapseTime.update(); // Update the current time
         //Drawing
         canvas.drawPaint(fill); //Refresh the canvas
-        if (roomVisual != null)
+        if (roomVisual != null) //Room Drawing
             roomVisual.draw(canvas, (int)(-RoomVisual.getScaleX() * RoomVisual.getTilePixelWidth() * 0.5), 0);
-
-
-
-        int pHP = player.getHealth();
-        int pMAXHP = player.getMaxHealth();
-
-        drawHealthBarAbove(canvas, playerDrawInstructions, pHP, pMAXHP);
 
         DrawInstructions.drawAll(canvas); //Entity Drawing
 
 
         drawHealthBar(canvas, actualBarX, actualBarY, player.getHealth(), player.getMaxHealth(),actualBarWidth, actualBarHeight, healthBarMaxHPColor, healthBarCurrentColor);
         healthBar.drawScaled(canvas, magicHealthBarPositionX, magicHealthBarPositionY, magicHealthBarScaleX, magicHealthBarScaleY);
+
         if (showMiniMap)
             miniMap.drawToCanvas(canvas, 200, 800);
 

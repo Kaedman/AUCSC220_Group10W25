@@ -105,9 +105,6 @@ public class MainActivity extends AppCompatActivity {
 
         pauseMenu.setOnQuitClickListener(this::onQuit);
         pauseMenu.setOnResumeClickListener(this::onUserResume);
-
-        Button mapButton = findViewById(R.id.buttonMap);
-        mapButton.setAlpha(0);
     }
 
     /**

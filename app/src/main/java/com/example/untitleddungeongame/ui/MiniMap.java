@@ -59,6 +59,21 @@ public class MiniMap {
 
                     outline.setColor(Color.BLACK);
                     drawer.drawRect(drawRect, outline);
+                    //Specific room minimap drawings
+                    switch (currentRoom) {
+                        case 2:
+                            outline.setColor(Color.RED);
+                            drawer.drawRect(drawRect, outline);
+                            break;
+                        case 1:
+                            outline.setColor(Color.BLUE);
+                            drawer.drawRect(drawRect, outline);
+                            break;
+                        case 3:
+                            outline.setColor(Color.GREEN);
+                            drawer.drawRect(drawRect, outline);
+                            break;
+                    }
 
                 }
                 drawRect.left += cellWidth; //Shift the drawing area right
@@ -80,7 +95,6 @@ public class MiniMap {
 
     public void updateExploredMap(int y, int x){
         exploredMap[y][x] = fullMap[y][x];
-
     }
 
 
@@ -105,5 +119,30 @@ public class MiniMap {
 
     public void updateCurrentMapWithPlayerPosition(){
         exploredMap[playerY][playerX] = fullMap[playerY][playerX];
+    }
+
+    public void checkBossAdjacentAndMark(){
+        if (playerX != exploredMap[0].length -1)
+            if (fullMap[playerY][playerX + 1] == 2) {
+                updateExploredMap(playerY, playerX + 1);
+                return;
+            }
+        if (playerX != 0)
+            if (fullMap[playerY][playerX - 1] == 2){
+                updateExploredMap(playerY, playerX - 1);
+                return;
+            }
+        if (playerY != exploredMap.length -1)
+            if (fullMap[playerY + 1][playerX] == 2){
+                updateExploredMap(playerY + 1, playerX);
+                return;
+            }
+        if (playerY != 0)
+            if (fullMap[playerY - 1][playerX] == 2){
+                updateExploredMap(playerY -1, playerX);
+                return;
+            }
+
+
     }
 }

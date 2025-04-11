@@ -117,8 +117,8 @@
         android:id="@+id/pauseVisual"
         android:layout_width="52dp"
         android:layout_height="66dp"
-        android:layout_marginTop="64dp"
-        android:layout_marginEnd="40dp"
+        android:layout_marginTop="72dp"
+        android:layout_marginEnd="36dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/buttonpause" />
@@ -134,23 +134,13 @@
 
     </com.example.untitleddungeongame.ui.Arrows>
 
-    <Button
-        android:id="@+id/buttonMap"
-        android:layout_width="60dp"
-        android:layout_height="56dp"
-        android:layout_marginTop="140dp"
-        android:layout_marginEnd="36dp"
-        android:onClick="mapButton"
-        android:text="Map"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <ImageView
-        android:id="@+id/imageView2"
+        android:id="@+id/map"
         android:layout_width="59dp"
         android:layout_height="56dp"
         android:layout_marginTop="140dp"
         android:layout_marginEnd="36dp"
+        android:onClick="mapButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/minimapbutton" />
