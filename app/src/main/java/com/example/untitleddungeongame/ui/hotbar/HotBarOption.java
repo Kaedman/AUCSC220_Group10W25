@@ -43,8 +43,7 @@ public class HotBarOption<T extends HotBarInfo> extends FrameLayout {
         itemButton = findViewById(R.id.item_touch);
         itemFrame = findViewById(R.id.item_frame);
         itemFrame.getHolder().addCallback(new FrameInstance());
-        itemFrame.setVisibility(GONE);
-
+        disable(true);
     }
 
     public void setItem(T item) {
@@ -64,10 +63,12 @@ public class HotBarOption<T extends HotBarInfo> extends FrameLayout {
 
     public void disable(boolean value) {
         if (value) {
+            itemFrame.setVisibility(GONE);
             itemButton.setVisibility(GONE);
             itemName.setText("");
             itemCount.setText("");
         } else {
+            itemFrame.setVisibility(VISIBLE);
             itemButton.setVisibility(VISIBLE);
             itemButton.setAlpha(0f);
         }

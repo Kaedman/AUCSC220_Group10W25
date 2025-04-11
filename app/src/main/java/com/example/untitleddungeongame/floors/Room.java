@@ -30,7 +30,6 @@ public class Room {
         this.roomId = roomId;
         this.roomCleared = false;
         this.enemy = enemy;
-        System.out.println("Room ID: " + roomId + " enemy: " + enemy);
     }
 
     public void setUpLooks(){
