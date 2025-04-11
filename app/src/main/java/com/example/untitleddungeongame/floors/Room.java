@@ -2,6 +2,7 @@ package com.example.untitleddungeongame.floors;
 
 import android.util.Log;
 
+import com.example.untitleddungeongame.entity.Enemy;
 import com.example.untitleddungeongame.ui.RoomVisual;
 
 
@@ -12,6 +13,7 @@ public class Room {
     private Room right;
     private Room up;
     private Room down;
+    protected Enemy enemy;
     //Room ids are a 4 digit numbers, the first 2 digits are the row number, the last 2 digits are
     //the column numbers.
     private int roomId;
@@ -20,13 +22,15 @@ public class Room {
     public static int[] currentTileGen = {15, 13, 14};
     private RoomVisual looks; //The visual itself
 
-    public Room(int roomId) {
+    public Room(int roomId, Enemy enemy) {
         this.left = null;
         this.right = null;
         this.up = null;
         this.down = null;
         this.roomId = roomId;
         this.roomCleared = false;
+        this.enemy = enemy;
+        System.out.println("Room ID: " + roomId + " enemy: " + enemy);
     }
 
     public void setUpLooks(){
@@ -59,6 +63,10 @@ public class Room {
 
     public boolean getRoomCleared(){
         return roomCleared;
+    }
+
+    public void setRoomCleared(boolean cleared){
+        this.roomCleared = cleared;
     }
 
 
@@ -125,4 +133,9 @@ public class Room {
     public RoomVisual getLooks(){
         return looks;
     }
+
+    public Enemy getEnemy() {
+        return this.enemy;
+    }
+
 }

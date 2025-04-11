@@ -21,12 +21,14 @@ import com.example.untitleddungeongame.animations.Sprite;
 import com.example.untitleddungeongame.entity.Enemy;
 import com.example.untitleddungeongame.entity.Player;
 import com.example.untitleddungeongame.entity.Slime;
+import com.example.untitleddungeongame.floors.Room;
 import com.example.untitleddungeongame.floors.RoomMaster;
 import com.example.untitleddungeongame.handlers.combat.Combat;
 import com.example.untitleddungeongame.hotbar.attacks.QuickAttack;
 import com.example.untitleddungeongame.hotbar.items.heals.Apple;
 import com.example.untitleddungeongame.hotbar.items.heals.Potion;
 import com.example.untitleddungeongame.misc.ElapseTime;
+import com.example.untitleddungeongame.ui.Arrows;
 import com.example.untitleddungeongame.ui.CustomDialog;
 import com.example.untitleddungeongame.misc.OutputText;
 import com.example.untitleddungeongame.ui.MiniMap;
@@ -61,11 +63,8 @@ public class Game extends SurfaceView implements Runnable {
     Combat combat;
     public RoomVisual roomVisual;
     private RoomMaster roomMaster;
-
-    Player player = new Player(50);
     private DrawInstructions playerDrawInstructions;
-
-    Enemy enemy = new Enemy("Enemy", 50);
+    private final Arrows arrows;
     Slime testSlime = new Slime("Jerry", 30);
     //Sprites and stuff
     private Sprite healthBar = new Sprite(Assets.AssetID.HEALTH_BAR, 128, 32, 1);
@@ -98,9 +97,6 @@ public class Game extends SurfaceView implements Runnable {
         screenY = size.y;
         dialogBox = activity.findViewById(R.id.combat_dialog);
 
-        combat = new Combat(activity, player, testSlime);
-        combat.setCombat(true);
-
         scaleX = (float) screenX / SCREENX_CONST;
         scaleY = (float) screenY / SCREENY_CONST;
         System.out.println(scaleX +  ", " + scaleY);
@@ -108,11 +104,11 @@ public class Game extends SurfaceView implements Runnable {
         //Fixed screen Scaling on smaller devices
         this.surfaceHolder.setFixedSize((SCREENX_CONST),(SCREENY_CONST)); //This fixed the scaling issue for smaller devices
 
-
-
         fill = new Paint();
         fill.setStyle(Paint.Style.FILL);
         fill.setColor(Color.BLACK);
+
+        arrows = activity.findViewById(R.id.arrows);
 
         touchListener = new GameTouchListener(this);
         gameView.setOnTouchListener(touchListener);
@@ -144,14 +140,13 @@ public class Game extends SurfaceView implements Runnable {
         Potion potion = new Potion();
 
         QuickAttack quickAttack = new QuickAttack();
+        Player player = roomMaster.getPlayer();
         player.addAttack(quickAttack);
         for (int i = 0; i < 5; i++){
             player.addItem(apple);
         }
         player.addItem(potion);
     }
-
-
 
     public void prepMiniMap(){
 
@@ -168,9 +163,7 @@ public class Game extends SurfaceView implements Runnable {
     }
 
     private boolean hasPlayerMoved(){
-        if (oldX != MiniMap.playerX || oldY != MiniMap.playerY)
-            return true;
-        return false;
+        return oldX != MiniMap.playerX || oldY != MiniMap.playerY;
     }
     private void mapUpdate(){
         if (hasPlayerMoved()){
@@ -214,13 +207,10 @@ public class Game extends SurfaceView implements Runnable {
 
         //GameLoop happens Here
         while (doGameLoop){
+            activity.runOnUiThread(this::runOnUiThread);
             if (!isPaused && !userPaused) {
                 mapUpdate();
-                combat.setCombat(roomMaster.getCurrentRoom().getRoomCleared());
-//                particleSystem.updateParticles();
-                combat.run();
-                activity.runOnUiThread(this::runOnUiThread);
-
+                combat.run(roomMaster.getCurrentRoom());
                 draw();
 
                 try {
@@ -265,16 +255,17 @@ public class Game extends SurfaceView implements Runnable {
      */
     @SuppressLint("SetTextI18n")
     public void draw(){
-
         if (!surfaceHolder.getSurface().isValid()) return;//check surface is correct
         canvas = surfaceHolder.lockCanvas(); //get the current surface as a canvas object, prevent changes to surface
         ElapseTime.update(); // Update the current time
+        Player player = roomMaster.getPlayer();
+        Room currentRoom = roomMaster.getCurrentRoom();
         //Drawing
         canvas.drawPaint(fill); //Refresh the canvas
         if (roomVisual != null) //Room Drawing
             roomVisual.draw(canvas, (int)(-RoomVisual.getScaleX() * RoomVisual.getTilePixelWidth() * 0.5), 0);
 //        particleSystem.drawAllParticles(canvas);
-        DrawInstructions.drawAll(canvas); //Entity Drawing
+        DrawInstructions.drawAll(canvas, !currentRoom.getRoomCleared() && currentRoom.getEnemy() != null); //Entity Drawing
 
 
         drawHealthBar(canvas, actualBarX, actualBarY, player.getHealth(), player.getMaxHealth(),actualBarWidth, actualBarHeight, healthBarMaxHPColor, healthBarCurrentColor);
@@ -304,9 +295,11 @@ public class Game extends SurfaceView implements Runnable {
 
     private void runOnUiThread() {
         dialogBox.updateText();
+        Room currentRoom = roomMaster.getCurrentRoom();
         if (OutputText.isNewText()) {
             setDialogText(OutputText.getOutputText());
         }
+        arrows.disable((!currentRoom.getRoomCleared() && currentRoom.getEnemy() != null) || Game.isPaused || Game.showMiniMap || Game.userPaused);
     }
 
     /**
@@ -343,7 +336,6 @@ public class Game extends SurfaceView implements Runnable {
 
     public void drawHealthBarAbove(Canvas c, DrawInstructions target, int currentHP, int maxHP){
         drawHealthBarAbove(c, target, currentHP, maxHP, Color.RED, Color.GREEN);
-
     }
 
     public void setRoomVisual(RoomVisual roomVisual) {
@@ -352,5 +344,9 @@ public class Game extends SurfaceView implements Runnable {
 
     public void setRoomMaster(RoomMaster roomMaster) {
         this.roomMaster = roomMaster;
+        arrows.setRoomMaster(roomMaster);
+        arrows.setArrows();
+        combat = new Combat(activity, roomMaster.getPlayer());
+        System.out.println(roomMaster);
     }
 }

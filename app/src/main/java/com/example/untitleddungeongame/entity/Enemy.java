@@ -8,8 +8,8 @@ public class Enemy extends Entity {
 
 
 
-    public Enemy(String name, int health) {
-        super(name, health, 10, 10, 10);
+    public Enemy(String name, int health, int attack, int defense, int speed) {
+        super(name, health, attack, defense, speed);
         attacks[0] = new QuickAttack();
     }
 }

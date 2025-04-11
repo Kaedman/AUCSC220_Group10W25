@@ -45,21 +45,8 @@ public class MainActivity extends AppCompatActivity {
     public Button pauseButton;
 
     PauseMenu pauseMenu;
-    ImageView resumeVisual;
-    ImageView quitVisual;
-    ImageView attacksVisual;
-    ImageView itemsVisual;
-
-    TextView resumeText;
-    TextView quitText;
-    TextView attacksText;
-    TextView itemsText;
-
     MyCallBack myCallBack;
     Player player;
-    Game gameControl;
-    static boolean userPause;
-    Arrows arrows;
 
     //HashMap<AssetID, Bitmap> assets;
     RoomMaster roomMaster;
@@ -73,6 +60,8 @@ public class MainActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         importAssets();
         setContentView(R.layout.activity_main);
+        player = new Player(10);
+        roomMaster = new RoomMaster(player);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -93,24 +82,20 @@ public class MainActivity extends AppCompatActivity {
 
         //Initializations Work Goes here
         gameView = findViewById(R.id.gameView);
-        myCallBack = new MyCallBack(this, gameView);
+        myCallBack = new MyCallBack(this, gameView, roomMaster);
         //myCallBack = new MyCallBack(this, gameView, assets);
         gameView.getHolder().addCallback(myCallBack);
 
         gameLaunched = true;
         //Log.d("gameMain", myCallBack.getGame().toString());
 
-        player = new Player(10);
-        roomMaster = new RoomMaster(player);
-        myCallBack.setRoomMaster(roomMaster);
-        roomMaster.generateRooms(STARTING_ROWS, STARTING_COLS, STARTING_THRESHOLD);
 
-        arrows = findViewById(R.id.arrows);
-        arrows.setRoomMaster(roomMaster);
-        arrows.setArrows();
+        roomMaster.generateRooms(STARTING_ROWS, STARTING_COLS, STARTING_THRESHOLD);
 
         pauseButton = findViewById(R.id.pause);
         pauseButton.setAlpha(0.0f);
+        pauseButton.setOnClickListener(this::onUserPause);
+
         pauseMenu = findViewById(R.id.pause_menu);
         pauseMenu.disable(true);
 
@@ -172,16 +157,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onUserResume(View v){
+        System.out.println("Resumed");
         Game.userPaused = false;
         pauseMenu.disable(true);
-        arrows.setArrows();
         pauseButton.setVisibility(View.VISIBLE);
         System.out.println("Resumed");
     }
     public void onUserPause(View v){
         Game.userPaused = true;
         pauseMenu.disable(false);
-        arrows.hideArrows();
+        pauseButton.setVisibility(View.GONE);
         System.out.println("Paused");
     }
 
@@ -196,10 +181,5 @@ public class MainActivity extends AppCompatActivity {
 
     public void mapButton(View v){
         Game.showMiniMap = !Game.showMiniMap;
-        if (Game.showMiniMap) {
-            arrows.hideArrows();
-        } else {
-            arrows.showArrows();
-        }
     }
 }

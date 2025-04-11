@@ -57,8 +57,9 @@ public class Entity {
     }
 
     public boolean heal(int heal) {
-        if (health == maxHealth)
-            return false; //Failed to heal
+        System.out.println("Current health: " + health);
+        System.out.println("Max health: " + maxHealth);
+        if (health == maxHealth) return false; //Failed to heal
 
         if (health + heal < maxHealth) {
             health += heal;
@@ -110,5 +111,9 @@ public class Entity {
             }
         }
         return null;
+    }
+
+    public boolean isDead() {
+        return health <= 0;
     }
 }

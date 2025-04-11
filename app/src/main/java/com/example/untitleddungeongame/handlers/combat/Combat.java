@@ -4,6 +4,7 @@ import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.untitleddungeongame.floors.Room;
 import com.example.untitleddungeongame.misc.OutputText;
 import com.example.untitleddungeongame.entity.Enemy;
 import com.example.untitleddungeongame.entity.Player;
@@ -16,16 +17,15 @@ public class Combat {
     protected final Controller controller;
     protected final Presenter presentor;
     private final Player player;
-    Enemy enemy;
+    private Enemy enemy;
     private final AppCompatActivity activity;
     private boolean isDisabled = false;
 
-     public Combat(AppCompatActivity activity, Player player, Enemy enemy) {
+     public Combat(AppCompatActivity activity, Player player) {
          this.activity = activity;
          this.player = player;
-         this.enemy = enemy;
          presentor = new Presenter(activity);
-         controller = new Controller(player, enemy);
+         controller = new Controller(player);
 
          presentor.itemAttackButton.setAttackButtonClickListener(this::attackButtonPressed);
          presentor.itemAttackButton.setItemButtonClickListener(this::itemsButtonPressed);
@@ -39,7 +39,8 @@ public class Combat {
          inCombat = state;
      }
 
-     public void run() {
+     public void run(Room room) {
+         inCombat = room.getEnemy() != null && !room.getRoomCleared();
          if (!inCombat) {
              if (!isDisabled) {
                  activity.runOnUiThread(() -> {
@@ -54,7 +55,8 @@ public class Combat {
              controller.reset();
              return;
          }
-         controller.run();
+
+         controller.run(room);
          activity.runOnUiThread(() -> {
             presentor.updateHotBars();
             presentor.itemAttackButton.disable(false);

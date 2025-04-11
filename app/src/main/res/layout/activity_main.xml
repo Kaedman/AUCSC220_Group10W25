@@ -19,6 +19,12 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.727" />
 
+    <com.example.untitleddungeongame.ui.Arrows
+        android:id="@+id/arrows"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:visibility="gone"/>
+
     <TextView
         android:id="@+id/player_health"
         android:layout_width="wrap_content"
@@ -82,13 +88,7 @@
         app:layout_constraintHorizontal_bias="0.506"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <com.example.untitleddungeongame.ui.Arrows
-        android:id="@+id/arrows"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:visibility="gone">
 
-    </com.example.untitleddungeongame.ui.Arrows>
 
     <ImageView
         android:id="@+id/pauseVisual"

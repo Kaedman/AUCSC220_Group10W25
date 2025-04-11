@@ -82,7 +82,7 @@ public class CustomDialog extends LinearLayout {
             return;
         }
 
-        if (!elapseTime.hasTimeElapsed(25)) return;
+        if (!elapseTime.hasTimeElapsed(10)) return;
 
         String currentWord = currentText.get(currantWordIndex);
         String newText = String.format("%s %s", current, currentWord);

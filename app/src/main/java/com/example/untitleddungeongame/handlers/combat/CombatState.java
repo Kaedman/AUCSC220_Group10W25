@@ -16,7 +16,7 @@ public class CombatState {
         ITEM_USE,
         STATUS_EFFECT,
         PARRY,
-        ENDING
+        ENDING,
     }
 
     private final HashMap<State, Runnable> stateCallbacks = new HashMap<>();
@@ -34,6 +34,7 @@ public class CombatState {
 
     public void switchState(State newState) {
         if (currentState == newState) return;
+        System.out.println("Switching state from " + currentState + " to " + newState);
         if (newState == State.TURN_START && (
                 currentState == State.ATTACK
                 || currentState == State.ITEM_USE

@@ -12,7 +12,7 @@ public class Slime extends Enemy{
     private AnimatedSprite animatedSprite;
     public DrawInstructions drawInstructions;
     public Slime(String name, int hp){
-        super(name, hp);
+        super(name, hp, 1, 0, 1);
         setUpAnimation();
 
     }

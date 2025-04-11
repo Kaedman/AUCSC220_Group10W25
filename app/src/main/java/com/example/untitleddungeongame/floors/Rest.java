@@ -7,7 +7,7 @@ public class Rest extends Room {
     private boolean restUsed;
 
     public Rest(int roomId) {
-        super(roomId);
+        super(roomId, null);
         this.restUsed = false;
     }
 

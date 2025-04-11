@@ -10,9 +10,8 @@
         android:id="@+id/attack_button"
         android:layout_width="@dimen/button_default_width"
         android:layout_height="@dimen/button_default_height"
-        android:layout_marginStart="40dp"
         android:src="@drawable/button_state"
-        app:layout_constraintStart_toStartOf="@+id/combat_dialog"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView

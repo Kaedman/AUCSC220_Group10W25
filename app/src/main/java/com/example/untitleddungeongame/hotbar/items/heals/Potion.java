@@ -13,6 +13,7 @@ public class Potion extends Item {
             drop(1, position, character.getEquipped());
             return true;
         }
+        System.out.println("Potion failed to heal");
         return false;
     }
 

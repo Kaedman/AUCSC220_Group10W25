@@ -1,11 +1,8 @@
 package com.example.untitleddungeongame.floors;
 
-import android.util.Log;
-
-import com.example.untitleddungeongame.Enemy;
+import com.example.untitleddungeongame.entity.Enemy;
 import com.example.untitleddungeongame.entity.Player;
 import com.example.untitleddungeongame.handlers.Game;
-import com.example.untitleddungeongame.floors.Room;
 
 import java.util.ArrayList;
 
@@ -155,19 +152,19 @@ public class RoomMaster {
         switch (floorMap[row][col]) {
             //Origin
             case 1:
-                newRoom = new Room(((row * 100) + (col)));
+                newRoom = new Room(((row * 100) + (col)), null);
                 break;
 
-            case 2:
+            case 2: //
                 //REPLACE WITH CREATE NEW ENEMY FUNCTION
-                enemy = new Enemy("Boss", 10, 10, 4);
+                enemy = new Enemy("Boss", 10, 10, 4, 10);
 
                 newRoom = new Boss(((row * 100) + (col)), enemy);
                 break;
 
             case 3:
                 //REPLACE WITH CREATE NEW ENEMY FUNCTION
-                enemy = new Enemy("Generic", 5, 5, 1);
+                enemy = new Enemy("Generic", 5, 5, 1, 5);
 
                 newRoom = new Encounter(((row * 100) + (col)), enemy, player);
                 break;
@@ -329,5 +326,9 @@ public class RoomMaster {
             }
         }
         return new int[]{-1,-1};
+    }
+
+    public Player getPlayer() {
+        return player;
     }
 }

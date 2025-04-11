@@ -15,6 +15,7 @@ import com.example.untitleddungeongame.ui.hotbar.HotBar;
 import com.example.untitleddungeongame.ui.hotbar.ItemAttackButton;
 import com.example.untitleddungeongame.ui.hotbar.ItemAttackButton;
 
+
 @SuppressLint("SetTextI18n")
 public class Presenter {
     protected final AppCompatActivity activity;

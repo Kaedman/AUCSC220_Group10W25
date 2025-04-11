@@ -19,6 +19,7 @@ public class Arrows extends androidx.constraintlayout.widget.ConstraintLayout {
     private ImageView upArrow;
     private ImageView downArrow;
     private RoomMaster roomMaster;
+    private boolean isDisabled = false;
 
     public Arrows(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -56,6 +57,7 @@ public class Arrows extends androidx.constraintlayout.widget.ConstraintLayout {
      * neighbouring rooms
      */
     public void setArrows() {
+        if (roomMaster == null) return;
         Log.d("floorMap", roomMaster.toString());
         Log.d("currentId", roomMaster.getCurrentRoom().toString());
         setArrowVisible(leftArrow, roomMaster.getCurrentRoom().getLeft() != null);
@@ -68,6 +70,7 @@ public class Arrows extends androidx.constraintlayout.widget.ConstraintLayout {
     }
 
     public void moveLeft(View v) {
+        if (roomMaster == null) return;
         setArrowVisible(leftArrow,false);
         Log.d("previousRoom", roomMaster.getCurrentRoom().toString());
         roomMaster.moveToRoom(roomMaster.getCurrentRoom().getLeft());
@@ -77,6 +80,7 @@ public class Arrows extends androidx.constraintlayout.widget.ConstraintLayout {
     }
 
     public void moveRight(View v) {
+        if (roomMaster == null) return;
         setArrowVisible(rightArrow,false);
         Log.d("previousRoom", roomMaster.getCurrentRoom().toString());
         roomMaster.moveToRoom(roomMaster.getCurrentRoom().getRight());
@@ -86,6 +90,7 @@ public class Arrows extends androidx.constraintlayout.widget.ConstraintLayout {
     }
 
     public void moveUp(View v) {
+        if (roomMaster == null) return;
         setArrowVisible(upArrow,false);
         Log.d("previousRoom", roomMaster.getCurrentRoom().toString());
         roomMaster.moveToRoom(roomMaster.getCurrentRoom().getUp());
@@ -95,6 +100,7 @@ public class Arrows extends androidx.constraintlayout.widget.ConstraintLayout {
     }
 
     public void moveDown(View v) {
+        if (roomMaster == null) return;
         setArrowVisible(downArrow,false);
         Log.d("previousRoom", roomMaster.getCurrentRoom().toString());
         roomMaster.moveToRoom(roomMaster.getCurrentRoom().getDown());
@@ -123,5 +129,16 @@ public class Arrows extends androidx.constraintlayout.widget.ConstraintLayout {
         setArrowVisible(rightArrow, true);
         setArrowVisible(upArrow, true);
         setArrowVisible(downArrow, true);
+    }
+
+    public void disable(boolean state) {
+        if (roomMaster == null) return;
+        if (isDisabled == state) return;
+        isDisabled = state;
+        if (state) {
+            rootView.setVisibility(GONE);
+        } else {
+            rootView.setVisibility(VISIBLE);
+        }
     }
 }
