@@ -43,6 +43,7 @@ public class HotBarOption<T extends HotBarInfo> extends FrameLayout {
         itemButton = findViewById(R.id.item_touch);
         itemFrame = findViewById(R.id.item_frame);
         itemFrame.getHolder().addCallback(new FrameInstance());
+        itemFrame.setVisibility(GONE);
 
     }
 

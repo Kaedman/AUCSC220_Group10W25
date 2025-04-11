@@ -21,14 +21,12 @@ public class Presenter {
     protected final AppCompatActivity activity;
     protected final ItemAttackButton itemAttackButton;
     protected final ImageView attackButton, itemsButton;
-    private final TextView playerHealth, enemyHealth;
 
     protected final HotBar<Item> itemBar;
     protected final HotBar<Attack> attackBar;
 
     boolean showItems = false;
     boolean showAttacks = false;
-    boolean newDialog = false;
 
     public Presenter(AppCompatActivity activity) {
         this.activity = activity;
@@ -36,8 +34,6 @@ public class Presenter {
         itemAttackButton = activity.findViewById(R.id.itemAttackButton);
         attackButton = activity.findViewById(R.id.attack_button);
         itemsButton = activity.findViewById(R.id.items_button);
-        playerHealth = activity.findViewById(R.id.player_health);
-        enemyHealth = activity.findViewById(R.id.enemy_health);
 
         itemBar = activity.findViewById(R.id.item_bar);
         attackBar = activity.findViewById(R.id.attack_bar);
