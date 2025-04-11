@@ -61,7 +61,7 @@ public class DrawInstructions {
     /*
     Draws all existing animated sprites if they are on screen
      */
-    public static void drawAll(Canvas canvas){
+    public static void drawAll(Canvas canvas, boolean isEnemy){
         DrawInstructions current;
         for (int index = 0; index < thingsToDraw.size(); index ++){
             current = thingsToDraw.get(index);
