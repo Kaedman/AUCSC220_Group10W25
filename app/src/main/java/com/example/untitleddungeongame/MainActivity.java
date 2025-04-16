@@ -12,17 +12,13 @@ package com.example.untitleddungeongame;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.res.Resources;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Display;
 import android.view.SurfaceView;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -30,11 +26,9 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.example.untitleddungeongame.floors.Boss;
 import com.example.untitleddungeongame.floors.RoomMaster;
 import com.example.untitleddungeongame.entity.Player;
 import com.example.untitleddungeongame.handlers.Game;
-import com.example.untitleddungeongame.ui.Arrows;
 import com.example.untitleddungeongame.ui.PauseMenu;
 
 public class MainActivity extends AppCompatActivity {
@@ -139,8 +133,15 @@ public class MainActivity extends AppCompatActivity {
 
         //TODO: Migrate keys and image values to a json or xml file, then loop through to create assets
         Assets.addAsset(Assets.AssetID.PLAYER, BitmapFactory.decodeResource(resources, R.drawable.playerrouge));
+        Assets.addAsset(Assets.AssetID.GHASTLY_SHOPKEEPER, BitmapFactory.decodeResource(resources, R.drawable.gastlyshopkeeper_sheet));
+
+
         Assets.addAsset(Assets.AssetID.ENEMY_SLIME, BitmapFactory.decodeResource(resources, R.drawable.enemyslime));
+        Assets.addAsset(Assets.AssetID.ENEMY_GOBLIN, BitmapFactory.decodeResource(resources, R.drawable.goblin));
+        Assets.addAsset(Assets.AssetID.ENEMY_BIG_GOBLIN, BitmapFactory.decodeResource(resources, R.drawable.orceboss_sheet));
+
         Assets.addAsset(Assets.AssetID.TILESET, BitmapFactory.decodeResource(resources, R.drawable.tiles));
+        Assets.addAsset(Assets.AssetID.BENCH, BitmapFactory.decodeResource(resources, R.drawable.bench));
 
         Assets.addAsset(Assets.AssetID.CHESTS, BitmapFactory.decodeResource(resources, R.drawable.chests)); //chests may be updated to show opened state
         Assets.addAsset(Assets.AssetID.ITEM_HEAL, BitmapFactory.decodeResource(resources, R.drawable.itemsheals));
@@ -154,6 +155,7 @@ public class MainActivity extends AppCompatActivity {
 
         Assets.addAsset(Assets.AssetID.DIALOG_FRAME, BitmapFactory.decodeResource(resources, R.drawable.dialog_frame));
         Assets.addAsset(Assets.AssetID.HEALTH_BAR, BitmapFactory.decodeResource(resources, R.drawable.healthbar));
+        Assets.addAsset(Assets.AssetID.MONEY_ICON, BitmapFactory.decodeResource(resources, R.drawable.moneyicon_sheet));
     }
 
     public void onUserResume(View v){

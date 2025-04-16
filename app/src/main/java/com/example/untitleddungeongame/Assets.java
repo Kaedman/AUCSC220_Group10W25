@@ -8,11 +8,15 @@ public class Assets {
     public enum AssetID {
         //ENTITY
         PLAYER,
+        GHASTLY_SHOPKEEPER,
 
         ENEMY_SLIME,
+        ENEMY_GOBLIN,
+        ENEMY_BIG_GOBLIN,
         //MAP
         TILESET,
         CHESTS,
+        BENCH,
         //Items
         ITEM_HEAL,
         ITEM_OFFENSE,
@@ -21,7 +25,7 @@ public class Assets {
         //UI
         BUTTON_PAUSE,
         BUTTON_INVENTORY,
-
+        MONEY_ICON,
         HEALTH_BAR,
         CONFIRM_ARROWS,
         BUTTON, BUTTON_PRESSED, DIALOG_FRAME
