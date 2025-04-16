@@ -25,6 +25,9 @@ public class ParticleSystem {
     private static Random r = new Random();
 
     private int scaleX, scaleY;
+
+    public boolean respawnParticles = true; //Can manually set this public attribute to have a "burst"
+    //of particles
     public ParticleSystem(int maxParticles, int particleFrameMin, int particleFrameMax, int scaleX, int scaleY){
         particleMaxCount = maxParticles;
         this.particleFrameMin = particleFrameMin;
@@ -132,7 +135,7 @@ public class ParticleSystem {
                 current = particles[p];
             }
 
-            if (!current.alive)
+            if (!current.alive & respawnParticles)
                 resetParticle(current);
 
             current.update();
@@ -144,6 +147,12 @@ public class ParticleSystem {
     public void drawAllParticles(Canvas c){
         for (int p = 0; p < particles.length; p++){
             particles[p].drawVisual(c, null, scaleX, scaleY);
+        }
+    }
+
+    public void resetAllParticles(){
+        for (int p = 0; p < particles.length; p++){
+            resetParticle(particles[p]);
         }
     }
 

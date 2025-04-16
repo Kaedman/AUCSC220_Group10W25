@@ -26,6 +26,8 @@ public class DrawInstructions {
 
     public AnimatedSprite spriteToDraw;
 
+    public boolean show = true; //To be changed publicly, allows changing of sprite visibility
+
     /**
      * Draw instruction basic information needed
      * IMPORTANT: Be sure to initalize the static phone size first before drawing!!!!
@@ -68,7 +70,7 @@ public class DrawInstructions {
 
 //            System.out.println(current.boundsCheckLeft() + ", " + current.boundsCheckRight() + ", " + current.boundsCheckUp() + ", " + current.boundsCheckDown());
             //Check sprite is in screen bounds to draw
-            if (current.spriteToDraw.doDraw) {
+            if (current.spriteToDraw.doDraw & current.show) {
                 if (current.boundsCheckLeft() && current.boundsCheckRight() && current.boundsCheckUp() && current.boundsCheckDown()) {
                     current.spriteToDraw.updateCurrentAnimation();
                     current.spriteToDraw.drawAnimation(canvas, current.x + cameraX, current.y + cameraY, current.scaleX, current.scaleY);
