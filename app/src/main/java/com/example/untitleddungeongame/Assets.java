@@ -17,6 +17,7 @@ public class Assets {
         TILESET,
         CHESTS,
         BENCH,
+        TORCH,
         //Items
         ITEM_HEAL,
         ITEM_OFFENSE,

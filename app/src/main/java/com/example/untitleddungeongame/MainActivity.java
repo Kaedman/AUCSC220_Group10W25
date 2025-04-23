@@ -156,6 +156,7 @@ public class MainActivity extends AppCompatActivity {
         Assets.addAsset(Assets.AssetID.DIALOG_FRAME, BitmapFactory.decodeResource(resources, R.drawable.dialog_frame));
         Assets.addAsset(Assets.AssetID.HEALTH_BAR, BitmapFactory.decodeResource(resources, R.drawable.healthbar));
         Assets.addAsset(Assets.AssetID.MONEY_ICON, BitmapFactory.decodeResource(resources, R.drawable.moneyicon_sheet));
+        Assets.addAsset(Assets.AssetID.TORCH, BitmapFactory.decodeResource(resources, R.drawable.torch_sheet));
     }
 
     public void onUserResume(View v){
