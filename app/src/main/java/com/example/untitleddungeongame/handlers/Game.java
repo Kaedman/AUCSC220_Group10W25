@@ -220,11 +220,8 @@ public class Game extends SurfaceView implements Runnable {
                 catch (InterruptedException e) {
                     //error
                 }
-
             }
-
         }
-
     }
 
     public void setDoGameLoop(boolean state){

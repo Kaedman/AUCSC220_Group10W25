@@ -1,5 +1,7 @@
 package com.example.untitleddungeongame.floors;
 
+import android.util.Log;
+
 import com.example.untitleddungeongame.entity.Enemy;
 import com.example.untitleddungeongame.entity.Player;
 import com.example.untitleddungeongame.handlers.Game;
@@ -52,6 +54,10 @@ public class RoomMaster {
 
     public void generateRooms(int maxRows, int maxCols, int roomThreshold) {
         generateRoomArray(maxRows, maxCols, roomThreshold);
+        setFloorMap(new int[][] {{4, 3, 0, 3},
+                                {3, 3, 0, 4},
+                                {2, 4, 4, 2},
+                                {4, 1, 0, 3}});
         headRoom = createFloor();
         currentRoom = headRoom;
         currentRoom.setUpAllLooks();
@@ -138,6 +144,8 @@ public class RoomMaster {
     public void moveToRoom(Room destination) {
         if (destination.isAdjacent(currentRoom)) {
             currentRoom = destination;
+            Log.d("floorMap", toString());
+            Log.d("currentId", getCurrentRoom().toString());
             game.setRoomVisual(currentRoom.getLooks());
         } else {
             throw new java.lang.RuntimeException("Room destination is not adjacent to current room");

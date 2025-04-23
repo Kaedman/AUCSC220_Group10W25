@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
     RoomMaster roomMaster;
     final int STARTING_ROWS = 5;
     final int STARTING_COLS = 5;
-    final int STARTING_THRESHOLD = (int) (STARTING_ROWS * STARTING_COLS * 0.8);
+    final int STARTING_THRESHOLD = (int) (STARTING_ROWS * STARTING_COLS * 0.6);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
