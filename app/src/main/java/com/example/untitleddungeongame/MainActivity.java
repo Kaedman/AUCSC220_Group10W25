@@ -9,6 +9,9 @@
 
 package com.example.untitleddungeongame;
 
+import static android.view.View.INVISIBLE;
+import static android.view.View.VISIBLE;
+
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -30,17 +33,18 @@ import com.example.untitleddungeongame.floors.RoomMaster;
 import com.example.untitleddungeongame.entity.Player;
 import com.example.untitleddungeongame.handlers.Game;
 import com.example.untitleddungeongame.ui.PauseMenu;
+import com.example.untitleddungeongame.ui.PixelButton;
 
 public class MainActivity extends AppCompatActivity {
 
     //Declarations
     SurfaceView gameView;
-    public boolean gameLaunched;
-    public Button pauseButton;
+    private boolean gameLaunched;
+    private PixelButton pauseButton;
+    private PixelButton miniMapButton;
 
-    PauseMenu pauseMenu;
-    MyCallBack myCallBack;
-    Player player;
+    private PauseMenu pauseMenu;
+    private Player player;
 
     //HashMap<AssetID, Bitmap> assets;
     RoomMaster roomMaster;
@@ -51,50 +55,47 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
-        importAssets();
+
         setContentView(R.layout.activity_main);
+        gameView = findViewById(R.id.gameView);
+        pauseButton = findViewById(R.id.pause_button);
+        pauseMenu = findViewById(R.id.pause_menu);
+        miniMapButton = findViewById(R.id.map_button);
+
         player = new Player(10);
         roomMaster = new RoomMaster(player);
+
+        pauseButton.setOnClickListener(this::onUserPause);
+        pauseMenu.setOnQuitClickListener(this::onQuit);
+        pauseMenu.setOnResumeClickListener(this::onUserResume);
+        miniMapButton.setOnClickListener(this::mapButton);
+        EdgeToEdge.enable(this);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
         gameLaunched = false;
     }
 
     @Override
     protected void onStart(){
         super.onStart();
-
-        setContentView(R.layout.activity_main);
-
         Display display = getWindowManager().getDefaultDisplay();
         Point size = new Point();
         display.getSize(size); //Instead of returning a value, we need to specify a point variable to change
 
-        //Initializations Work Goes here
-        gameView = findViewById(R.id.gameView);
-        myCallBack = new MyCallBack(this, gameView, roomMaster);
-        //myCallBack = new MyCallBack(this, gameView, assets);
-        gameView.getHolder().addCallback(myCallBack);
+        pauseMenu.disable(true);
+
+        gameView.getHolder().addCallback( new MyCallBack(this, gameView, roomMaster));
 
         gameLaunched = true;
-        //Log.d("gameMain", myCallBack.getGame().toString());
 
 
         roomMaster.generateRooms(STARTING_ROWS, STARTING_COLS, STARTING_THRESHOLD);
 
-        pauseButton = findViewById(R.id.pause);
-        pauseButton.setAlpha(0.0f);
-        pauseButton.setOnClickListener(this::onUserPause);
 
-        pauseMenu = findViewById(R.id.pause_menu);
-        pauseMenu.disable(true);
-
-        pauseMenu.setOnQuitClickListener(this::onQuit);
-        pauseMenu.setOnResumeClickListener(this::onUserResume);
     }
 
     /**
@@ -125,51 +126,21 @@ public class MainActivity extends AppCompatActivity {
         pauseMenu.setVisibility(View.GONE);
     }
 
-    @SuppressLint("UseCompatLoadingForDrawables")
-    private void importAssets() {
 
-        //assets = new HashMap<AssetID, Bitmap>(10);
-        Resources resources = getResources();
-
-        //TODO: Migrate keys and image values to a json or xml file, then loop through to create assets
-        Assets.addAsset(Assets.AssetID.PLAYER, BitmapFactory.decodeResource(resources, R.drawable.playerrouge));
-        Assets.addAsset(Assets.AssetID.GHASTLY_SHOPKEEPER, BitmapFactory.decodeResource(resources, R.drawable.gastlyshopkeeper_sheet));
-
-
-        Assets.addAsset(Assets.AssetID.ENEMY_SLIME, BitmapFactory.decodeResource(resources, R.drawable.enemyslime));
-        Assets.addAsset(Assets.AssetID.ENEMY_GOBLIN, BitmapFactory.decodeResource(resources, R.drawable.goblin));
-        Assets.addAsset(Assets.AssetID.ENEMY_BIG_GOBLIN, BitmapFactory.decodeResource(resources, R.drawable.orceboss_sheet));
-
-        Assets.addAsset(Assets.AssetID.TILESET, BitmapFactory.decodeResource(resources, R.drawable.tiles));
-        Assets.addAsset(Assets.AssetID.BENCH, BitmapFactory.decodeResource(resources, R.drawable.bench));
-
-        Assets.addAsset(Assets.AssetID.CHESTS, BitmapFactory.decodeResource(resources, R.drawable.chests)); //chests may be updated to show opened state
-        Assets.addAsset(Assets.AssetID.ITEM_HEAL, BitmapFactory.decodeResource(resources, R.drawable.itemsheals));
-        Assets.addAsset(Assets.AssetID.ITEM_OFFENSE, BitmapFactory.decodeResource(resources, R.drawable.itemsoffense));
-        Assets.addAsset(Assets.AssetID.ITEM_SLOT, BitmapFactory.decodeResource(resources, R.drawable.itemslot));
-
-        Assets.addAsset(Assets.AssetID.BUTTON, BitmapFactory.decodeResource(resources, R.drawable.button));
-        Assets.addAsset(Assets.AssetID.BUTTON_PRESSED, BitmapFactory.decodeResource(resources, R.drawable.buttonpressed));
-        Assets.addAsset(Assets.AssetID.BUTTON_PAUSE, BitmapFactory.decodeResource(resources, R.drawable.buttonpause));
-        Assets.addAsset(Assets.AssetID.BUTTON_INVENTORY, BitmapFactory.decodeResource(resources, R.drawable.buttoninventory));
-
-        Assets.addAsset(Assets.AssetID.DIALOG_FRAME, BitmapFactory.decodeResource(resources, R.drawable.dialog_frame));
-        Assets.addAsset(Assets.AssetID.HEALTH_BAR, BitmapFactory.decodeResource(resources, R.drawable.healthbar));
-        Assets.addAsset(Assets.AssetID.MONEY_ICON, BitmapFactory.decodeResource(resources, R.drawable.moneyicon_sheet));
-        Assets.addAsset(Assets.AssetID.TORCH, BitmapFactory.decodeResource(resources, R.drawable.torch_sheet));
-    }
 
     public void onUserResume(View v){
         System.out.println("Resumed");
         Game.userPaused = false;
         pauseMenu.disable(true);
-        pauseButton.setVisibility(View.VISIBLE);
+        pauseButton.setVisibility(VISIBLE);
+        miniMapButton.setVisibility(VISIBLE);
         System.out.println("Resumed");
     }
     public void onUserPause(View v){
         Game.userPaused = true;
         pauseMenu.disable(false);
-        pauseButton.setVisibility(View.GONE);
+        pauseButton.setVisibility(INVISIBLE);
+        miniMapButton.setVisibility(INVISIBLE);
         System.out.println("Paused");
     }
 
