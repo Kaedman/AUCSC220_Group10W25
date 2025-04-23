@@ -6,7 +6,7 @@ import com.example.untitleddungeongame.animations.Animation;
 import com.example.untitleddungeongame.animations.Sprite;
 
 public class Goblin extends Enemy{
-    private static Sprite sprite = new Sprite(Assets.AssetID.ENEMY_BIG_GOBLIN, 32, 32, 4);
+    private static Sprite sprite = new Sprite(Assets.AssetID.ENEMY_GOBLIN, 32, 32, 4);
     public Goblin(String name, int hp){
         super(name, hp, 1, 0, 1);
         setUpAnimation();

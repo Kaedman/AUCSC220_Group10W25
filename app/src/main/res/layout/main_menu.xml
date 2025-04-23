@@ -29,87 +29,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:id="@+id/play_button"
-        android:layout_width="150dp"
-        android:layout_height="88dp"
-        android:layout_marginStart="36dp"
-        android:layout_marginTop="168dp"
-        android:layout_marginEnd="30dp"
-        android:onClick="buttonPlay"
-        android:scaleType="fitXY"
-        android:src="@drawable/button_state"
-        android:text="Play"
-        app:layout_constraintEnd_toStartOf="@+id/newRun"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
-
-    <TextView
-        android:id="@+id/play_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/button_state"
-        android:text="Play"
-        android:textColor="@color/white"
-        android:textSize="@dimen/button_main_menu_text_size"
-        app:layout_constraintBottom_toBottomOf="@+id/play_button"
-        app:layout_constraintEnd_toEndOf="@+id/play_button"
-        app:layout_constraintStart_toStartOf="@+id/play_button"
-        app:layout_constraintTop_toTopOf="@+id/play_button" />
-
-    <ImageView
-        android:id="@+id/newRun"
-        android:layout_width="150dp"
-        android:layout_height="88dp"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="168dp"
-        android:layout_marginEnd="45dp"
-        android:scaleType="fitXY"
-        android:src="@drawable/button_state"
-        android:text="New Run"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/play_button"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
-
-    <TextView
-        android:id="@+id/new_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="New Run"
-        android:textColor="@color/white"
-        android:textSize="@dimen/button_main_menu_text_size"
-        app:layout_constraintBottom_toBottomOf="@+id/newRun"
-        app:layout_constraintEnd_toEndOf="@+id/newRun"
-        app:layout_constraintStart_toStartOf="@+id/newRun"
-        app:layout_constraintTop_toTopOf="@+id/newRun" />
-
-    <ImageView
-        android:id="@+id/settings"
-        android:layout_width="333dp"
-        android:layout_height="88dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginBottom="134dp"
-        android:onClick="buttonSettings"
-        android:scaleType="fitXY"
-        android:src="@drawable/button_state"
-        android:text="Settings"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/play_button" />
-
-    <TextView
-        android:id="@+id/settings_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Settings"
-        android:textColor="@color/white"
-        android:textSize="@dimen/button_main_menu_text_size"
-        app:layout_constraintBottom_toBottomOf="@+id/settings"
-        app:layout_constraintEnd_toEndOf="@+id/settings"
-        app:layout_constraintStart_toStartOf="@+id/settings"
-        app:layout_constraintTop_toTopOf="@+id/settings" />
-
     <TextView
         android:id="@+id/loading_text"
         android:layout_width="wrap_content"
@@ -121,6 +40,42 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <com.example.untitleddungeongame.ui.PixelButton
+        android:id="@+id/play_button"
+        android:layout_width="172dp"
+        android:layout_height="77dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="320dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:resource="BUTTON"
+        android:textColor="@color/white"
+        android:text="PLAY"/>
+
+    <com.example.untitleddungeongame.ui.PixelButton
+        android:id="@+id/new_run_button"
+        android:layout_width="172dp"
+        android:layout_height="77dp"
+        android:layout_marginStart="20dp"
+        app:layout_constraintStart_toEndOf="@+id/play_button"
+        app:layout_constraintTop_toTopOf="@+id/play_button"
+        app:resource="BUTTON"
+        android:text="NEW RUN"
+        android:textColor="@color/white"/>
+
+    <com.example.untitleddungeongame.ui.PixelButton
+        android:id="@+id/settings_button"
+        android:layout_width="359dp"
+        android:layout_height="86dp"
+        android:layout_marginTop="124dp"
+        app:layout_constraintEnd_toEndOf="@+id/new_run_button"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/play_button"
+        app:layout_constraintTop_toTopOf="@+id/play_button"
+        app:resource="BUTTON"
+        android:textColor="@color/white"
+        android:text="SETTING" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

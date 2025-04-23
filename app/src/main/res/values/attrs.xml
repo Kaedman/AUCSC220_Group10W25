@@ -1,6 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="CustomDialog">
-        <attr name="text" format="string"/>
+    <declare-styleable name="PixelButton">
+        <attr name="resource" format="enum">
+            <enum name="PLAYER" value="0"/>
+            <enum name="ENEMY_SLIME" value="1"/>
+            <enum name="TILESET" value="2"/>
+            <enum name="CHESTS" value="3"/>
+            <enum name="ITEM_HEAL" value="4"/>
+            <enum name="ITEM_OFFENSE" value="5"/>
+            <enum name="ITEM_SLOT" value="6"/>
+            <enum name="BUTTON_PAUSE" value="7"/>
+            <enum name="BUTTON_INVENTORY" value="8"/>
+            <enum name="HEALTH_BAR" value="9"/>
+            <enum name="CONFIRM_ARROWS" value="10"/>
+            <enum name="BUTTON" value="11"/>
+            <enum name="BUTTON_PRESSED" value="12"/>
+            <enum name="DIALOG_FRAME" value="13"/>
+            <enum name="GHASTLY_SHOPKEEPER" value="14"/>
+            <enum name="ENEMY_GOBLIN" value="15"/>
+            <enum name="ENEMY_BIG_GOBLIN" value="16"/>
+            <enum name="BENCH" value="17"/>
+            <enum name="MONEY_ICON" value="18"/>
+            <enum name="MAP" value="19"/>
+        </attr>
+        <attr name="android:text" format="string"/>
+        <attr name="android:textColor" format="color"/>
+        <attr name="android:textSize" format="dimension"/>
+        <attr name="android:textStyle" format="enum">
+            <enum name="normal" value="0"/>
+            <enum name="bold" value="1"/>
+            <enum name="italic" value="2"/>
+        </attr>
+        <attr name="android:rotation" format="float"/>
+
     </declare-styleable>
 </resources>
