@@ -178,6 +178,11 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void restartGame(View v){
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+    }
+
     public void setRoomMasterGame(Game game) {
         roomMaster.setGame(game);
     }
