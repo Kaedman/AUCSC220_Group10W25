@@ -14,6 +14,7 @@ import android.view.View;
 
 import com.example.untitleddungeongame.Assets;
 import com.example.untitleddungeongame.GameTouchListener;
+import com.example.untitleddungeongame.MainActivity;
 import com.example.untitleddungeongame.R;
 import com.example.untitleddungeongame.animations.AnimatedSprite;
 import com.example.untitleddungeongame.animations.Animation;
@@ -32,6 +33,7 @@ import com.example.untitleddungeongame.misc.ElapseTime;
 import com.example.untitleddungeongame.ui.Arrows;
 import com.example.untitleddungeongame.ui.CustomDialog;
 import com.example.untitleddungeongame.misc.OutputText;
+import com.example.untitleddungeongame.ui.DeathScreen;
 import com.example.untitleddungeongame.ui.MiniMap;
 import com.example.untitleddungeongame.ui.ParticleSystem;
 import com.example.untitleddungeongame.ui.RoomVisual;
@@ -66,6 +68,7 @@ public class Game extends SurfaceView implements Runnable {
     private RoomMaster roomMaster;
     private DrawInstructions playerDrawInstructions;
     private final Arrows arrows;
+    private DeathScreen deathScreen;
     Goblin testSlime = new Goblin("Jerry", 30);
     AnimatedSprite slimeTestAnim;
     //Sprites and stuff
@@ -111,6 +114,10 @@ public class Game extends SurfaceView implements Runnable {
         fill.setColor(Color.BLACK);
 
         arrows = activity.findViewById(R.id.arrows);
+        deathScreen = activity.findViewById(R.id.death_screen);
+        deathScreen.setMainActivity((MainActivity) activity);
+
+
 
         touchListener = new GameTouchListener(this);
         gameView.setOnTouchListener(touchListener);
@@ -206,6 +213,7 @@ public class Game extends SurfaceView implements Runnable {
         testSlime.makeDrawInstructions(550,800);
 
         prepMiniMap();
+        deathScreen.show();
 
         //GameLoop happens Here
         while (doGameLoop){
@@ -213,6 +221,15 @@ public class Game extends SurfaceView implements Runnable {
             if (!isPaused && !userPaused) {
                 mapUpdate();
                 combat.run(roomMaster.getCurrentRoom());
+
+                if (combat.getPlayer().isDead()){
+                    deathScreen.show();
+                }
+                else {
+//                    deathScreen.hide();
+                }
+
+
                 draw();
 
                 try {
