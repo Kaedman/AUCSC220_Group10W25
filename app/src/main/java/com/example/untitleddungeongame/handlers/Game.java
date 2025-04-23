@@ -19,6 +19,7 @@ import com.example.untitleddungeongame.animations.AnimatedSprite;
 import com.example.untitleddungeongame.animations.Animation;
 import com.example.untitleddungeongame.animations.Sprite;
 import com.example.untitleddungeongame.entity.Enemy;
+import com.example.untitleddungeongame.entity.Goblin;
 import com.example.untitleddungeongame.entity.Player;
 import com.example.untitleddungeongame.entity.Slime;
 import com.example.untitleddungeongame.floors.Room;
@@ -65,7 +66,7 @@ public class Game extends SurfaceView implements Runnable {
     private RoomMaster roomMaster;
     private DrawInstructions playerDrawInstructions;
     private final Arrows arrows;
-    Slime testSlime = new Slime("Jerry", 30);
+    Goblin testSlime = new Goblin("Jerry", 30);
     AnimatedSprite slimeTestAnim;
     //Sprites and stuff
     private Sprite healthBar = new Sprite(Assets.AssetID.HEALTH_BAR, 128, 32, 1);
