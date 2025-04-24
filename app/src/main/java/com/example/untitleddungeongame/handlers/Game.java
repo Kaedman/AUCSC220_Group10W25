@@ -238,6 +238,7 @@ public class Game extends SurfaceView implements Runnable {
         attackUp.setCurrentAnimation("attack");
         attackDown.setCurrentAnimation("attack");
 
+
         attackUpInstruct = new DrawInstructions(575, 1200, attackUp, Sprite.universalSpriteScale, Sprite.universalSpriteScale);
         attackDownInstruct = new DrawInstructions(575, 1100, attackDown, Sprite.universalSpriteScale, Sprite.universalSpriteScale);
 
@@ -264,7 +265,7 @@ public class Game extends SurfaceView implements Runnable {
                 mapUpdate();
                 combat.run(roomMaster.getCurrentRoom());
                 draw();
-                playerHit.updateParticles();
+//                playerHit.updateParticles();
 
                 try {
                     Thread.sleep(fps);
@@ -327,7 +328,7 @@ public class Game extends SurfaceView implements Runnable {
         }
 
         drawBench(canvas);
-        playerHit.drawAllParticles(canvas);
+//        playerHit.drawAllParticles(canvas);
         //Entity Drawing
         DrawInstructions.drawAll(canvas);
 
@@ -425,6 +426,14 @@ public class Game extends SurfaceView implements Runnable {
     }
     private void combaEventListener(Controller.CombatEventEnum event) {
         switch (event) {
+            case PLAYER_ATTACK: {
+                attackUp.playCurrentAnimation();
+                break;
+            }
+            case ENEMY_ATTACK: {
+                attackDown.playCurrentAnimation();
+                break;
+            }
             case PLAYER_DEATH: {
                 Log.d("Game", "Player Died");
                 // TODO: Death screen

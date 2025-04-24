@@ -6,22 +6,25 @@ import com.example.untitleddungeongame.animations.Animation;
 import com.example.untitleddungeongame.animations.Sprite;
 import com.example.untitleddungeongame.handlers.DrawInstructions;
 
-public class Slime extends Enemy{
-    public static Sprite sprite  = new Sprite(Assets.AssetID.ENEMY_SLIME , 32, 32, 9);
-
-    public Slime(String name, int hp, int attack, int defense, int speed){
+public class Big_Goblin extends Enemy{
+    private static Sprite sprite = new Sprite(Assets.AssetID.ENEMY_BIG_GOBLIN, 64, 64, 4);
+    public Big_Goblin(String name, int hp, int attack, int defense, int speed){
         super(name, hp, attack, defense, speed);
         setUpAnimation();
     }
-    public Slime(String name, int hp){
-        super(name, hp, 1, 0, 1);
+    public Big_Goblin(String name, int hp){
+        super(name, hp, 3, 1, 1);
         setUpAnimation();
     }
-    public void setUpAnimation(){
+
+    private void setUpAnimation(){
         animatedSprite = new AnimatedSprite(sprite);
-        animatedSprite.addAnimation(new Animation("idle", 0, 9, new int[] {150, 94, 74, 94, 300, 94, 74, 94, 150}));
+        animatedSprite.addAnimation(new Animation("idle", 0, 3, new int[] {500, 100, 600, 84}));
         animatedSprite.setCurrentAnimation("idle");
         animatedSprite.setCurrentRepeat(true);
         animatedSprite.playCurrentAnimation();
+//        drawInstructions = new DrawInstructions(550, 800, animatedSprite,Sprite.universalSpriteScale, Sprite.universalSpriteScale);
+        animatedSprite.doDraw = true;
+        makeDrawInstructions(550, 800);
     }
 }

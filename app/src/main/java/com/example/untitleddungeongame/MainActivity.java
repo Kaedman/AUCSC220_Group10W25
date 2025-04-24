@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
         miniMapButton = findViewById(R.id.map_button);
         confirmCancel = findViewById(R.id.confirm_cancel);
 
-        player = new Player(10);
+        player = new Player(20, 10, 5, 10);
         roomMaster = new RoomMaster(player);
 
         confirmCancel.setRoomMaster(roomMaster);

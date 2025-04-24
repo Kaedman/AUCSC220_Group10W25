@@ -2,6 +2,7 @@ package com.example.untitleddungeongame.floors;
 
 import android.util.Log;
 
+import com.example.untitleddungeongame.entity.Big_Goblin;
 import com.example.untitleddungeongame.entity.Enemy;
 import com.example.untitleddungeongame.entity.Goblin;
 import com.example.untitleddungeongame.entity.Player;
@@ -164,7 +165,7 @@ public class RoomMaster {
                 break;
 
             case 2: //
-                enemy = makeRandomEnemy();
+                enemy = new Big_Goblin("Ooga Booga", 20, 8, 5, 9);
 
                 newRoom = new Boss(((row * 100) + (col)), enemy);
                 break;
@@ -342,9 +343,9 @@ public class RoomMaster {
         double random = Math.random() * FLOOR1ENEMIES;
 
         if (random <= 1) {
-            return new Slime("Slime", 5);
+            return new Slime("Slime", 12, 7, 6, 6);
         } else if (random <= 2) {
-            return new Goblin("Goblin", 8);
+            return new Goblin("Goblin", 11, 8, 8, 12);
         } else {
             return new Slime("King Slime", 20);
         }
