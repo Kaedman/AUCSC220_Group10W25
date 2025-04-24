@@ -17,7 +17,7 @@ public class ParryController {
     }
 
     public boolean isTryingToParry() {
-        if (parryTime.hasTimeElapsed(500) && screenTapped) {
+        if (!parryTime.hasTimeElapsed(500) && screenTapped) {
             screenTapped = false;
             return true;
         }

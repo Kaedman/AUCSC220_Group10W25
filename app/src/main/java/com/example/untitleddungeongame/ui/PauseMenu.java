@@ -15,15 +15,21 @@ import com.example.untitleddungeongame.R;
 
 public class PauseMenu extends androidx.constraintlayout.widget.ConstraintLayout {
     private ConstraintLayout rootView;
-    private ImageView quitButton;
-    private ImageView resumeButton;
+    private PixelButton quitButton;
+    private PixelButton resumeButton;
+
     public PauseMenu(Context context) {
         super(context);
+        init(context);
     }
 
     public PauseMenu(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        LayoutInflater.from(context).inflate(R.layout.pause_menu, this, true);
+        init(context);
+    }
+
+    private void init(Context context) {
+        inflate(context, R.layout.pause_menu, this);
         rootView = findViewById(R.id.pause_menu);
         quitButton = findViewById(R.id.quit_button);
         resumeButton = findViewById(R.id.resume_button);

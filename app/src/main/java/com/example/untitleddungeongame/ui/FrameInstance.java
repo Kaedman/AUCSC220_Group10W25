@@ -33,6 +33,7 @@ public class FrameInstance implements SurfaceHolder.Callback {
     @Override
     public void surfaceChanged(@NonNull SurfaceHolder holder, int format, int width, int height) {
         // Handle surface changes if needed
+        holder.setFormat(PixelFormat.TRANSLUCENT);
         surfaceHolder = holder;
     }
 
@@ -49,7 +50,7 @@ public class FrameInstance implements SurfaceHolder.Callback {
         // 292 = 4
         // 156 = 2
         // Draw on the canvas here
-        canvas.drawColor(0, android.graphics.PorterDuff.Mode.CLEAR);
+//        canvas.drawColor(0, android.graphics.PorterDuff.Mode.CLEAR);
         frameSprite.drawScaled(canvas, Sprite.SpriteRelativePosition.CENTER, Sprite.SpriteRelativePosition.CENTER, scaleX, scaleX);
         surfaceHolder.unlockCanvasAndPost(canvas);
     }

@@ -59,7 +59,9 @@ public class CombatState {
     public CombatTurn.State currentTurn() {
         return combatTurn.currentTurn();
     }
-
+    public State getCurrentState() {
+        return currentState;
+    }
     public void reset() {
         currentState = State.READY;
         previousState = State.READY;
