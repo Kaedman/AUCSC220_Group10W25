@@ -3,6 +3,7 @@ package com.example.untitleddungeongame.floors;
 import android.util.Log;
 
 import com.example.untitleddungeongame.entity.Enemy;
+import com.example.untitleddungeongame.handlers.Game;
 import com.example.untitleddungeongame.ui.RoomVisual;
 
 
@@ -137,4 +138,11 @@ public class Room {
         return this.enemy;
     }
 
+    public void showVisuals(Game game) {
+        return;
+    }
+
+    public void hideVisuals(Game game) {
+        return;
+    }
 }

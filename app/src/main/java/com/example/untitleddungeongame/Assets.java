@@ -20,7 +20,7 @@ public class Assets {
         TILESET(2),
         CHESTS(3),
 
-        TORCH,
+        TORCH(20),
         //Items
         ITEM_HEAL(4),
         ITEM_OFFENSE(5),

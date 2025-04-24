@@ -1,5 +1,7 @@
 package com.example.untitleddungeongame.entity;
 
+import android.util.Log;
+
 import com.example.untitleddungeongame.Assets;
 import com.example.untitleddungeongame.animations.AnimatedSprite;
 import com.example.untitleddungeongame.animations.Sprite;
@@ -23,12 +25,13 @@ public class Enemy extends Entity {
 
     /**
      * Creates a new draw instruction for the given enemy, allowing automatic animation
-     * @param posX - position X
-     * @param posY - position Y
+     *
+     * @param posX   - position X
+     * @param posY   - position Y
      * @param scaleX - scale X
      * @param scaleY - scale Y
      */
-    public void makeDrawInstructions(int posX, int posY, int scaleX, int scaleY){
+    public void makeDrawInstructions(int posX, int posY, int scaleX, int scaleY) {
         if (animatedSprite == null)
             return;
 
@@ -37,34 +40,26 @@ public class Enemy extends Entity {
         this.posY = posY;
     }
 
-    public void makeDrawInstructions(int posX, int posY){
+    public void makeDrawInstructions(int posX, int posY) {
         makeDrawInstructions(posX, posY, Sprite.universalSpriteScale, Sprite.universalSpriteScale);
     }
 
     /**
      * Allows repositioning of the drawInstruction on the enemy if drawInstruction has been made
+     *
      * @param x - new position X
      * @param y - new position Y
      */
-    public void repositionEnemy(int x, int y){
-        if (drawInstructions != null){
+    public void repositionEnemy(int x, int y) {
+        if (drawInstructions != null) {
             drawInstructions.setX(x);
             drawInstructions.setY(y);
         }
     }
 
-    /**
-     * Get that enemy out of my sight!
-     */
-    public void yeetEnemy(boolean isDead){
-        if (drawInstructions != null){
-            if (isDead) {
-                drawInstructions.setY(200000);
-            } else {
-                drawInstructions.setY(posY);
-            }
+    public void setEnemyAppearance() {
+        if (animatedSprite != null) {
+            animatedSprite.doDraw = !isDead();
         }
     }
-
-
 }
