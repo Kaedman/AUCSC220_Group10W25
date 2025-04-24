@@ -25,16 +25,6 @@
         android:layout_height="match_parent"
         tools:visibility="gone"/>
 
-    <Button
-        android:id="@+id/pause"
-        android:layout_width="54dp"
-        android:layout_height="66dp"
-        android:layout_marginStart="316dp"
-        android:layout_marginTop="64dp"
-        android:onClick="onUserPause"
-        android:text="| |"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <com.example.untitleddungeongame.ui.CustomDialog
         android:id="@+id/combat_dialog"
@@ -70,36 +60,15 @@
         app:layout_constraintStart_toStartOf="parent" />
 
 
-
-    <ImageView
-        android:id="@+id/pauseVisual"
-        android:layout_width="52dp"
-        android:layout_height="66dp"
-        android:layout_marginTop="64dp"
-        android:layout_marginEnd="40dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/buttonpause" />
-
     <com.example.untitleddungeongame.ui.PauseMenu
         android:id="@+id/pause_menu"
         android:layout_width="416dp"
-        android:layout_height="141dp"
-        android:layout_marginTop="165dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/pause" />
-
-    <ImageView
-        android:id="@+id/map"
-        android:layout_width="59dp"
-        android:layout_height="56dp"
-        android:layout_marginTop="140dp"
-        android:layout_marginEnd="36dp"
-        android:onClick="mapButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/minimapbutton" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.example.untitleddungeongame.ui.hotbar.ItemAttackButton
         android:id="@+id/itemAttackButton"
@@ -111,6 +80,42 @@
         app:layout_constraintHorizontal_bias="0.504"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <com.example.untitleddungeongame.ui.ConfirmCancelMenu
+        android:id="@+id/confirm_cancel"
+        android:layout_width="300dp"
+        android:layout_height="65dp"
+        android:layout_marginTop="500dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.504"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.example.untitleddungeongame.ui.PixelButton
+        android:id="@+id/pause_button"
+        android:layout_width="60dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="36dp"
+        android:layout_marginEnd="36dp"
+        android:text=""
+        app:layout_constraintDimensionRatio="1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:resource="BUTTON_PAUSE" />
+
+    <com.example.untitleddungeongame.ui.PixelButton
+        android:id="@+id/map_button"
+        android:layout_width="60dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="12dp"
+        android:text=""
+        app:layout_constraintDimensionRatio="1"
+        app:layout_constraintEnd_toEndOf="@+id/pause_button"
+        app:layout_constraintTop_toBottomOf="@+id/pause_button"
+        app:resource="MAP"
+
+        />
 
     <com.example.untitleddungeongame.ui.DeathScreen
         android:id="@+id/death_screen"

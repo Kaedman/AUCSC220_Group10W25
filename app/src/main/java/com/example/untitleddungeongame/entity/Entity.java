@@ -35,15 +35,15 @@ public class Entity {
         maxHealth = health;
     }
 
-    public String takeDamage(Attack attack) {
+    public String takeDamage(Attack attack, int additionalDamage) {
         Pair<Integer, Stat> info = attack.use();
         Stat stat = getStatModifier(StatType.DEFENSE);
-        int damage = info.first;
+        int damage = info.first + additionalDamage;
         if (stat != null) {
             damage -= stat.getValue();
-            if (damage < 0) {
-                damage = 1;
-            }
+        }
+        if (damage < 0) {
+            damage = 1;
         }
         health -= damage;
         if (health <= 0) {

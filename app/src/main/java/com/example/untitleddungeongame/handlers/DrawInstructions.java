@@ -1,6 +1,7 @@
 package com.example.untitleddungeongame.handlers;
 
 import android.graphics.Canvas;
+import android.util.Log;
 
 import com.example.untitleddungeongame.animations.AnimatedSprite;
 import com.example.untitleddungeongame.animations.Sprite;
@@ -70,7 +71,8 @@ public class DrawInstructions {
 
 //            System.out.println(current.boundsCheckLeft() + ", " + current.boundsCheckRight() + ", " + current.boundsCheckUp() + ", " + current.boundsCheckDown());
             //Check sprite is in screen bounds to draw
-            if (current.spriteToDraw.doDraw && current.show) {
+            if (current.spriteToDraw.doDraw) {
+                Log.d("drawInstructions", current.spriteToDraw.toString());
                 if (current.boundsCheckLeft() && current.boundsCheckRight() && current.boundsCheckUp() && current.boundsCheckDown()) {
                     current.spriteToDraw.updateCurrentAnimation();
                     current.spriteToDraw.drawAnimation(canvas, current.x + cameraX, current.y + cameraY, current.scaleX, current.scaleY);

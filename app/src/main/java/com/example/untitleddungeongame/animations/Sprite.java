@@ -69,7 +69,6 @@ public class Sprite {
      */
     public void drawScaled(Canvas canvas, Paint paint, int posX, int posY, int scaleX, int scaleY){
         canvasPosition.set(posX, posY, posX + spriteX * scaleX, posY + spriteY* scaleY);
-
         canvas.drawBitmap(resource, currentBound, canvasPosition, paint);
     }
     /*

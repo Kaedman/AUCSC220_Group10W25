@@ -1,7 +1,11 @@
 package com.example.untitleddungeongame.floors;
 
+import android.util.Log;
+
 import com.example.untitleddungeongame.entity.Enemy;
+import com.example.untitleddungeongame.entity.Goblin;
 import com.example.untitleddungeongame.entity.Player;
+import com.example.untitleddungeongame.entity.Slime;
 import com.example.untitleddungeongame.handlers.Game;
 
 import java.util.ArrayList;
@@ -22,6 +26,8 @@ public class RoomMaster {
     // This array simply indicates which rooms can be randomly chosen from during room generation
     // (where the origin and boss rooms are reserved)
     private final int[] roomIntList = {3, 4};
+
+    private final int FLOOR1ENEMIES = 2;
 
     public RoomMaster(Player player) {
         this.player = player;
@@ -138,6 +144,8 @@ public class RoomMaster {
     public void moveToRoom(Room destination) {
         if (destination.isAdjacent(currentRoom)) {
             currentRoom = destination;
+            Log.d("floorMap", toString());
+            Log.d("currentId", getCurrentRoom().toString());
             game.setRoomVisual(currentRoom.getLooks());
         } else {
             throw new java.lang.RuntimeException("Room destination is not adjacent to current room");
@@ -156,15 +164,13 @@ public class RoomMaster {
                 break;
 
             case 2: //
-                //REPLACE WITH CREATE NEW ENEMY FUNCTION
-                enemy = new Enemy("Boss", 10, 10, 4, 10);
+                enemy = makeRandomEnemy();
 
                 newRoom = new Boss(((row * 100) + (col)), enemy);
                 break;
 
             case 3:
-                //REPLACE WITH CREATE NEW ENEMY FUNCTION
-                enemy = new Enemy("Generic", 5, 5, 1, 5);
+                enemy = makeRandomEnemy();
 
                 newRoom = new Encounter(((row * 100) + (col)), enemy, player);
                 break;
@@ -330,5 +336,25 @@ public class RoomMaster {
 
     public Player getPlayer() {
         return player;
+    }
+
+    private Enemy getRandomFloor1Enemy() {
+        double random = Math.random() * FLOOR1ENEMIES;
+
+        if (random <= 1) {
+            return new Slime("Slime", 5);
+        } else if (random <= 2) {
+            return new Goblin("Goblin", 8);
+        } else {
+            return new Slime("King Slime", 20);
+        }
+    }
+
+    private Enemy makeRandomEnemy() {
+        if (currentFloor <= 1) {
+            return getRandomFloor1Enemy();
+        } else {
+            return new Slime("King Slime", 20);
+        }
     }
 }

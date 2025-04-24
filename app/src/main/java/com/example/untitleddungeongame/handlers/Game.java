@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
+import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
@@ -22,7 +23,7 @@ import com.example.untitleddungeongame.animations.Sprite;
 import com.example.untitleddungeongame.entity.Enemy;
 import com.example.untitleddungeongame.entity.Goblin;
 import com.example.untitleddungeongame.entity.Player;
-import com.example.untitleddungeongame.entity.Slime;
+import com.example.untitleddungeongame.floors.Rest;
 import com.example.untitleddungeongame.floors.Room;
 import com.example.untitleddungeongame.floors.RoomMaster;
 import com.example.untitleddungeongame.handlers.combat.Combat;
@@ -68,16 +69,16 @@ public class Game extends SurfaceView implements Runnable {
     private RoomMaster roomMaster;
 //    private DrawInstructions playerDrawInstructions;
     private final Arrows arrows;
-    private DeathScreen deathScreen;
-    Goblin testSlime = new Goblin("Jerry", 30);
-    AnimatedSprite slimeTestAnim;
+    Enemy enemyToDraw = new Goblin("Jerry", 30);
+    AnimatedSprite enemyAnim;
     //Sprites and stuff
     private Sprite healthBar = new Sprite(Assets.AssetID.HEALTH_BAR, 128, 32, 1);
+    private AnimatedSprite restBench;
 
     private int oldX, oldY; //For player tracking and miniMap updates
     private MiniMap miniMap;
     public static boolean showMiniMap = false;
-
+    DrawInstructions playerDrawInstructions;
     //Other
     private final AppCompatActivity activity;
 
@@ -169,6 +170,12 @@ public class Game extends SurfaceView implements Runnable {
         miniMap.makeMapVisual();
     }
 
+    private void prepRestRoom() {
+        restBench = new AnimatedSprite(new Sprite(Assets.AssetID.BENCH, 64, 32, 1));
+        restBench.addAnimation(new Animation("Static", 0, 0, new int[] {0}));
+        restBench.setCurrentAnimation("Static");
+    }
+
     private boolean hasPlayerMoved(){
         return oldX != MiniMap.playerX || oldY != MiniMap.playerY;
     }
@@ -200,18 +207,9 @@ public class Game extends SurfaceView implements Runnable {
 
         preparePlayer();
 
-        slimeTestAnim = new AnimatedSprite(new Sprite(Assets.AssetID.ENEMY_SLIME, 32, 32, 9));
-        slimeTestAnim.addAnimation(new Animation("idle", 0, 9, new int[] {150, 94, 74, 94, 300, 94, 74, 94, 150}));
-        slimeTestAnim.setCurrentAnimation("idle");
-        slimeTestAnim.setCurrentRepeat(true);
-        slimeTestAnim.playCurrentAnimation();
-
-        //DrawInstructions slimeInstruction = new DrawInstructions(0, 500, slimeTestAnim, 20, 20);
-
-        testSlime.makeDrawInstructions(550,800);
-
         prepMiniMap();
 
+        prepRestRoom();
 
         //GameLoop happens Here
         while (doGameLoop){
@@ -228,11 +226,8 @@ public class Game extends SurfaceView implements Runnable {
                 catch (InterruptedException e) {
                     //error
                 }
-
             }
-
         }
-
     }
 
     public void setDoGameLoop(boolean state){
@@ -247,7 +242,7 @@ public class Game extends SurfaceView implements Runnable {
     int magicHealthBarScaleY = 5;
     int actualBarX = magicHealthBarPositionX + 35 * magicHealthBarScaleX;
     int actualBarY = magicHealthBarPositionY + 6 * magicHealthBarScaleY;
-    int actualBarWidth = 82 * magicHealthBarScaleY;
+    int actualBarWidth = 82 * magicHealthBarScaleX;
     int actualBarHeight = 20 * magicHealthBarScaleY;
     int healthBarMaxHPColor = Color.BLACK;
     int healthBarCurrentColor = Color.RED;
@@ -273,7 +268,19 @@ public class Game extends SurfaceView implements Runnable {
         canvas.drawPaint(fill); //Refresh the canvas
         if (roomVisual != null) //Room Drawing
             roomVisual.draw(canvas, (int)(-RoomVisual.getScaleX() * RoomVisual.getTilePixelWidth() * 0.5), 0);
-        testSlime.yeetEnemy(currentRoom.getRoomCleared() || currentRoom.getEnemy() == null);
+
+        enemyToDraw = currentRoom.getEnemy();
+
+        if (enemyToDraw != null) {
+            enemyToDraw.setEnemyAppearance();
+            if (enemyToDraw.animatedSprite.doDraw) {
+                enemyToDraw.animatedSprite.updateCurrentAnimation();
+                enemyToDraw.animatedSprite.drawAnimation(canvas, 550, 800, Sprite.universalSpriteScale, Sprite.universalSpriteScale);
+                drawHealthBar(canvas, 550, 700, enemyToDraw.getHealth(), enemyToDraw.getMaxHealth(),70 * magicHealthBarScaleX, 10 * magicHealthBarScaleY);
+            }
+        }
+
+        drawBench(canvas);
         DrawInstructions.drawAll(canvas, !currentRoom.getRoomCleared() && currentRoom.getEnemy() != null); //Entity Drawing
 
 
@@ -357,5 +364,15 @@ public class Game extends SurfaceView implements Runnable {
         arrows.setArrows();
         combat = new Combat(activity, roomMaster.getPlayer());
         System.out.println(roomMaster);
+    }
+
+    public Canvas getCanvas() {
+        return canvas;
+    }
+
+    private void drawBench(Canvas canvas) {
+        if (roomMaster.getCurrentRoom() instanceof Rest) {
+            restBench.drawAnimation(canvas, 450, 1500, Sprite.universalSpriteScale, Sprite.universalSpriteScale);
+        }
     }
 }

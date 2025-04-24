@@ -7,11 +7,12 @@ import com.example.untitleddungeongame.stats.Stat;
 public class QuickAttack extends Attack {
 
     public QuickAttack() {
-        super("Quick Attack", 5);
+        super("Quick Attack", 1);
     }
 
     public Pair<Integer, Stat> use() {
-        int damage = getInfo();
+        int damage = getInfo()
+        ;
         return new Pair<>(damage, null);
     }
 }

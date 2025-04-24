@@ -14,10 +14,10 @@ import com.example.untitleddungeongame.R;
 
 public class Arrows extends androidx.constraintlayout.widget.ConstraintLayout {
     private ConstraintLayout rootView;
-    private ImageView leftArrow;
-    private ImageView rightArrow;
-    private ImageView upArrow;
-    private ImageView downArrow;
+    private PixelButton leftArrow;
+    private PixelButton rightArrow;
+    private PixelButton upArrow;
+    private PixelButton downArrow;
     private RoomMaster roomMaster;
     private boolean isDisabled = false;
 
@@ -44,7 +44,7 @@ public class Arrows extends androidx.constraintlayout.widget.ConstraintLayout {
         downArrow.setOnClickListener(this :: moveDown);
     }
 
-    public void setArrowVisible(ImageView v, boolean activated) {
+    public void setArrowVisible(PixelButton v, boolean activated) {
         if (activated) {
             v.setVisibility(VISIBLE);
         } else {
@@ -71,7 +71,8 @@ public class Arrows extends androidx.constraintlayout.widget.ConstraintLayout {
 
     public void moveLeft(View v) {
         if (roomMaster == null) return;
-        setArrowVisible(leftArrow,false);
+        leftArrow.setVisibility(INVISIBLE);
+//        setArrowVisible(leftArrow,false);
         Log.d("previousRoom", roomMaster.getCurrentRoom().toString());
         roomMaster.moveToRoom(roomMaster.getCurrentRoom().getLeft());
         Log.d("currentRoom", roomMaster.getCurrentRoom().toString());
