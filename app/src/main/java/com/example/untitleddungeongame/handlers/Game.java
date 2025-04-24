@@ -90,8 +90,8 @@ public class Game extends SurfaceView implements Runnable {
     private AnimatedSprite playerSprite;
     private AnimatedSprite[] enemies;
 
-    private AnimatedSprite attackUp, attackDown;
-    private DrawInstructions attackUpInstruct, attackDownInstruct;
+    private AnimatedSprite attackUp, attackDown, parry;
+    private DrawInstructions attackUpInstruct, attackDownInstruct, parryInstruct;
 
     private ParticleSystem playerHit;
 
@@ -241,6 +241,15 @@ public class Game extends SurfaceView implements Runnable {
 
         attackUpInstruct = new DrawInstructions(575, 1200, attackUp, Sprite.universalSpriteScale, Sprite.universalSpriteScale);
         attackDownInstruct = new DrawInstructions(575, 1100, attackDown, Sprite.universalSpriteScale, Sprite.universalSpriteScale);
+
+
+        Sprite parrySprite = new Sprite(Assets.AssetID.PARRY, 32, 32, 1);
+        parry = new AnimatedSprite(parrySprite);
+        parry.addAnimation(new Animation("parry", 0, 12, new int[] {40, 40, 40, 40, 150, 50, 60, 40, 70, 80, 90, 100}));
+        parry.setCurrentAnimation("parry");
+
+
+        parryInstruct = new DrawInstructions(575, 1200, parry, Sprite.universalSpriteScale, Sprite.universalSpriteScale);
 
     }
 
@@ -438,6 +447,10 @@ public class Game extends SurfaceView implements Runnable {
                 Log.d("Game", "Player Died");
                 // TODO: Death screen
 //                    activity.runOnUiThread(deathScreen::show);
+                break;
+            }
+            case PLAYER_PARRY: {
+                parry.playCurrentAnimation();
                 break;
             }
             case ENEMY_DEATH: {
