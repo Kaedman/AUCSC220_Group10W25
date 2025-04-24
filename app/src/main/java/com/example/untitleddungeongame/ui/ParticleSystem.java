@@ -3,7 +3,6 @@ package com.example.untitleddungeongame.ui;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.provider.Telephony;
 
 import java.util.Random;
 
@@ -35,9 +34,15 @@ public class ParticleSystem {
         this.scaleX = scaleX;
         this.scaleY = scaleY;
 
+        createParticleList();
+
     }
 
-    public void createParticles(){
+    /**
+     * Creates the particle list which particles are stored in
+     * This MUST be called before you can use the particle system
+     */
+    public void createParticleList(){
         particles = new Particle[particleMaxCount];
 
     }
@@ -57,6 +62,7 @@ public class ParticleSystem {
     /**
      * This function has violated the principles of clean code
      * Sets the random particle settings ranges for particles generated under this particle system
+     * This function MUST BE CALLED in order to use the particle system
      * @param posXMin - startPositionMin of particles
      * @param posXMax - startPositionMax of particles
      * @param posYMin - same but y
@@ -90,11 +96,12 @@ public class ParticleSystem {
 
         return p;
     }
+
     private void resetParticle(Particle p){
         //https://stackoverflow.com/questions/363681/how-do-i-generate-random-integers-within-a-specific-range-in-java
         //Random Ranges
         int minX = particlePosMinX + r.nextInt(particlePosMaxX - particlePosMinX + 1);
-        int minY = particlePosMinX + r.nextInt(particlePosMaxY - particlePosMinY + 1);
+        int minY = particlePosMinY + r.nextInt(particlePosMaxY - particlePosMinY + 1);
 
         int velX = particleVelMinX + r.nextInt(particleVelMaxX - particleVelMinX + 1);
         int velY = particleVelMinY + r.nextInt(particleVelMaxY - particleVelMinY + 1);
@@ -114,6 +121,9 @@ public class ParticleSystem {
 
     }
 
+    /**
+     * Creates all visual particles and places them into the particles list
+     */
     public void createAllParticles(){
         int randomLifeTimeStart;
         for (int p = 0; p < particles.length; p++){
@@ -124,6 +134,9 @@ public class ParticleSystem {
         }
     }
 
+    /**
+     * Simulates a step for all particles
+     */
     public void updateParticles(){
         Particle current;
         for (int p = 0; p < particles.length; p++){
@@ -144,12 +157,22 @@ public class ParticleSystem {
 
     }
 
+    /**
+     * Draws all particles to a given canvas
+     * @param c - Canvas to draw on
+     */
     public void drawAllParticles(Canvas c){
+        Particle current;
         for (int p = 0; p < particles.length; p++){
-            particles[p].drawVisual(c, null, scaleX, scaleY);
+            current = particles[p];
+            if (current.alive)
+                current.drawVisual(c, null, scaleX, scaleY);
         }
     }
 
+    /**
+     * Resets all particles to the current particle system setting
+     */
     public void resetAllParticles(){
         for (int p = 0; p < particles.length; p++){
             resetParticle(particles[p]);

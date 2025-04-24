@@ -86,11 +86,13 @@ public class Game extends SurfaceView implements Runnable {
     //Other
     private GameTouchListener touchListener;
     //AnimatedSprites
-    AnimatedSprite playerSprite;
-    AnimatedSprite[] enemies;
+    private AnimatedSprite playerSprite;
+    private AnimatedSprite[] enemies;
 
-    AnimatedSprite attackUp, attackDown;
-    DrawInstructions attackUpInstruct, attackDownInstruct;
+    private AnimatedSprite attackUp, attackDown;
+    private DrawInstructions attackUpInstruct, attackDownInstruct;
+
+    private ParticleSystem playerHit;
 
     @SuppressLint("SetTextI18n")
 
@@ -198,11 +200,28 @@ public class Game extends SurfaceView implements Runnable {
         particleSystem.createRectBaseParticle(Color.GREEN, 5, 5);
 
         particleSystem.setParticleSettings(600, 620, 1500, 1500, -3, 3, 5, 10, 0, 0, -1, -1);
-        particleSystem.createParticles();
         particleSystem.createAllParticles();
 
     }
 
+    private void playerHitParticleSetup(){
+        playerHit = new ParticleSystem(30,100, 200, 8, 8);
+        playerHit.respawnParticles = false;
+        playerHit.createRectBaseParticle(Color.RED, 10, 10);
+
+        playerHit.setParticleSettings(
+                700, 700,
+                1700, 1700,
+                -10, 10,
+                -10, 0,
+                0, 0,
+                -5, -5
+        );
+
+        playerHit.createAllParticles();
+
+
+    }
     private void attackFXSetup(){
         Sprite up = new Sprite(Assets.AssetID.SlASH_UP,32, 32, 9);
         Sprite down = new Sprite(Assets.AssetID.SLASH_DOWN,32, 32, 9);
@@ -229,6 +248,8 @@ public class Game extends SurfaceView implements Runnable {
 
         attackFXSetup();
 
+        playerHitParticleSetup();
+
         prepMiniMap();
 
         prepRestRoom();
@@ -237,10 +258,11 @@ public class Game extends SurfaceView implements Runnable {
         while (doGameLoop){
             activity.runOnUiThread(this::runOnUiThread);
             if (!isPaused && !userPaused) {
+
                 mapUpdate();
                 combat.run(roomMaster.getCurrentRoom());
-
                 draw();
+                playerHit.updateParticles();
 
                 try {
                     Thread.sleep(fps);
@@ -290,7 +312,7 @@ public class Game extends SurfaceView implements Runnable {
         canvas.drawPaint(fill); //Refresh the canvas
         if (roomVisual != null) //Room Drawing
             roomVisual.draw(canvas, (int)(-RoomVisual.getScaleX() * RoomVisual.getTilePixelWidth() * 0.5), 0);
-
+            //Enemy Drawings
         enemyToDraw = currentRoom.getEnemy();
 
         if (enemyToDraw != null) {
@@ -303,7 +325,9 @@ public class Game extends SurfaceView implements Runnable {
         }
 
         drawBench(canvas);
-        DrawInstructions.drawAll(canvas, !currentRoom.getRoomCleared() && currentRoom.getEnemy() != null); //Entity Drawing
+        playerHit.drawAllParticles(canvas);
+        //Entity Drawing
+        DrawInstructions.drawAll(canvas, !currentRoom.getRoomCleared() && currentRoom.getEnemy() != null);
 
 
         drawHealthBar(canvas, actualBarX, actualBarY, player.getHealth(), player.getMaxHealth(),actualBarWidth, actualBarHeight, healthBarMaxHPColor, healthBarCurrentColor);
