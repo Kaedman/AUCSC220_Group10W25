@@ -11,16 +11,10 @@ public class Assets {
     public enum AssetID {
         //ENTITY
         PLAYER(0),
-
-
         ENEMY_SLIME(1),
-
-
         //MAP
         TILESET(2),
         CHESTS(3),
-
-
         //Items
         ITEM_HEAL(4),
         ITEM_OFFENSE(5),

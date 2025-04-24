@@ -21,6 +21,8 @@ public class Combat {
     private final AppCompatActivity activity;
     private boolean isDisabled = false;
 
+
+
      public Combat(AppCompatActivity activity, Player player) {
          this.activity = activity;
          this.player = player;
@@ -33,10 +35,6 @@ public class Combat {
          presentor.attackBar.setOnClick(this::useAttack);
          presentor.setItemBar(player.getEquipped());
          presentor.setAttackBar(player.getAttacks());
-     }
-
-     public void setCombat(boolean state) {
-         inCombat = state;
      }
 
      public void run(Room room) {
@@ -64,12 +62,12 @@ public class Combat {
          isDisabled = false;
      }
 
-     public void attackButtonPressed(View button) {
+     private void attackButtonPressed(View button) {
         if (!inCombat) return;
         presentor.switchAttacks();
      }
 
-    public void itemsButtonPressed(View button) {
+    private void itemsButtonPressed(View button) {
         if (!inCombat) return;
         presentor.switchItems();
     }
@@ -78,13 +76,13 @@ public class Combat {
         return inCombat;
     }
 
-    public void useItem(int position) {
+    private void useItem(int position) {
         if (!inCombat || OutputText.isInDialog()) return;
         presentor.optionPressed();
         controller.useItem(position, player);
     }
 
-    public void useAttack(int position) {
+    private void useAttack(int position) {
         if (!inCombat || OutputText.isInDialog()) return;
         presentor.optionPressed();
         controller.useAttack(position, player);
@@ -98,4 +96,9 @@ public class Combat {
     public Player getPlayer() {
         return player;
     }
+
+    public void setEventListener(Controller.CombatEventListener listener) {
+         controller.eventListener = listener;
+    }
+
 }

@@ -12,10 +12,10 @@ import com.example.untitleddungeongame.misc.ElapseTime;
 public class Controller {
 
     protected final CombatState combatState = new CombatState();
-    private CombatOption combatOption;
-    private ParryController parryController = new ParryController();
-    private CombatEvent combatEvent = new CombatEvent();
+    private final ParryController parryController = new ParryController();
     private final ElapseTime elapseTime = new ElapseTime();
+    private final CombatEvent combatEvent = new CombatEvent();
+    private CombatOption combatOption;
 
     private final Player player;
     private Enemy enemy;
@@ -24,6 +24,24 @@ public class Controller {
     boolean parried = false;
     boolean isReadyToParry = false;
     boolean canParry = true;
+
+    public enum CombatEventEnum {
+        PLAYER_ATTACK,
+        ENEMY_ATTACK,
+        PLAYER_ITEM_USE,
+        ENEMY_ITEM_USE,
+        PLAYER_STATUS_EFFECT,
+        ENEMY_STATUS_EFFECT,
+        PLAYER_TURN,
+        ENEMY_TURN,
+        PLAYER_DEATH,
+        ENEMY_DEATH,
+        PLAYER_PARRY
+    }
+    public interface CombatEventListener {
+        void run(CombatEventEnum event);
+    }
+    protected CombatEventListener eventListener = null;
 
     public Controller(Player player) {
         this.player = player;
@@ -38,6 +56,7 @@ public class Controller {
     }
 
     public void run(Room room) {
+        if (eventListener == null) throw new NullPointerException("Event Listener is null");
         if (room.getEnemy() == null) return;
         enemy = room.getEnemy();
         currentRoom = room;
@@ -57,9 +76,11 @@ public class Controller {
         if (!elapseTime.hasTimeElapsed(250)) return;
         System.out.println("Combat Turn: " + combatState.currentTurn());
         if (combatState.currentTurn() == CombatTurn.State.PLAYER) {
+            eventListener.run(CombatEventEnum.PLAYER_TURN);
             OutputText.setOutputText("Player Turn");
             combatEvent.set(player, enemy, combatOption.getType(), combatOption.getPosition());
         } else if (combatState.currentTurn() == CombatTurn.State.ENEMY) {
+            eventListener.run(CombatEventEnum.ENEMY_TURN);
             combatOption = new CombatOption<>(enemy.getAttacks()[0], 0);
             OutputText.setOutputText("Enemy Turn");
             combatEvent.set(enemy, player, combatOption.getType(), combatOption.getPosition());
@@ -101,11 +122,15 @@ public class Controller {
 
         StringBuilder outputText = new StringBuilder(source.getName() + " used " + attack.getName() + " on " + target.getName());
 
-
         if (combatState.currentTurn() == CombatTurn.State.ENEMY && parried) {
             parried = false;
             combatState.switchState(CombatState.State.PARRY);
         } else {
+            if (combatState.currentTurn() == CombatTurn.State.ENEMY) {
+                eventListener.run(CombatEventEnum.ENEMY_ATTACK);
+            } else if (combatState.currentTurn() == CombatTurn.State.PLAYER) {
+                eventListener.run(CombatEventEnum.PLAYER_ATTACK);
+            }
             String result = target.takeDamage(attack, source.getAttack());
             outputText.append("\n").append(result);
             combatState.switchState(CombatState.State.TURN_START);
@@ -122,10 +147,15 @@ public class Controller {
         String outputText = combatEvent.getSource().getName() + " used " + item.getName();
         if (!result) {
             outputText += "\nBut it failed";
+        } else {
+            if (combatState.currentTurn() == CombatTurn.State.ENEMY) {
+                eventListener.run(CombatEventEnum.ENEMY_ITEM_USE);
+            } else if (combatState.currentTurn() == CombatTurn.State.PLAYER) {
+                eventListener.run(CombatEventEnum.PLAYER_ITEM_USE);
+            }
         }
 
         OutputText.setOutputText(outputText);
-
         combatState.switchState(CombatState.State.TURN_START);
     }
     private void statusEffect() {
@@ -134,6 +164,7 @@ public class Controller {
 
     private void handleParry() {
         if (!elapseTime.hasTimeElapsed(100)) return;
+        eventListener.run(CombatEventEnum.PLAYER_PARRY);
         StringBuilder outputText = new StringBuilder("But Player Parried");
         Entity source = combatEvent.getSource();
         Entity target = combatEvent.getTarget();
@@ -154,11 +185,13 @@ public class Controller {
     public void ending() {
         if (!elapseTime.hasTimeElapsed(100)) return;
         if (enemy.isDead()) {
+            eventListener.run(CombatEventEnum.ENEMY_DEATH);
             OutputText.setOutputText("Enemy Defeated");
             currentRoom.setRoomCleared(true);
             combatState.switchState(CombatState.State.READY);
             return;
         } else if (player.isDead()) {
+            eventListener.run(CombatEventEnum.PLAYER_DEATH);
             OutputText.setOutputText("Player Defeated");
             combatState.switchState(CombatState.State.READY);
             return;
@@ -167,12 +200,6 @@ public class Controller {
         combatState.combatTurn.resetTurns();
         combatOption = null;
         canParry = true;
-    }
-
-    private void enemyTurn() {
-        if (!elapseTime.hasTimeElapsedSeconds(1)) return;
-        OutputText.setOutputText("Enemy Attacked");
-        return;
     }
 
     public void useItem(int pos, Player player) {
