@@ -24,6 +24,7 @@ public class ParticleSystem {
     private static Random r = new Random();
 
     private int scaleX, scaleY;
+    private boolean allParticlesDead = false;
 
     public boolean respawnParticles = true; //Can manually set this public attribute to have a "burst"
     //of particles
@@ -139,6 +140,7 @@ public class ParticleSystem {
      */
     public void updateParticles(){
         Particle current;
+        boolean deadParticles = true;
         for (int p = 0; p < particles.length; p++){
 
             current = particles[p];
@@ -148,12 +150,18 @@ public class ParticleSystem {
                 current = particles[p];
             }
 
+            if (current.alive)
+                deadParticles = false;
+
             if (!current.alive & respawnParticles)
                 resetParticle(current);
 
             current.update();
 
         }
+
+        if (deadParticles)
+            allParticlesDead = true;
 
     }
 
@@ -163,6 +171,9 @@ public class ParticleSystem {
      */
     public void drawAllParticles(Canvas c){
         Particle current;
+
+        if (allParticlesDead) return; //Don't loop through and draw particles if none to draw
+
         for (int p = 0; p < particles.length; p++){
             current = particles[p];
             if (current.alive)
@@ -174,6 +185,7 @@ public class ParticleSystem {
      * Resets all particles to the current particle system setting
      */
     public void resetAllParticles(){
+        allParticlesDead = false;
         for (int p = 0; p < particles.length; p++){
             resetParticle(particles[p]);
         }

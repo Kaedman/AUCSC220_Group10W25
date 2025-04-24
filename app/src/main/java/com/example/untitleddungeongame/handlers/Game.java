@@ -327,7 +327,7 @@ public class Game extends SurfaceView implements Runnable {
         drawBench(canvas);
         playerHit.drawAllParticles(canvas);
         //Entity Drawing
-        DrawInstructions.drawAll(canvas, !currentRoom.getRoomCleared() && currentRoom.getEnemy() != null);
+        DrawInstructions.drawAll(canvas);
 
 
         drawHealthBar(canvas, actualBarX, actualBarY, player.getHealth(), player.getMaxHealth(),actualBarWidth, actualBarHeight, healthBarMaxHPColor, healthBarCurrentColor);
