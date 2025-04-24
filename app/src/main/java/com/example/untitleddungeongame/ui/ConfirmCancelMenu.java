@@ -7,65 +7,75 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
+
 import com.example.untitleddungeongame.floors.Boss;
 import com.example.untitleddungeongame.floors.Rest;
 import com.example.untitleddungeongame.floors.RoomMaster;
 import com.example.untitleddungeongame.R;
 
-public class ConfirmCancelMenu extends LinearLayout {
+public class ConfirmCancelMenu extends ConstraintLayout {
     private RoomMaster roomMaster;
-    private LinearLayout rootView;
-    private Button confirmButton;
-    private Button cancelButton;
+    private ConstraintLayout rootView;
+    private PixelButton confirmButton;
+    private PixelButton cancelButton;
 
-    public ConfirmCancelMenu(Context context, AttributeSet attrs, RoomMaster roomMaster) {
+    public ConfirmCancelMenu(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init(context, roomMaster);
+        init(context);
     }
 
-    public ConfirmCancelMenu(Context context, RoomMaster roomMaster) {
+    public ConfirmCancelMenu(Context context) {
         super(context);
-        init(context, roomMaster);
+        init(context);
     }
 
-    private void init(Context context, RoomMaster roomMaster) {
-        this.roomMaster = roomMaster;
-        LayoutInflater.from(context).inflate(R.layout.confirm_cancel_menu, this, true);
-        rootView = findViewById(R.id.confirm_cancel_menu);
-        confirmButton = findViewById(R.id.confirm);
-        cancelButton = findViewById(R.id.cancel);
+    private void init(Context context) {
+        inflate(context, R.layout.confirm_cancel, this);
+        rootView = findViewById(R.id.confirm_cancel);
+        confirmButton = findViewById(R.id.confirm_button);
+        cancelButton = findViewById(R.id.cancel_button);
     }
 
     public void onConfirm(View v) {
         if (roomMaster.getCurrentRoom() instanceof Rest) {
-            //roomMaster.useRest();
-            enterRest(); // Should be updated if there are any other triggers added in enterRest,
-            // right now just used to update the dialog
+            ((Rest) roomMaster.getCurrentRoom()).useRest(roomMaster.getPlayer());
         } else if (roomMaster.getCurrentRoom() instanceof Boss) {
             // TODO: GO TO NEXT ROOM, not necessary for prototype
             //((Boss) roomMaster.getCurrentRoom().nextFloor());
         }
+
+        updateButtons();
     }
 
     public void onCancel(View v) {
-        // TODO: HIDE DIALOG
-        confirmButton.setVisibility(View.GONE);
-        cancelButton.setVisibility(View.GONE);
-    }
-
-    public void enterRest() {
-        if (((Rest) roomMaster.getCurrentRoom()).usedRest()) {
-            // TODO: ADD HEAL? DIALOG
-            confirmButton.setVisibility(View.VISIBLE);
-            cancelButton.setVisibility(View.VISIBLE);
-        } else {
-            // TODO: ADD HEAL USED DIALOG
-        }
+        hide();
     }
 
     public void showFloorDialog() {
         // TODO: ADD MOVE TO NEXT FLOOR? DIALOG not necessary in prototype
         confirmButton.setVisibility(View.VISIBLE);
         cancelButton.setVisibility(View.VISIBLE);
+    }
+
+    private void updateButtons() {
+        if (((Rest) roomMaster.getCurrentRoom()).usedRest()) {
+            confirmButton.setVisibility(GONE);
+        } else {
+            confirmButton.setVisibility(VISIBLE);
+        }
+    }
+
+    public void show() {
+        updateButtons();
+        rootView.setVisibility(VISIBLE);
+    }
+
+    public void hide() {
+        rootView.setVisibility(GONE);
+    }
+
+    public void setRoomMaster(RoomMaster roomMaster) {
+        this.roomMaster = roomMaster;
     }
 }

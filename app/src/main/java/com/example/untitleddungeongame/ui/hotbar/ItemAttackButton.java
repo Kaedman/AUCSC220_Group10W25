@@ -2,7 +2,6 @@ package com.example.untitleddungeongame.ui.hotbar;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.widget.Button;
 import android.widget.ImageView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -31,7 +30,7 @@ public class ItemAttackButton extends ConstraintLayout {
 
     private void init(Context context) {
         inflate(context, R.layout.attack_items, this);
-        rootLayout = findViewById(R.id.item_attack_button);
+        rootLayout = findViewById(R.id.itemAttackButton);
         attackButton = findViewById(R.id.attack_button);
         itemButton = findViewById(R.id.items_button);
     }

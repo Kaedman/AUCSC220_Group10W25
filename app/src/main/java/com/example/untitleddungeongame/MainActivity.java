@@ -25,6 +25,7 @@ import android.widget.Button;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -32,6 +33,7 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.untitleddungeongame.floors.RoomMaster;
 import com.example.untitleddungeongame.entity.Player;
 import com.example.untitleddungeongame.handlers.Game;
+import com.example.untitleddungeongame.ui.ConfirmCancelMenu;
 import com.example.untitleddungeongame.ui.PauseMenu;
 import com.example.untitleddungeongame.ui.PixelButton;
 
@@ -42,8 +44,8 @@ public class MainActivity extends AppCompatActivity {
     private boolean gameLaunched;
     private PixelButton pauseButton;
     private PixelButton miniMapButton;
-
     private PauseMenu pauseMenu;
+    private ConfirmCancelMenu confirmCancel;
     private Player player;
 
     //HashMap<AssetID, Bitmap> assets;
@@ -61,9 +63,13 @@ public class MainActivity extends AppCompatActivity {
         pauseButton = findViewById(R.id.pause_button);
         pauseMenu = findViewById(R.id.pause_menu);
         miniMapButton = findViewById(R.id.map_button);
+        confirmCancel = findViewById(R.id.confirm_cancel);
 
         player = new Player(10);
         roomMaster = new RoomMaster(player);
+
+        confirmCancel.setRoomMaster(roomMaster);
+        confirmCancel.hide();
 
         pauseButton.setOnClickListener(this::onUserPause);
         pauseMenu.setOnQuitClickListener(this::onQuit);

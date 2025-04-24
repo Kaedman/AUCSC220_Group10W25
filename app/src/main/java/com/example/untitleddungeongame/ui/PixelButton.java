@@ -72,8 +72,8 @@ public class PixelButton  extends FrameLayout implements TextureView.SurfaceText
         init(context);
         if (a.hasValue(R.styleable.PixelButton_resource)) {
             int resourceId = Integer.parseInt(Objects.requireNonNull(a.getString(R.styleable.PixelButton_resource)));
-                // Load the bitmap from the resource ID
-                buttonSprite = Assets.getAsset(resourceId);
+            // Load the bitmap from the resource ID
+            buttonSprite = Assets.getAsset(resourceId);
         } else {
             buttonSprite = Assets.getAsset(Assets.AssetID.BUTTON);
         }
