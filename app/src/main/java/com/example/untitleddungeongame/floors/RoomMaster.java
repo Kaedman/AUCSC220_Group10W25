@@ -157,6 +157,8 @@ public class RoomMaster {
                 hideArrows();
                 confirmCancel.show();
                 currentRoom.setRoomCleared(false);
+            } else if (!currentRoom.getRoomCleared() && currentRoom.getEnemy() != null) {
+                hideArrows();
             }
         } else {
             throw new java.lang.RuntimeException("Room destination is not adjacent to current room");

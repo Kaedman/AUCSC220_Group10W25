@@ -143,15 +143,16 @@ public class MainActivity extends AppCompatActivity {
         pauseButton.setVisibility(VISIBLE);
         miniMapButton.setVisibility(VISIBLE);
         System.out.println("Resumed");
-        game.disableArrows(Game.userPaused);
+        game.disableArrows(false);
     }
     public void onUserPause(View v){
         Game.userPaused = true;
         pauseMenu.disable(false);
         pauseButton.setVisibility(INVISIBLE);
         miniMapButton.setVisibility(INVISIBLE);
+        Game.showMiniMap = false;
         System.out.println("Paused");
-        game.disableArrows(Game.userPaused);
+        game.disableArrows(true);
     }
 
     public void onQuit(View v){

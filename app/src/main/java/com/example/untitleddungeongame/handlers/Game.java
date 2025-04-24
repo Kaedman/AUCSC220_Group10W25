@@ -35,7 +35,6 @@ import com.example.untitleddungeongame.misc.ElapseTime;
 import com.example.untitleddungeongame.ui.Arrows;
 import com.example.untitleddungeongame.ui.CustomDialog;
 import com.example.untitleddungeongame.misc.OutputText;
-import com.example.untitleddungeongame.ui.DeathScreen;
 import com.example.untitleddungeongame.ui.MiniMap;
 import com.example.untitleddungeongame.ui.ParticleSystem;
 import com.example.untitleddungeongame.ui.RoomVisual;
@@ -374,7 +373,6 @@ public class Game extends SurfaceView implements Runnable {
         if (OutputText.isNewText()) {
             setDialogText(OutputText.getOutputText());
         }
-        arrows.disable((!currentRoom.getRoomCleared() && currentRoom.getEnemy() != null) || Game.isPaused || Game.showMiniMap || Game.userPaused || OutputText.isInDialog());
     }
 
     /**
@@ -422,7 +420,7 @@ public class Game extends SurfaceView implements Runnable {
         arrows.setRoomMaster(roomMaster);
         arrows.setArrows();
         combat = new Combat(activity, roomMaster.getPlayer());
-        combat.setEventListener(this::combaEventListener);
+        combat.setEventListener(this::combatEventListener);
         System.out.println(roomMaster);
     }
 
@@ -440,7 +438,7 @@ public class Game extends SurfaceView implements Runnable {
         arrows.disable(visibility);
     }
 
-    private void combaEventListener(Controller.CombatEventEnum event) {
+    private void combatEventListener(Controller.CombatEventEnum event) {
         switch (event) {
             case PLAYER_ATTACK: {
                 attackUp.playCurrentAnimation();
@@ -463,6 +461,9 @@ public class Game extends SurfaceView implements Runnable {
             case ENEMY_DEATH: {
                 Log.d("Game", "Enemy Died");
                 roomMaster.getCurrentRoom().setRoomCleared(true);
+                activity.runOnUiThread(() -> {
+                    disableArrows(false);
+                });
                 arrows.setArrows();
                 break;
             }
