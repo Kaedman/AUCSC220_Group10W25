@@ -27,6 +27,7 @@ import com.example.untitleddungeongame.floors.Rest;
 import com.example.untitleddungeongame.floors.Room;
 import com.example.untitleddungeongame.floors.RoomMaster;
 import com.example.untitleddungeongame.handlers.combat.Combat;
+import com.example.untitleddungeongame.handlers.combat.Controller;
 import com.example.untitleddungeongame.hotbar.attacks.QuickAttack;
 import com.example.untitleddungeongame.hotbar.items.heals.Apple;
 import com.example.untitleddungeongame.hotbar.items.heals.Potion;
@@ -136,6 +137,7 @@ public class Game extends SurfaceView implements Runnable {
         playerSprite = new AnimatedSprite(new Sprite(Assets.AssetID.PLAYER, 32, 32, 4));
 
         doGameLoop = true;
+
     }
 
 
@@ -336,7 +338,6 @@ public class Game extends SurfaceView implements Runnable {
         if (showMiniMap)
             miniMap.drawToCanvas(canvas, 200, 1000);
 
-
         //Final Image updates
 
         surfaceHolder.unlockCanvasAndPost(canvas); //update the surface
@@ -409,6 +410,7 @@ public class Game extends SurfaceView implements Runnable {
         arrows.setRoomMaster(roomMaster);
         arrows.setArrows();
         combat = new Combat(activity, roomMaster.getPlayer());
+        combat.setEventListener(this::combaEventListener);
         System.out.println(roomMaster);
     }
 
@@ -419,6 +421,25 @@ public class Game extends SurfaceView implements Runnable {
     private void drawBench(Canvas canvas) {
         if (roomMaster.getCurrentRoom() instanceof Rest) {
             restBench.drawAnimation(canvas, 450, 1500, Sprite.universalSpriteScale, Sprite.universalSpriteScale);
+        }
+    }
+    private void combaEventListener(Controller.CombatEventEnum event) {
+        switch (event) {
+            case PLAYER_DEATH: {
+                Log.d("Game", "Player Died");
+                // TODO: Death screen
+//                    activity.runOnUiThread(deathScreen::show);
+                break;
+            }
+            case ENEMY_DEATH: {
+                Log.d("Game", "Enemy Died");
+                roomMaster.getCurrentRoom().setRoomCleared(true);
+                arrows.setArrows();
+                break;
+            }
+            default:{
+                //Do nothing
+            }
         }
     }
 }
