@@ -19,11 +19,6 @@ public class Rest extends Room {
         }
     }
 
-    @Override
-    public boolean getRoomCleared(){
-        return true;
-    }
-
     public boolean usedRest() {
         return restUsed;
     }

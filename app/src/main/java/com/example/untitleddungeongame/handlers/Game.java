@@ -102,6 +102,8 @@ public class Game extends SurfaceView implements Runnable {
         this.activity = activity;
         this.surfaceHolder = surfaceHolder;
 
+        ((MainActivity) activity).setGame(this);
+
         //Screen and UI
         fps = 1000/60;
 
@@ -420,9 +422,14 @@ public class Game extends SurfaceView implements Runnable {
 
     private void drawBench(Canvas canvas) {
         if (roomMaster.getCurrentRoom() instanceof Rest) {
-            restBench.drawAnimation(canvas, 450, 1500, Sprite.universalSpriteScale, Sprite.universalSpriteScale);
+            restBench.drawAnimation(canvas, 411, 1500, Sprite.universalSpriteScale, Sprite.universalSpriteScale);
         }
     }
+
+    public void disableArrows(Boolean visibility) {
+        arrows.disable(visibility);
+    }
+
     private void combaEventListener(Controller.CombatEventEnum event) {
         switch (event) {
             case PLAYER_DEATH: {

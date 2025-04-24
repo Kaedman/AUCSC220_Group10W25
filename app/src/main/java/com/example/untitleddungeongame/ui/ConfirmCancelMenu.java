@@ -35,21 +35,30 @@ public class ConfirmCancelMenu extends ConstraintLayout {
         rootView = findViewById(R.id.confirm_cancel);
         confirmButton = findViewById(R.id.confirm_button);
         cancelButton = findViewById(R.id.cancel_button);
+
+        confirmButton.setOnClickListener(this::onConfirm);
+        cancelButton.setOnClickListener(this::onCancel);
     }
 
     public void onConfirm(View v) {
         if (roomMaster.getCurrentRoom() instanceof Rest) {
             ((Rest) roomMaster.getCurrentRoom()).useRest(roomMaster.getPlayer());
+            roomMaster.getCurrentRoom().setRoomCleared(true);
+            roomMaster.showArrows();
         } else if (roomMaster.getCurrentRoom() instanceof Boss) {
             // TODO: GO TO NEXT ROOM, not necessary for prototype
             //((Boss) roomMaster.getCurrentRoom().nextFloor());
         }
 
-        updateButtons();
+        hide();
     }
 
     public void onCancel(View v) {
         hide();
+        if (roomMaster.getCurrentRoom() instanceof Rest) {
+            roomMaster.getCurrentRoom().setRoomCleared(true);
+            roomMaster.showArrows();
+        }
     }
 
     public void showFloorDialog() {
@@ -58,18 +67,10 @@ public class ConfirmCancelMenu extends ConstraintLayout {
         cancelButton.setVisibility(View.VISIBLE);
     }
 
-    private void updateButtons() {
-        if (((Rest) roomMaster.getCurrentRoom()).usedRest()) {
-            confirmButton.setVisibility(GONE);
-        } else {
-            confirmButton.setVisibility(VISIBLE);
-        }
-    }
-
     public void show() {
-        updateButtons();
         rootView.setVisibility(VISIBLE);
     }
+
 
     public void hide() {
         rootView.setVisibility(GONE);
