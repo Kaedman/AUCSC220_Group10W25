@@ -16,6 +16,8 @@ public class Assets {
         ENEMY_SLIME(1),
 
 
+
+
         //MAP
         TILESET(2),
         CHESTS(3),
@@ -41,7 +43,11 @@ public class Assets {
         BENCH(17),
         MONEY_ICON(18),
         MAP(19),
-        TORCH(20);
+        TORCH(20),
+
+        //ATTACKS
+        SlASH_UP(21),
+        SLASH_DOWN(22);
 
         final int id;
 
@@ -89,5 +95,7 @@ public class Assets {
         Assets.addAsset(Assets.AssetID.BENCH, BitmapFactory.decodeResource(resources, R.drawable.bench));
         Assets.addAsset(Assets.AssetID.MONEY_ICON, BitmapFactory.decodeResource(resources, R.drawable.moneyicon_sheet));
         Assets.addAsset(Assets.AssetID.MAP, BitmapFactory.decodeResource(resources, R.drawable.minimapbutton));
+        Assets.addAsset(AssetID.SlASH_UP, BitmapFactory.decodeResource(resources, R.drawable.slash_upwards_sheet));
+        Assets.addAsset(AssetID.SLASH_DOWN, BitmapFactory.decodeResource(resources, R.drawable.slash_downwards_sheet));
     }
 }

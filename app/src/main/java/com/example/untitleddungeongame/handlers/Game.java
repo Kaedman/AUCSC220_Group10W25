@@ -89,6 +89,9 @@ public class Game extends SurfaceView implements Runnable {
     AnimatedSprite playerSprite;
     AnimatedSprite[] enemies;
 
+    AnimatedSprite attackUp, attackDown;
+    DrawInstructions attackUpInstruct, attackDownInstruct;
+
     @SuppressLint("SetTextI18n")
 
     public Game(AppCompatActivity activity, SurfaceHolder surfaceHolder, Point size, View gameView){
@@ -200,12 +203,31 @@ public class Game extends SurfaceView implements Runnable {
 
     }
 
+    private void attackFXSetup(){
+        Sprite up = new Sprite(Assets.AssetID.SlASH_UP,32, 32, 9);
+        Sprite down = new Sprite(Assets.AssetID.SLASH_DOWN,32, 32, 9);
+
+        attackUp = new AnimatedSprite(up);
+        attackDown = new AnimatedSprite(down);
+
+        int[] timings = new int[] {50, 50, 50, 50, 50, 50, 50, 50, 50};
+
+        attackUp.addAnimation(new Animation("attack", 0, 9, timings));
+        attackDown.addAnimation(new Animation("attack", 0, 9, timings));
+        attackUp.setCurrentAnimation("attack");
+        attackDown.setCurrentAnimation("attack");
+
+        attackUpInstruct = new DrawInstructions(575, 1200, attackUp, Sprite.universalSpriteScale, Sprite.universalSpriteScale);
+        attackDownInstruct = new DrawInstructions(575, 1100, attackDown, Sprite.universalSpriteScale, Sprite.universalSpriteScale);
+
+    }
+
     @Override
     public void run() {
 
-        testParticlesSystem();
-
         preparePlayer();
+
+        attackFXSetup();
 
         prepMiniMap();
 
