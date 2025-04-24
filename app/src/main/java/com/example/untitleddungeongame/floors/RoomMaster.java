@@ -7,6 +7,7 @@ import com.example.untitleddungeongame.entity.Goblin;
 import com.example.untitleddungeongame.entity.Player;
 import com.example.untitleddungeongame.entity.Slime;
 import com.example.untitleddungeongame.handlers.Game;
+import com.example.untitleddungeongame.ui.ConfirmCancelMenu;
 
 import java.util.ArrayList;
 
@@ -21,6 +22,8 @@ public class RoomMaster {
     public int count = 0;
     private Player player;
     private Game game;
+
+    private ConfirmCancelMenu confirmCancel;
 
     // 0 is no room, 1 is origin, 2 is boss, 3 is encounter, 4 is rest
     // This array simply indicates which rooms can be randomly chosen from during room generation
@@ -143,10 +146,16 @@ public class RoomMaster {
      */
     public void moveToRoom(Room destination) {
         if (destination.isAdjacent(currentRoom)) {
+            confirmCancel.hide();
             currentRoom = destination;
             Log.d("floorMap", toString());
             Log.d("currentId", getCurrentRoom().toString());
             game.setRoomVisual(currentRoom.getLooks());
+
+            if (currentRoom instanceof Rest && !((Rest) currentRoom).usedRest()) {
+                confirmCancel.show();
+                currentRoom.setRoomCleared(false);
+            }
         } else {
             throw new java.lang.RuntimeException("Room destination is not adjacent to current room");
         }
@@ -356,5 +365,9 @@ public class RoomMaster {
         } else {
             return new Slime("King Slime", 20);
         }
+    }
+
+    public void setConfirmCancel(ConfirmCancelMenu confirmCancel) {
+        this.confirmCancel = confirmCancel;
     }
 }

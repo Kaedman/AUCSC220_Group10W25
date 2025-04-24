@@ -310,7 +310,9 @@ public class Game extends SurfaceView implements Runnable {
         if (OutputText.isNewText()) {
             setDialogText(OutputText.getOutputText());
         }
-        arrows.disable((!currentRoom.getRoomCleared() && currentRoom.getEnemy() != null) || Game.isPaused || Game.showMiniMap || Game.userPaused || OutputText.isInDialog());
+        arrows.disable((!currentRoom.getRoomCleared() && currentRoom.getEnemy() != null) ||
+                Game.isPaused || Game.showMiniMap || Game.userPaused || OutputText.isInDialog() ||
+                (!currentRoom.getRoomCleared() && currentRoom instanceof Rest));
     }
 
     /**
@@ -367,7 +369,7 @@ public class Game extends SurfaceView implements Runnable {
 
     private void drawBench(Canvas canvas) {
         if (roomMaster.getCurrentRoom() instanceof Rest) {
-            restBench.drawAnimation(canvas, 450, 1500, Sprite.universalSpriteScale, Sprite.universalSpriteScale);
+            restBench.drawAnimation(canvas, 411, 1500, Sprite.universalSpriteScale, Sprite.universalSpriteScale);
         }
     }
 }

@@ -71,6 +71,8 @@ public class MainActivity extends AppCompatActivity {
         confirmCancel.setRoomMaster(roomMaster);
         confirmCancel.hide();
 
+        roomMaster.setConfirmCancel(confirmCancel);
+
         pauseButton.setOnClickListener(this::onUserPause);
         pauseMenu.setOnQuitClickListener(this::onQuit);
         pauseMenu.setOnResumeClickListener(this::onUserResume);
