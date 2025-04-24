@@ -1,9 +1,12 @@
 package com.example.untitleddungeongame.entity;
 
+import android.util.Log;
+
 import com.example.untitleddungeongame.Assets;
 import com.example.untitleddungeongame.animations.AnimatedSprite;
 import com.example.untitleddungeongame.animations.Animation;
 import com.example.untitleddungeongame.animations.Sprite;
+import com.example.untitleddungeongame.handlers.DrawInstructions;
 
 public class Goblin extends Enemy{
     private static Sprite sprite = new Sprite(Assets.AssetID.ENEMY_GOBLIN, 32, 32, 4);
@@ -18,5 +21,8 @@ public class Goblin extends Enemy{
         animatedSprite.setCurrentAnimation("idle");
         animatedSprite.setCurrentRepeat(true);
         animatedSprite.playCurrentAnimation();
+        drawInstructions = new DrawInstructions(550, 800, animatedSprite,Sprite.universalSpriteScale, Sprite.universalSpriteScale);
+        animatedSprite.doDraw = true;
+        makeDrawInstructions(550, 800);
     }
 }
