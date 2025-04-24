@@ -48,6 +48,8 @@ public class MainActivity extends AppCompatActivity {
     private ConfirmCancelMenu confirmCancel;
     private Player player;
 
+    private Game game;
+
     //HashMap<AssetID, Bitmap> assets;
     RoomMaster roomMaster;
     final int STARTING_ROWS = 5;
@@ -134,8 +136,6 @@ public class MainActivity extends AppCompatActivity {
         pauseMenu.setVisibility(View.GONE);
     }
 
-
-
     public void onUserResume(View v){
         System.out.println("Resumed");
         Game.userPaused = false;
@@ -143,6 +143,7 @@ public class MainActivity extends AppCompatActivity {
         pauseButton.setVisibility(VISIBLE);
         miniMapButton.setVisibility(VISIBLE);
         System.out.println("Resumed");
+        game.disableArrows(Game.userPaused);
     }
     public void onUserPause(View v){
         Game.userPaused = true;
@@ -150,6 +151,7 @@ public class MainActivity extends AppCompatActivity {
         pauseButton.setVisibility(INVISIBLE);
         miniMapButton.setVisibility(INVISIBLE);
         System.out.println("Paused");
+        game.disableArrows(Game.userPaused);
     }
 
     public void onQuit(View v){
@@ -157,11 +159,13 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void setRoomMasterGame(Game game) {
-        roomMaster.setGame(game);
-    }
-
     public void mapButton(View v){
         Game.showMiniMap = !Game.showMiniMap;
+
+        game.disableArrows(Game.showMiniMap);
+    }
+
+    public void setGame(Game game) {
+        this.game = game;
     }
 }

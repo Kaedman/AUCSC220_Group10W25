@@ -58,8 +58,6 @@ public class Arrows extends androidx.constraintlayout.widget.ConstraintLayout {
      */
     public void setArrows() {
         if (roomMaster == null) return;
-        Log.d("floorMap", roomMaster.toString());
-        Log.d("currentId", roomMaster.getCurrentRoom().toString());
         setArrowVisible(leftArrow, roomMaster.getCurrentRoom().getLeft() != null);
 
         setArrowVisible(rightArrow, roomMaster.getCurrentRoom().getRight() != null);
@@ -71,8 +69,7 @@ public class Arrows extends androidx.constraintlayout.widget.ConstraintLayout {
 
     public void moveLeft(View v) {
         if (roomMaster == null) return;
-        leftArrow.setVisibility(INVISIBLE);
-//        setArrowVisible(leftArrow,false);
+        setArrowVisible(leftArrow,false);
         Log.d("previousRoom", roomMaster.getCurrentRoom().toString());
         roomMaster.moveToRoom(roomMaster.getCurrentRoom().getLeft());
         Log.d("currentRoom", roomMaster.getCurrentRoom().toString());
@@ -136,6 +133,7 @@ public class Arrows extends androidx.constraintlayout.widget.ConstraintLayout {
         if (roomMaster == null) return;
         if (isDisabled == state) return;
         isDisabled = state;
+        Log.d("isDisabled", String.valueOf(isDisabled));
         if (state) {
             rootView.setVisibility(GONE);
         } else {

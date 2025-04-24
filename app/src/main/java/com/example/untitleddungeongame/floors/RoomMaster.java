@@ -153,6 +153,7 @@ public class RoomMaster {
             game.setRoomVisual(currentRoom.getLooks());
 
             if (currentRoom instanceof Rest && !((Rest) currentRoom).usedRest()) {
+                hideArrows();
                 confirmCancel.show();
                 currentRoom.setRoomCleared(false);
             }
@@ -369,5 +370,13 @@ public class RoomMaster {
 
     public void setConfirmCancel(ConfirmCancelMenu confirmCancel) {
         this.confirmCancel = confirmCancel;
+    }
+
+    public void hideArrows() {
+        game.disableArrows(true);
+    }
+
+    public void showArrows() {
+        game.disableArrows(false);
     }
 }

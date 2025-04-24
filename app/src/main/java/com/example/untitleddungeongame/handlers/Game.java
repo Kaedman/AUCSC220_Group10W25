@@ -15,6 +15,7 @@ import android.view.View;
 
 import com.example.untitleddungeongame.Assets;
 import com.example.untitleddungeongame.GameTouchListener;
+import com.example.untitleddungeongame.MainActivity;
 import com.example.untitleddungeongame.R;
 import com.example.untitleddungeongame.animations.AnimatedSprite;
 import com.example.untitleddungeongame.animations.Animation;
@@ -93,6 +94,8 @@ public class Game extends SurfaceView implements Runnable {
         super(activity);
         this.activity = activity;
         this.surfaceHolder = surfaceHolder;
+
+        ((MainActivity) activity).setGame(this);
 
         //Screen and UI
         fps = 1000/60;
@@ -276,7 +279,7 @@ public class Game extends SurfaceView implements Runnable {
         }
 
         drawBench(canvas);
-        DrawInstructions.drawAll(canvas, !currentRoom.getRoomCleared() && currentRoom.getEnemy() != null); //Entity Drawing
+        DrawInstructions.drawAll(canvas); //Entity Drawing
 
 
         drawHealthBar(canvas, actualBarX, actualBarY, player.getHealth(), player.getMaxHealth(),actualBarWidth, actualBarHeight, healthBarMaxHPColor, healthBarCurrentColor);
@@ -306,13 +309,11 @@ public class Game extends SurfaceView implements Runnable {
 
     private void runOnUiThread() {
         dialogBox.updateText();
-        Room currentRoom = roomMaster.getCurrentRoom();
         if (OutputText.isNewText()) {
             setDialogText(OutputText.getOutputText());
         }
-        arrows.disable((!currentRoom.getRoomCleared() && currentRoom.getEnemy() != null) ||
-                Game.isPaused || Game.showMiniMap || Game.userPaused || OutputText.isInDialog() ||
-                (!currentRoom.getRoomCleared() && currentRoom instanceof Rest));
+        /*arrows.disable((!currentRoom.getRoomCleared() && currentRoom.getEnemy() != null) ||
+                Game.isPaused || Game.showMiniMap || Game.userPaused || OutputText.isInDialog());*/
     }
 
     /**
@@ -371,5 +372,9 @@ public class Game extends SurfaceView implements Runnable {
         if (roomMaster.getCurrentRoom() instanceof Rest) {
             restBench.drawAnimation(canvas, 411, 1500, Sprite.universalSpriteScale, Sprite.universalSpriteScale);
         }
+    }
+
+    public void disableArrows(Boolean visibility) {
+        arrows.disable(visibility);
     }
 }
