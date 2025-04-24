@@ -20,7 +20,7 @@ public class Assets {
         TILESET(2),
         CHESTS(3),
 
-        TORCH,
+
         //Items
         ITEM_HEAL(4),
         ITEM_OFFENSE(5),
@@ -40,7 +40,8 @@ public class Assets {
         ENEMY_BIG_GOBLIN(16),
         BENCH(17),
         MONEY_ICON(18),
-        MAP(19);
+        MAP(19),
+        TORCH(20);
 
         final int id;
 

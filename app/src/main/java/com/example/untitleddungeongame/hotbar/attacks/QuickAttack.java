@@ -11,7 +11,8 @@ public class QuickAttack extends Attack {
     }
 
     public Pair<Integer, Stat> use() {
-        int damage = getInfo();
+        int damage = getInfo()
+        ;
         return new Pair<>(damage, null);
     }
 }
