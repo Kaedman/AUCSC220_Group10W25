@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.example.untitleddungeongame.MainActivity;
 import com.example.untitleddungeongame.MainMenu;
 import com.example.untitleddungeongame.R;
+import com.example.untitleddungeongame.handlers.Game;
 
 public class DeathScreen extends androidx.constraintlayout.widget.ConstraintLayout{
 
@@ -20,6 +21,8 @@ public class DeathScreen extends androidx.constraintlayout.widget.ConstraintLayo
     private ImageView newRun, mainMenu;
 
     private MainActivity mainActivity;
+
+
 
 
     public DeathScreen(Context c, AttributeSet attributeSet){
@@ -67,13 +70,17 @@ public class DeathScreen extends androidx.constraintlayout.widget.ConstraintLayo
 
     public void restartGame(View v){
         mainActivity.restartGame(v);
+        Game.doGameLoop = false;
     }
 
     public void returnToMainMenu(View v){
-        mainActivity.onQuit(v);
+        mainActivity.backToMainMenu(v);
+        Game.doGameLoop = false;
     }
 
     public void setMainActivity(MainActivity m) {
         mainActivity = m;
     }
+
+
 }

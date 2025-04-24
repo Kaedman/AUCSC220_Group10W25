@@ -43,7 +43,7 @@ public class Game extends SurfaceView implements Runnable {
     //Refering to this tutorial: https://gamecodeschool.com/android/coding-a-snake-game-for-android/
 
     //Game Control
-    private boolean doGameLoop;
+    public static boolean doGameLoop;
     public static boolean isPaused;
     public static boolean userPaused;
     private final int fps;
@@ -66,7 +66,7 @@ public class Game extends SurfaceView implements Runnable {
     Combat combat;
     public RoomVisual roomVisual;
     private RoomMaster roomMaster;
-    private DrawInstructions playerDrawInstructions;
+//    private DrawInstructions playerDrawInstructions;
     private final Arrows arrows;
     private DeathScreen deathScreen;
     Goblin testSlime = new Goblin("Jerry", 30);
@@ -114,10 +114,6 @@ public class Game extends SurfaceView implements Runnable {
         fill.setColor(Color.BLACK);
 
         arrows = activity.findViewById(R.id.arrows);
-        deathScreen = activity.findViewById(R.id.death_screen);
-        deathScreen.setMainActivity((MainActivity) activity);
-
-
 
         touchListener = new GameTouchListener(this);
         gameView.setOnTouchListener(touchListener);
@@ -132,6 +128,8 @@ public class Game extends SurfaceView implements Runnable {
         showMiniMap = false;
 
         playerSprite = new AnimatedSprite(new Sprite(Assets.AssetID.PLAYER, 32, 32, 4));
+
+        doGameLoop = true;
     }
 
 
@@ -213,7 +211,7 @@ public class Game extends SurfaceView implements Runnable {
         testSlime.makeDrawInstructions(550,800);
 
         prepMiniMap();
-        deathScreen.show();
+
 
         //GameLoop happens Here
         while (doGameLoop){
@@ -221,14 +219,6 @@ public class Game extends SurfaceView implements Runnable {
             if (!isPaused && !userPaused) {
                 mapUpdate();
                 combat.run(roomMaster.getCurrentRoom());
-
-                if (combat.getPlayer().isDead()){
-                    deathScreen.show();
-                }
-                else {
-//                    deathScreen.hide();
-                }
-
 
                 draw();
 

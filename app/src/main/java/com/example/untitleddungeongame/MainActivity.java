@@ -183,6 +183,11 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void backToMainMenu(View v){
+        Intent intent = new Intent(this, MainMenu.class);
+        startActivity(intent);
+    }
+
     public void setRoomMasterGame(Game game) {
         roomMaster.setGame(game);
     }
