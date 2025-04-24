@@ -11,6 +11,9 @@ public class Player extends Entity {
     public Player(int health) {
         super("Player", health, 10, 10, 10);
     }
+    public Player(int health, int attack, int defense, int speed) {
+        super("Player", health, attack, defense, speed);
+    }
 
     public boolean addItem(Item item) {
         boolean itemEquipped = false;

@@ -39,7 +39,8 @@ public class Assets {
 
         //ATTACKS
         SlASH_UP(21),
-        SLASH_DOWN(22);
+        SLASH_DOWN(22),
+        PARRY(23);
 
         final int id;
 
@@ -89,5 +90,6 @@ public class Assets {
         Assets.addAsset(Assets.AssetID.MAP, BitmapFactory.decodeResource(resources, R.drawable.minimapbutton));
         Assets.addAsset(AssetID.SlASH_UP, BitmapFactory.decodeResource(resources, R.drawable.slash_upwards_sheet));
         Assets.addAsset(AssetID.SLASH_DOWN, BitmapFactory.decodeResource(resources, R.drawable.slash_downwards_sheet));
+        Assets.addAsset(AssetID.PARRY, BitmapFactory.decodeResource(resources, R.drawable.parry_vertical));
     }
 }
