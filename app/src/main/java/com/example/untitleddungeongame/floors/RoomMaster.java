@@ -342,24 +342,29 @@ public class RoomMaster {
         return player;
     }
 
-    private Enemy getRandomFloor1Enemy() {
+    private Enemy getRandomSet1Enemy() {
         double random = Math.random() * FLOOR1ENEMIES;
 
         if (random <= 1) {
-            return new Slime("Slime", 20, 7, 6, 6);
+            return new Slime("Slime", 12 * currentFloor, 7 * currentFloor,
+                    6 * currentFloor, 6);
         } else if (random <= 2) {
-            return new Goblin("Goblin", 20, 8, 8, 12);
+            return new Goblin("Goblin", 11 * currentFloor, 8 * currentFloor,
+                    8 * currentFloor, 12);
         } else {
             return new Slime("King Slime", 20);
         }
     }
 
     private Enemy makeRandomEnemy() {
+        return getRandomSet1Enemy();
+        /*
         if (currentFloor <= 1) {
-            return getRandomFloor1Enemy();
+            return getRandomSet1Enemy();
         } else {
             return new Slime("King Slime", 20);
         }
+         */
     }
 
     public void setConfirmCancel(ConfirmCancelMenu confirmCancel) {
