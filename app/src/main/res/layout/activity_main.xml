@@ -34,7 +34,8 @@
         app:layout_constraintBottom_toTopOf="@+id/item_bar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        tools:visibility="gone" />
 
 
     <com.example.untitleddungeongame.ui.hotbar.HotBar
@@ -68,7 +69,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="gone" />
 
     <com.example.untitleddungeongame.ui.hotbar.ItemAttackButton
         android:id="@+id/itemAttackButton"
@@ -117,12 +119,14 @@
 
         />
 
-    <com.example.untitleddungeongame.ui.DeathScreen
-        android:id="@+id/death_screen"
-        android:layout_width="337dp"
-        android:layout_height="667dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+    <TextView
+        android:id="@+id/deathText"
+        android:layout_width="199dp"
+        android:layout_height="112dp"
+        android:layout_marginStart="92dp"
+        android:layout_marginTop="188dp"
+        android:text="You Died"
+        android:visibility="invisible"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
