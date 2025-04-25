@@ -272,10 +272,10 @@ public class Game extends SurfaceView implements Runnable {
         //GameLoop happens Here
         while (doGameLoop){
             activity.runOnUiThread(this::runOnUiThread);
+            combat.run(roomMaster.getCurrentRoom(), isPaused || userPaused);
             if (!isPaused && !userPaused) {
 
                 mapUpdate();
-                combat.run(roomMaster.getCurrentRoom());
                 draw();
 //                playerHit.updateParticles();
 
@@ -473,10 +473,7 @@ public class Game extends SurfaceView implements Runnable {
                         mapUpdate();
                         arrows.setArrows();
                     });
-
-
                 }
-                arrows.setArrows();
                 break;
             }
             default:{
