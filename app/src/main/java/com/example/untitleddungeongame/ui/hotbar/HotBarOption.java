@@ -9,18 +9,18 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
+import com.example.untitleddungeongame.Assets;
 import com.example.untitleddungeongame.R;
 import com.example.untitleddungeongame.hotbar.HotBarInfo;
 import com.example.untitleddungeongame.ui.FrameInstance;
+import com.example.untitleddungeongame.ui.PixelButton;
 
-public class HotBarOption<T extends HotBarInfo> extends FrameLayout {
-    private FrameLayout rootView;
-    private TextView itemName;
+public class HotBarOption<T extends HotBarInfo> extends ConstraintLayout {
+    private ConstraintLayout rootView;
     private TextView itemCount;
-    private Button itemButton;
-    private SurfaceView itemFrame;
-    private Runnable onClick;
+    private PixelButton itemFrame;
 
     private int currentCount = 0;
     private String currentName = "";
@@ -38,11 +38,9 @@ public class HotBarOption<T extends HotBarInfo> extends FrameLayout {
     private void init(Context context) {
         LayoutInflater.from(context).inflate(R.layout.container, this);
         rootView = findViewById(R.id.item_root);
-        itemName = findViewById(R.id.item_name);
         itemCount = findViewById(R.id.item_count);
-        itemButton = findViewById(R.id.item_touch);
         itemFrame = findViewById(R.id.item_frame);
-        itemFrame.getHolder().addCallback(new FrameInstance());
+        itemFrame.setButtonSprite(Assets.getAsset(Assets.AssetID.ITEM_SLOT));
         disable(true);
     }
 
@@ -56,7 +54,7 @@ public class HotBarOption<T extends HotBarInfo> extends FrameLayout {
         }
         currentCount = item.getInfo();
         currentName = item.getName();
-        itemName.setText(currentName);
+        itemFrame.setText(currentName);
         itemCount.setText(String.format("x%s", currentCount));
         disable(false);
     }
@@ -64,23 +62,13 @@ public class HotBarOption<T extends HotBarInfo> extends FrameLayout {
     public void disable(boolean value) {
         if (value) {
             itemFrame.setVisibility(GONE);
-            itemButton.setVisibility(GONE);
-            itemName.setText("");
             itemCount.setText("");
         } else {
             itemFrame.setVisibility(VISIBLE);
-            itemButton.setVisibility(VISIBLE);
-            itemButton.setAlpha(0f);
         }
-
     }
 
-    public void setOnClick(Runnable onClick) {
-        this.onClick = onClick;
-        itemButton.setOnClickListener(v -> {
-            if (onClick != null) {
-                onClick.run();
-            }
-        });
+    public void setOnClick(OnClickListener onClick) {
+        itemFrame.setOnClickListener(onClick);
     }
 }

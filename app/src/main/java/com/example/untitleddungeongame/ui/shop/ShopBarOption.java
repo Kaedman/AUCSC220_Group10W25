@@ -38,9 +38,9 @@ public class ShopBarOption<T extends HotBarInfo> extends FrameLayout {
     private void init(Context context) {
         LayoutInflater.from(context).inflate(R.layout.container, this);
         rootView = findViewById(R.id.item_root);
-        itemName = findViewById(R.id.item_name);
+//        itemName = findViewById(R.id.item_name);
         itemCount = findViewById(R.id.item_count);
-        itemButton = findViewById(R.id.item_touch);
+//        itemButton = findViewById(R.id.item_touch);
         itemFrame = findViewById(R.id.item_frame);
         itemFrame.getHolder().addCallback(new FrameInstance());
         disable(true);

@@ -6,6 +6,7 @@ public class ParryController {
     protected boolean playerParrying = false;
     protected boolean playerParrySet = false;
     protected boolean screenTapped = false;
+    private boolean timeHasElapsed = false;
     private final ElapseTime parryTime = new ElapseTime();
 
     public ParryController() {
@@ -17,7 +18,10 @@ public class ParryController {
     }
 
     public boolean isTryingToParry() {
-        if (!parryTime.hasTimeElapsed(250) && screenTapped) {
+        if (parryTime.hasTimeElapsed(500) && !timeHasElapsed) {
+            timeHasElapsed = true;
+        }
+        if (timeHasElapsed && screenTapped) {
             screenTapped = false;
             return true;
         }
