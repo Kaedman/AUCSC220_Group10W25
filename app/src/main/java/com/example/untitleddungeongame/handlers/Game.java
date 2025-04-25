@@ -275,8 +275,8 @@ public class Game extends SurfaceView implements Runnable {
             playerHit.updateParticles();
         }
 
-//        deathScreen();
-        while (!confirmExitToScreen){}
+        deathScreen();
+//        while (!confirmExitToScreen){}
 
         activity.runOnUiThread(() ->{
             ((MainActivity)activity).onQuit(findViewById(R.id.quit_button));
@@ -514,7 +514,7 @@ public class Game extends SurfaceView implements Runnable {
         canvas = surfaceHolder.lockCanvas();
         Paint black = new Paint();
         black.setColor(Color.BLACK);
-        canvas.drawRect(300, 300, screenX - 300, screenY - 300, black);
+//        canvas.drawRect(300, 300, screenX - 300, screenY - 300, black);
         Paint text = new Paint();
         text.setColor(Color.WHITE);
         text.setTextSize(100);
