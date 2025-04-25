@@ -435,6 +435,7 @@ public class Game extends SurfaceView implements Runnable {
     }
 
     public void disableArrows(Boolean visibility) {
+        if (combat.isInCombat()) return;
         arrows.disable(visibility);
     }
 

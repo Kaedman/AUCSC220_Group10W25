@@ -41,7 +41,6 @@ public class MainMenu extends AppCompatActivity {
         playButton.setOnClickListener(this::buttonPlay);
         newButton.setOnClickListener(this::buttonPlay);
         settingsButton.setOnClickListener(this::buttonSettings);
-
     }
 
     @Override
