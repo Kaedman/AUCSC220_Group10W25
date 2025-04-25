@@ -138,6 +138,7 @@ public class Game extends SurfaceView implements Runnable {
         playerSprite = new AnimatedSprite(new Sprite(Assets.AssetID.PLAYER, 32, 32, 4));
 
         doGameLoop = true;
+        OutputText.addDialogEventListener(this::dialogEventListener);
 
     }
 
@@ -355,7 +356,7 @@ public class Game extends SurfaceView implements Runnable {
     }
 
     public void onTouchEvent(float touchX, float touchY){
-        if (dialogBox.isTextFinishedUpdating()) {
+        if (dialogBox.isTextFinishedUpdating() && OutputText.isInDialog()) {
             dialogBox.closeDialog();
             OutputText.setInDialog(false);
         }
@@ -369,7 +370,6 @@ public class Game extends SurfaceView implements Runnable {
 
     private void runOnUiThread() {
         dialogBox.updateText();
-        Room currentRoom = roomMaster.getCurrentRoom();
         if (OutputText.isNewText()) {
             setDialogText(OutputText.getOutputText());
         }
@@ -435,6 +435,7 @@ public class Game extends SurfaceView implements Runnable {
     }
 
     public void disableArrows(Boolean visibility) {
+        if (!visibility && combat.isInCombat()) return;
         arrows.disable(visibility);
     }
 
@@ -461,10 +462,6 @@ public class Game extends SurfaceView implements Runnable {
             case ENEMY_DEATH: {
                 Log.d("Game", "Enemy Died");
                 roomMaster.getCurrentRoom().setRoomCleared(true);
-                activity.runOnUiThread(() -> {
-                    disableArrows(false);
-                });
-                arrows.setArrows();
                 break;
             }
             default:{
@@ -472,4 +469,19 @@ public class Game extends SurfaceView implements Runnable {
             }
         }
     }
+
+    private void dialogEventListener(OutputText.DialogEvent event) {
+        switch (event) {
+            case CLOSED: {
+                disableArrows(false);
+                break;
+            }
+            default: {
+                //Do nothing
+            }
+        }
+    }
 }
+
+
+

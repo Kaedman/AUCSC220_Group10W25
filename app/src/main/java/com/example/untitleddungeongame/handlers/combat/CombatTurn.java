@@ -41,14 +41,8 @@ public class CombatTurn {
             }
             enemyTurnHappened = true;
         } else if (currentTurn == State.NONE) {
-            resetTurns();
+            reset();
         }
-    }
-
-    public void resetTurns() {
-        currentTurn = State.NONE;
-        playerTurnHappened = false;
-        enemyTurnHappened = false;
     }
 
     public State currentTurn() {
@@ -62,9 +56,7 @@ public class CombatTurn {
         return enemyTurnHappened;
     }
     public void reset() {
-        if (currentTurn == State.NONE) {
-            return;
-        }
+        System.out.println("Combat Turn Reset");
         currentTurn = State.NONE;
         playerTurnHappened = false;
         enemyTurnHappened = false;

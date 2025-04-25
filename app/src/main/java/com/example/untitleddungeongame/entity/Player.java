@@ -57,7 +57,6 @@ public class Player extends Entity {
     }
 
     public int calculateReceivedDamage(int initialDamage){
-
         //Imma just yoink terraria's defense stats. Cry about it
         return initialDamage - defense/2;
     }

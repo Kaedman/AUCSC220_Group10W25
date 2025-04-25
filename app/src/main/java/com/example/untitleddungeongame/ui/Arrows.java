@@ -138,6 +138,7 @@ public class Arrows extends androidx.constraintlayout.widget.ConstraintLayout {
             rootView.setVisibility(GONE);
         } else {
             rootView.setVisibility(VISIBLE);
+            setArrows();
         }
     }
 }

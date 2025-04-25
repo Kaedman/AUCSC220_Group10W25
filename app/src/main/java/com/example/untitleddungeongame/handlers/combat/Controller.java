@@ -36,7 +36,8 @@ public class Controller {
         ENEMY_TURN,
         PLAYER_DEATH,
         ENEMY_DEATH,
-        PLAYER_PARRY
+        PLAYER_PARRY,
+
     }
     public interface CombatEventListener {
         void run(CombatEventEnum event);
@@ -66,8 +67,12 @@ public class Controller {
 
     private void runWaitingState() {
         if (!elapseTime.hasTimeElapsed(750)) return;
-        OutputText.setOutputText("Combat Started, Player is faster, Player Turn");
-        combatState.combatTurn.initializePlayerTurn();
+        if (player.getSpeed() < enemy.getSpeed()) {
+            combatState.combatTurn.initializeEnemyTurn();
+        } else {
+            combatState.combatTurn.initializePlayerTurn();
+        }
+
         combatState.switchState(CombatState.State.TURN_START);
     }
 
@@ -86,7 +91,8 @@ public class Controller {
             combatEvent.set(enemy, player, combatOption.getType(), combatOption.getPosition());
         } else {
             OutputText.setOutputText("Combat Sequence Ended");
-            combatState.switchState(CombatState.State.READY);
+            combatState.switchState(CombatState.State.ENDING);
+
             return;
         }
         if (combatOption.getType() == CombatOption.CombatOptionType.ATTACK) {
@@ -125,6 +131,7 @@ public class Controller {
         if (combatState.currentTurn() == CombatTurn.State.ENEMY && parried) {
             parried = false;
             combatState.switchState(CombatState.State.PARRY);
+            eventListener.run(CombatEventEnum.ENEMY_ATTACK);
         } else {
             if (combatState.currentTurn() == CombatTurn.State.ENEMY) {
                 eventListener.run(CombatEventEnum.ENEMY_ATTACK);
@@ -169,8 +176,8 @@ public class Controller {
         Entity source = combatEvent.getSource();
         Entity target = combatEvent.getTarget();
         Attack attack = source.getAttacks()[combatEvent.getPosition()];
-        String result = target.takeDamage(attack, -target.getDefense());
-        outputText.append("and").append(result);
+        String result = target.takeDamage(attack, -target.getDefense() * 2);
+        outputText.append("\n").append(result);
         OutputText.setOutputText(outputText.toString());
 
         if (target.isDead() || source.isDead()) {
@@ -183,23 +190,22 @@ public class Controller {
     }
 
     public void ending() {
-        if (!elapseTime.hasTimeElapsed(100)) return;
+        combatState.combatTurn.reset();
+        combatOption = null;
+        canParry = true;
         if (enemy.isDead()) {
+            if (!elapseTime.hasTimeElapsed(100)) return;
             eventListener.run(CombatEventEnum.ENEMY_DEATH);
             OutputText.setOutputText("Enemy Defeated");
             currentRoom.setRoomCleared(true);
             combatState.switchState(CombatState.State.READY);
-            return;
         } else if (player.isDead()) {
+            if (!elapseTime.hasTimeElapsed(100)) return;
             eventListener.run(CombatEventEnum.PLAYER_DEATH);
             OutputText.setOutputText("Player Defeated");
             combatState.switchState(CombatState.State.READY);
-            return;
         }
         combatState.switchState(CombatState.State.READY);
-        combatState.combatTurn.resetTurns();
-        combatOption = null;
-        canParry = true;
     }
 
     public void useItem(int pos, Player player) {

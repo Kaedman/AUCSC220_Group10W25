@@ -355,9 +355,9 @@ public class RoomMaster {
         double random = Math.random() * FLOOR1ENEMIES;
 
         if (random <= 1) {
-            return new Slime("Slime", 12, 7, 6, 6);
+            return new Slime("Slime", 20, 7, 6, 6);
         } else if (random <= 2) {
-            return new Goblin("Goblin", 11, 8, 8, 12);
+            return new Goblin("Goblin", 20, 8, 8, 12);
         } else {
             return new Slime("King Slime", 20);
         }

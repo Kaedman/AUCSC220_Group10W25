@@ -21,8 +21,6 @@ public class Combat {
     private final AppCompatActivity activity;
     private boolean isDisabled = false;
 
-
-
      public Combat(AppCompatActivity activity, Player player) {
          this.activity = activity;
          this.player = player;

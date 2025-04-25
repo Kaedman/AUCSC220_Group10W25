@@ -12,6 +12,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.example.untitleddungeongame.R;
 import com.example.untitleddungeongame.misc.ElapseTime;
+import com.example.untitleddungeongame.misc.OutputText;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -86,17 +87,14 @@ public class CustomDialog extends LinearLayout {
 
         String currentWord = currentText.get(currantWordIndex);
         String newText = String.format("%s %s", current, currentWord);
+        OutputText.textUpdating();
         textView.setText(newText);
         if (newText.length() < length) {
             currantWordIndex++;
         } else {
             length = 0;
-
-            if (autoClose) {
-                isTextSet = false;
-            } else {
-                isTextSet = false;
-            }
+            isTextSet = false;
+            OutputText.textFinished();
         }
     }
 
@@ -107,7 +105,6 @@ public class CustomDialog extends LinearLayout {
     }
 
     public boolean isTextFinishedUpdating() {
-
         return !isTextSet;
     }
 }
