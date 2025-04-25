@@ -22,6 +22,7 @@ import android.view.Display;
 import android.view.SurfaceView;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -36,6 +37,8 @@ import com.example.untitleddungeongame.handlers.Game;
 import com.example.untitleddungeongame.ui.ConfirmCancelMenu;
 import com.example.untitleddungeongame.ui.PauseMenu;
 import com.example.untitleddungeongame.ui.PixelButton;
+
+import org.w3c.dom.Text;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -183,4 +186,5 @@ public class MainActivity extends AppCompatActivity {
     public void setGame(Game game) {
         this.game = game;
     }
+
 }

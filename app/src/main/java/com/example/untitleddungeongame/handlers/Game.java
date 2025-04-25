@@ -12,6 +12,7 @@ import android.view.SurfaceView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.view.View;
+import android.widget.TextView;
 
 import com.example.untitleddungeongame.Assets;
 import com.example.untitleddungeongame.GameTouchListener;
@@ -36,6 +37,7 @@ import com.example.untitleddungeongame.misc.ElapseTime;
 import com.example.untitleddungeongame.ui.Arrows;
 import com.example.untitleddungeongame.ui.CustomDialog;
 import com.example.untitleddungeongame.misc.OutputText;
+import com.example.untitleddungeongame.ui.DeathScreen;
 import com.example.untitleddungeongame.ui.MiniMap;
 import com.example.untitleddungeongame.ui.ParticleSystem;
 import com.example.untitleddungeongame.ui.RoomVisual;
@@ -83,17 +85,16 @@ public class Game extends SurfaceView implements Runnable {
     //Other
     private final AppCompatActivity activity;
 
-
     //Other
     private GameTouchListener touchListener;
     //AnimatedSprites
     private AnimatedSprite playerSprite;
-    private AnimatedSprite[] enemies;
 
     private AnimatedSprite attackUp, attackDown, parry;
     private DrawInstructions attackUpInstruct, attackDownInstruct, parryInstruct;
 
     private ParticleSystem playerHit;
+    private boolean confirmExitToScreen = false;
 
     @SuppressLint("SetTextI18n")
 
@@ -103,6 +104,7 @@ public class Game extends SurfaceView implements Runnable {
         this.surfaceHolder = surfaceHolder;
 
         ((MainActivity) activity).setGame(this);
+
 
         //Screen and UI
         fps = 1000/60;
@@ -199,16 +201,6 @@ public class Game extends SurfaceView implements Runnable {
         }
     }
 
-    ParticleSystem particleSystem;
-    public void testParticlesSystem(){
-        particleSystem = new ParticleSystem(100, 50, 100, 8, 8);
-        particleSystem.createRectBaseParticle(Color.GREEN, 5, 5);
-
-        particleSystem.setParticleSettings(600, 620, 1500, 1500, -3, 3, 5, 10, 0, 0, -1, -1);
-        particleSystem.createAllParticles();
-
-    }
-
     private void playerHitParticleSetup(){
         playerHit = new ParticleSystem(30,100, 200, 8, 8);
         playerHit.respawnParticles = false;
@@ -224,6 +216,8 @@ public class Game extends SurfaceView implements Runnable {
         );
 
         playerHit.createAllParticles();
+        for (int i = 0; i < 200; i ++)
+            playerHit.updateParticles(); //Hide inital particles
 
 
     }
@@ -277,7 +271,7 @@ public class Game extends SurfaceView implements Runnable {
                 mapUpdate();
                 combat.run(roomMaster.getCurrentRoom());
                 draw();
-//                playerHit.updateParticles();
+                playerHit.updateParticles();
 
                 try {
                     Thread.sleep(fps);
@@ -287,6 +281,12 @@ public class Game extends SurfaceView implements Runnable {
                 }
             }
         }
+
+        deathScreen();
+
+        activity.runOnUiThread(() ->{
+            ((MainActivity)activity).onQuit(findViewById(R.id.quit_button));
+        });
     }
 
     public void setDoGameLoop(boolean state){
@@ -340,7 +340,7 @@ public class Game extends SurfaceView implements Runnable {
         }
 
         drawBench(canvas);
-//        playerHit.drawAllParticles(canvas);
+        playerHit.drawAllParticles(canvas);
         //Entity Drawing
         DrawInstructions.drawAll(canvas);
 
@@ -357,6 +357,10 @@ public class Game extends SurfaceView implements Runnable {
     }
 
     public void onTouchEvent(float touchX, float touchY){
+        if (!doGameLoop){
+            confirmExitToScreen = true;
+            return;
+        }
         if (dialogBox.isTextFinishedUpdating() && OutputText.isInDialog()) {
             dialogBox.closeDialog();
             OutputText.setInDialog(false);
@@ -448,12 +452,14 @@ public class Game extends SurfaceView implements Runnable {
             }
             case ENEMY_ATTACK: {
                 attackDown.playCurrentAnimation();
+                playerHit.resetAllParticles();
                 break;
             }
             case PLAYER_DEATH: {
                 Log.d("Game", "Player Died");
-                // TODO: Death screen
-//                    activity.runOnUiThread(deathScreen::show);
+                //TODO: Kick user back to menu
+                doGameLoop = false;
+
                 break;
             }
             case PLAYER_PARRY: {
@@ -506,6 +512,30 @@ public class Game extends SurfaceView implements Runnable {
         DrawInstructions.thingsToDraw.add(attackUpInstruct);
         DrawInstructions.thingsToDraw.add(parryInstruct);
     }
+
+    private void deathScreen(){
+        canvas = surfaceHolder.lockCanvas();
+        Paint black = new Paint();
+        black.setColor(Color.BLACK);
+        canvas.drawRect(300, 300, screenX - 300, screenY - 300, black);
+        Paint text = new Paint();
+        text.setColor(Color.WHITE);
+        text.setTextSize(100);
+
+        canvas.drawText("You Died!", 575, 1300, text);
+        text.setTextSize(50);
+        canvas.drawText("Tap Anywhere to return to main menu", 200, 1600, text);
+        surfaceHolder.unlockCanvasAndPost(canvas);
+
+        arrows.hideArrows();
+
+        while (!confirmExitToScreen){
+
+        }
+
+    }
+
+
 }
 
 
