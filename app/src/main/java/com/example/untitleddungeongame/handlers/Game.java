@@ -25,6 +25,7 @@ import com.example.untitleddungeongame.entity.Enemy;
 import com.example.untitleddungeongame.entity.Goblin;
 import com.example.untitleddungeongame.entity.Player;
 import com.example.untitleddungeongame.floors.Boss;
+import com.example.untitleddungeongame.floors.Encounter;
 import com.example.untitleddungeongame.floors.Rest;
 import com.example.untitleddungeongame.floors.Room;
 import com.example.untitleddungeongame.floors.RoomMaster;
@@ -47,9 +48,9 @@ public class Game extends SurfaceView implements Runnable {
     //Refering to this tutorial: https://gamecodeschool.com/android/coding-a-snake-game-for-android/
 
     //Game Control
-    public static boolean doGameLoop;
-    public static boolean isPaused;
-    public static boolean userPaused;
+    public boolean doGameLoop;
+    public boolean isPaused;
+    public boolean userPaused;
     private final int fps;
 
     //Graphics
@@ -59,7 +60,7 @@ public class Game extends SurfaceView implements Runnable {
 
     private final Paint fill; //https://stackoverflow.com/questions/36717782/how-to-fill-canvas-with-a-color
     //Used for "refreshing" a canvas
-    public static int screenX, screenY;
+    public int screenX, screenY;
 
     //Used for adaptive scaling. Testing on the given screen resolution,
     private final int SCREENX_CONST = 1440;
@@ -80,7 +81,7 @@ public class Game extends SurfaceView implements Runnable {
 
     private int oldX, oldY; //For player tracking and miniMap updates
     private MiniMap miniMap;
-    public static boolean showMiniMap = false;
+    public boolean showMiniMap = false;
     DrawInstructions playerDrawInstructions;
     //Other
     private final AppCompatActivity activity;
@@ -95,6 +96,7 @@ public class Game extends SurfaceView implements Runnable {
 
     private ParticleSystem playerHit;
     private boolean confirmExitToScreen = false;
+    private ElapseTime frameTime = new ElapseTime();
 
     @SuppressLint("SetTextI18n")
 
@@ -102,10 +104,6 @@ public class Game extends SurfaceView implements Runnable {
         super(activity);
         this.activity = activity;
         this.surfaceHolder = surfaceHolder;
-
-        ((MainActivity) activity).setGame(this);
-
-
         //Screen and UI
         fps = 1000/60;
 
@@ -265,28 +263,23 @@ public class Game extends SurfaceView implements Runnable {
 
         //GameLoop happens Here
         while (doGameLoop){
-            activity.runOnUiThread(this::runOnUiThread);
-            combat.run(roomMaster.getCurrentRoom(), isPaused || userPaused);
-            if (!isPaused && !userPaused) {
-
-                mapUpdate();
-                draw();
-                playerHit.updateParticles();
-
-                try {
-                    Thread.sleep(fps);
-                }
-                catch (InterruptedException e) {
-                    //error
-                }
+            if (OutputText.isNewText()) {
+                String text = OutputText.getOutputText();
+                activity.runOnUiThread(() -> {setDialogText(text);});
             }
+            combat.run(roomMaster.getCurrentRoom(), isPaused || userPaused);
+            if (isPaused || userPaused) continue;
+            if (frameTime.hasTimeElapsed(fps)) continue;
+            mapUpdate();
+            draw();
+            playerHit.updateParticles();
         }
 
-        deathScreen();
+//        deathScreen();
 
-        activity.runOnUiThread(() ->{
-            ((MainActivity)activity).onQuit(findViewById(R.id.quit_button));
-        });
+//        activity.runOnUiThread(() ->{
+//            ((MainActivity)activity).onQuit(findViewById(R.id.quit_button));
+//        });
     }
 
     public void setDoGameLoop(boolean state){
@@ -373,13 +366,6 @@ public class Game extends SurfaceView implements Runnable {
         OutputText.setInDialog(true);
     }
 
-    private void runOnUiThread() {
-        dialogBox.updateText();
-        if (OutputText.isNewText()) {
-            setDialogText(OutputText.getOutputText());
-        }
-    }
-
     /**
      * Helper for visualization of hp
      * @param c - canvas
@@ -424,7 +410,7 @@ public class Game extends SurfaceView implements Runnable {
         this.roomMaster = roomMaster;
         arrows.setRoomMaster(roomMaster);
         arrows.setArrows();
-        combat = new Combat(activity, roomMaster.getPlayer());
+        combat = new Combat(activity, roomMaster.getPlayer(), fps);
         combat.setEventListener(this::combatEventListener);
         System.out.println(roomMaster);
     }
@@ -440,8 +426,13 @@ public class Game extends SurfaceView implements Runnable {
     }
 
     public void disableArrows(Boolean visibility) {
-        if (!visibility && combat.isInCombat()) return;
+        Room room = roomMaster.getCurrentRoom();
+        if (!visibility) { // Before turning them on
+            if ((room instanceof Encounter || room instanceof Boss) && combat.isInCombat()) return;
+            if (room instanceof Rest && !room.getRoomCleared()) return;
+        }
         arrows.disable(visibility);
+
     }
 
     private void combatEventListener(Controller.CombatEventEnum event) {
@@ -481,6 +472,14 @@ public class Game extends SurfaceView implements Runnable {
                         resetEntities();
                     });
                 }
+                break;
+            }
+            case PARRY_WINDOW_OPEN: {
+                System.out.println("Parry Window Open");
+                break;
+            }
+            case PARRY_WINDOW_CLOSE: {
+                System.out.println("Parry Window Closed");
                 break;
             }
             default:{
@@ -533,6 +532,17 @@ public class Game extends SurfaceView implements Runnable {
     }
 
 
+    public void pause() {
+        isPaused = true;
+    }
+
+    public void resume() {
+        isPaused = false;
+    }
+
+    public void endGame() {
+        doGameLoop = false;
+    }
 }
 
 

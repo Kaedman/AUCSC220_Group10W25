@@ -17,8 +17,6 @@ import com.example.untitleddungeongame.ui.PixelButton;
 public class MainMenu extends AppCompatActivity {
     TextView loadingText;
     PixelButton playButton;
-    PixelButton newButton;
-    PixelButton settingsButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,21 +30,18 @@ public class MainMenu extends AppCompatActivity {
             return insets;
         });
         playButton = findViewById(R.id.play_button);
-        newButton = findViewById(R.id.new_run_button);
-        settingsButton = findViewById(R.id.settings_button);
 
         loadingText = findViewById(R.id.loading_text);
         loadingText.setVisibility(View.GONE);
 
-        playButton.setOnClickListener(this::buttonPlay);
-        newButton.setOnClickListener(this::buttonPlay);
-        settingsButton.setOnClickListener(this::buttonSettings);
+
 
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+        playButton.setOnClickListener(this::buttonPlay);
     }
 
     public void buttonPlay(View v){

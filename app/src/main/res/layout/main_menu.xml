@@ -17,14 +17,13 @@
         android:layout_marginStart="63dp"
         android:layout_marginTop="124dp"
         android:layout_marginEnd="52dp"
-        android:layout_marginBottom="503dp"
         android:text="Some Untitled Dungeon Game"
         android:textAlignment="center"
         android:textColor="#F6F6F6"
         android:textColorLink="#FFFFFF"
         android:textSize="34sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/play_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -39,43 +38,20 @@
         android:textSize="34sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/play_button" />
 
     <com.example.untitleddungeongame.ui.PixelButton
         android:id="@+id/play_button"
-        android:layout_width="172dp"
-        android:layout_height="77dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="320dp"
+        android:layout_width="293dp"
+        android:layout_height="90dp"
+        android:text="PLAY"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:resource="BUTTON"
-        android:textColor="@color/white"
-        android:text="PLAY"/>
-
-    <com.example.untitleddungeongame.ui.PixelButton
-        android:id="@+id/new_run_button"
-        android:layout_width="172dp"
-        android:layout_height="77dp"
-        android:layout_marginStart="20dp"
-        app:layout_constraintStart_toEndOf="@+id/play_button"
-        app:layout_constraintTop_toTopOf="@+id/play_button"
-        app:resource="BUTTON"
-        android:text="NEW RUN"
-        android:textColor="@color/white"/>
-
-    <com.example.untitleddungeongame.ui.PixelButton
-        android:id="@+id/settings_button"
-        android:layout_width="359dp"
-        android:layout_height="86dp"
-        android:layout_marginTop="124dp"
-        app:layout_constraintEnd_toEndOf="@+id/new_run_button"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@+id/play_button"
-        app:layout_constraintTop_toTopOf="@+id/play_button"
-        app:resource="BUTTON"
-        android:textColor="@color/white"
-        android:text="SETTING" />
+        app:resource="BUTTON" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
