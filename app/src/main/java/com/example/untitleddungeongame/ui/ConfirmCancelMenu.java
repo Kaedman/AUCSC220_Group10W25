@@ -47,7 +47,7 @@ public class ConfirmCancelMenu extends ConstraintLayout {
             roomMaster.showArrows();
         } else if (roomMaster.getCurrentRoom() instanceof Boss) {
             // TODO: GO TO NEXT ROOM, not necessary for prototype
-            //((Boss) roomMaster.getCurrentRoom().nextFloor());
+
         }
 
         hide();

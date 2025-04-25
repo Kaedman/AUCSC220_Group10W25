@@ -352,7 +352,7 @@ public class RoomMaster {
             return new Goblin("Goblin", 11 * currentFloor, 8 * currentFloor,
                     8 * currentFloor, 12);
         } else {
-            return new Slime("King Slime", 20);
+            return new Slime("King Slime", 20 * currentFloor);
         }
     }
 
