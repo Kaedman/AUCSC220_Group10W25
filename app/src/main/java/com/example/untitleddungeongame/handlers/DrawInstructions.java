@@ -23,7 +23,7 @@ public class DrawInstructions {
     private int x, y;
     private int scaleX, scaleY;
     private int spriteSizeX, spriteSizeY;
-    private static ArrayList<DrawInstructions> thingsToDraw = new ArrayList<DrawInstructions>();
+    public static ArrayList<DrawInstructions> thingsToDraw = new ArrayList<DrawInstructions>();
 
     public AnimatedSprite spriteToDraw;
 

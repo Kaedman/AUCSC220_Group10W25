@@ -472,6 +472,7 @@ public class Game extends SurfaceView implements Runnable {
                         prepMiniMap();
                         mapUpdate();
                         arrows.setArrows();
+                        resetEntities();
                     });
 
 
@@ -495,6 +496,15 @@ public class Game extends SurfaceView implements Runnable {
                 //Do nothing
             }
         }
+    }
+
+    private void resetEntities(){
+        DrawInstructions.thingsToDraw.clear();
+
+        DrawInstructions.thingsToDraw.add(playerDrawInstructions);
+        DrawInstructions.thingsToDraw.add(attackDownInstruct);
+        DrawInstructions.thingsToDraw.add(attackUpInstruct);
+        DrawInstructions.thingsToDraw.add(parryInstruct);
     }
 }
 
