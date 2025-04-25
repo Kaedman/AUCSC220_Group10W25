@@ -69,13 +69,13 @@ public class DeathScreen extends androidx.constraintlayout.widget.ConstraintLayo
     }
 
     public void restartGame(View v){
-        mainActivity.restartGame(v);
-        Game.doGameLoop = false;
+//        mainActivity.restartGame(v);
+//        Game.doGameLoop = false;
     }
 
     public void returnToMainMenu(View v){
-        mainActivity.backToMainMenu(v);
-        Game.doGameLoop = false;
+//        mainActivity.backToMainMenu(v);
+//        Game.doGameLoop = false;
     }
 
     public void setMainActivity(MainActivity m) {

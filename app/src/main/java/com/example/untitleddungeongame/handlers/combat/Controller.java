@@ -106,8 +106,8 @@ public class Controller {
 
     }
     private void attacking() {
-        if (combatState.currentTurn() == CombatTurn.State.ENEMY) {
-            if (canParry && !parried && !shouldCancelParry) {
+        if (combatState.currentTurn() == CombatTurn.State.ENEMY && canParry) {
+            if (!parried && !shouldCancelParry) {
                 if (!isReadyToParry) {
                     if (!elapseTime.hasTimeElapsed(400)) return; // This is the time before the parry window opens
                     isReadyToParry = true;
@@ -115,11 +115,12 @@ public class Controller {
                     return;
                 }
                 if (parryController.isTryingToParry() && isReadyToParry) {
+                    System.out.println("Parry Attempted");
                     parried = true;
                 }
                 if (!elapseTime.hasTimeElapsed(500)) return; // This effects the parry window time
-                canParry = false;
                 eventListener.run(CombatEventEnum.PARRY_WINDOW_CLOSE);
+                canParry = false;
             }
             if (parried && !shouldCancelParry && parryController.isTryingToParry()) {
                 parried = false;
@@ -204,12 +205,10 @@ public class Controller {
             eventListener.run(CombatEventEnum.ENEMY_DEATH);
             OutputText.setOutputText("Enemy Defeated");
             currentRoom.setRoomCleared(true);
-            combatState.switchState(CombatState.State.READY);
         } else if (player.isDead()) {
             if (!elapseTime.hasTimeElapsed(100)) return;
             eventListener.run(CombatEventEnum.PLAYER_DEATH);
             OutputText.setOutputText("Player Defeated");
-            combatState.switchState(CombatState.State.READY);
         }
         combatState.switchState(CombatState.State.READY);
     }
@@ -233,8 +232,10 @@ public class Controller {
     }
 
     public void screenTapped() {
-        if (combatState.getCurrentState() != CombatState.State.ATTACK && combatState.currentTurn() != CombatTurn.State.ENEMY) return;
-        parryController.screenTapped = true;
+        if (combatState.getCurrentState() != CombatState.State.ATTACK || combatState.currentTurn() != CombatTurn.State.ENEMY) return;
+        if (isReadyToParry && canParry) {
+            parryController.screenTapped = true;
+        }
     }
     public void reset() {
         combatState.reset();

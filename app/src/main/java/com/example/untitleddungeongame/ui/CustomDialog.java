@@ -1,6 +1,7 @@
 package com.example.untitleddungeongame.ui;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.os.Handler;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.FrameLayout;
@@ -8,13 +9,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
-import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.example.untitleddungeongame.R;
 import com.example.untitleddungeongame.misc.ElapseTime;
 import com.example.untitleddungeongame.misc.OutputText;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -27,11 +26,13 @@ public class CustomDialog extends LinearLayout {
     private TextView popupInfo;
 
     private List<String> currentText = new ArrayList<>();
+    private String current = "";
     private int length = 0;
     private int currantWordIndex = 0;
     private final ElapseTime elapseTime = new ElapseTime();
     private boolean isTextSet = false;
     private boolean autoClose = false;
+    private final int delay = 60;
 
     public CustomDialog(Context context) {
         super(context);
@@ -60,6 +61,26 @@ public class CustomDialog extends LinearLayout {
         closeDialog();
     }
 
+    private Handler handler = new Handler();
+    private Runnable wordAdder = new Runnable() {
+        @Override
+        public void run() {
+            String currentWord = currentText.get(currantWordIndex);
+            current = String.format("%s %s", current, currentWord);
+            OutputText.textUpdating();
+            textView.setText(current);
+            if (current.length() < length) {
+                currantWordIndex++;
+                handler.postDelayed(this, delay);
+            } else {
+                length = 0;
+                isTextSet = false;
+                current = "";
+                OutputText.textFinished();
+            }
+        }
+    };
+
     public void setText(String text) {
         currentText = Arrays.asList(text.split(" "));
         length = text.length();
@@ -67,23 +88,32 @@ public class CustomDialog extends LinearLayout {
         isTextSet = true;
         elapseTime.reset();
         rootView.setVisibility(VISIBLE);
+        textView.setText("");
+        current = "";
+
+        handler.removeCallbacks(wordAdder);
+        handler.postDelayed(wordAdder, delay);
     }
 
-    public void updateText() {
-        if (!isTextSet) return;
+    private void animateText(String target) {
+
+    }
+
+    public Runnable updateText() {
+        if (!isTextSet) return null;
         if (length == 0) {
             elapseTime.reset();
-            return;
+            return null;
         }
 
-        String current = textView.getText().toString();
+
 
         if (current.length() == length) {
             elapseTime.reset();
-            return;
+            return null;
         }
 
-        if (!elapseTime.hasTimeElapsed(10)) return;
+        if (!elapseTime.hasTimeElapsed(10)) return null;
 
         String currentWord = currentText.get(currantWordIndex);
         String newText = String.format("%s %s", current, currentWord);
@@ -96,6 +126,7 @@ public class CustomDialog extends LinearLayout {
             isTextSet = false;
             OutputText.textFinished();
         }
+        return null;
     }
 
     public void closeDialog() {

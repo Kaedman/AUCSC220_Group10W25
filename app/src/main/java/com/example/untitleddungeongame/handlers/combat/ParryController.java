@@ -21,7 +21,9 @@ public class ParryController {
         if (parryTime.hasTimeElapsed(500) && !timeHasElapsed) {
             timeHasElapsed = true;
         }
+        System.out.println("Screen Tapped: " + screenTapped);
         if (timeHasElapsed && screenTapped) {
+            System.out.println("Parry set");
             screenTapped = false;
             return true;
         }

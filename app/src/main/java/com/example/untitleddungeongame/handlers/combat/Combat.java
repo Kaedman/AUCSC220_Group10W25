@@ -5,6 +5,7 @@ import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.untitleddungeongame.floors.Room;
+import com.example.untitleddungeongame.misc.ElapseTime;
 import com.example.untitleddungeongame.misc.OutputText;
 import com.example.untitleddungeongame.entity.Enemy;
 import com.example.untitleddungeongame.entity.Player;
@@ -20,10 +21,13 @@ public class Combat {
     private Enemy enemy;
     private final AppCompatActivity activity;
     private boolean isDisabled = false;
+    private int fps;
+    private ElapseTime combatUITimer = new ElapseTime();
 
-     public Combat(AppCompatActivity activity, Player player) {
+     public Combat(AppCompatActivity activity, Player player, int fps) {
          this.activity = activity;
          this.player = player;
+         this.fps = fps;
          presentor = new Presenter(activity);
          controller = new Controller(player);
 
@@ -41,11 +45,14 @@ public class Combat {
              disableButtons();
              return;
          }
+         if (combatUITimer.hasTimeElapsed(fps)) {
+             activity.runOnUiThread(() -> {
+                presentor.updateHotBars();
+                presentor.itemAttackButton.disable(false);
+             });
+
+         }
          controller.run(room);
-         activity.runOnUiThread(() -> {
-            presentor.updateHotBars();
-            presentor.itemAttackButton.disable(false);
-         });
          isDisabled = false;
      }
 

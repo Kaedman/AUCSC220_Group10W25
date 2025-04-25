@@ -50,8 +50,7 @@ public class MainActivity extends AppCompatActivity {
     private PauseMenu pauseMenu;
     private ConfirmCancelMenu confirmCancel;
     private Player player;
-
-    private Game game;
+    private MyCallBack gameCallBack;
 
     //HashMap<AssetID, Bitmap> assets;
     RoomMaster roomMaster;
@@ -77,11 +76,7 @@ public class MainActivity extends AppCompatActivity {
         confirmCancel.hide();
 
         roomMaster.setConfirmCancel(confirmCancel);
-
-        pauseButton.setOnClickListener(this::onUserPause);
-        pauseMenu.setOnQuitClickListener(this::onQuit);
-        pauseMenu.setOnResumeClickListener(this::onUserResume);
-        miniMapButton.setOnClickListener(this::mapButton);
+        gameCallBack = new MyCallBack(this, gameView, roomMaster);
         EdgeToEdge.enable(this);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -95,20 +90,17 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart(){
         super.onStart();
-        Display display = getWindowManager().getDefaultDisplay();
-        Point size = new Point();
-        display.getSize(size); //Instead of returning a value, we need to specify a point variable to change
 
+
+        pauseButton.setOnClickListener(this::onUserPause);
+        pauseMenu.setOnQuitClickListener(this::onQuit);
+        pauseMenu.setOnResumeClickListener(this::onUserResume);
+        miniMapButton.setOnClickListener(this::mapButton);
         pauseMenu.disable(true);
 
-        gameView.getHolder().addCallback( new MyCallBack(this, gameView, roomMaster));
-
+        gameView.getHolder().addCallback(gameCallBack);
         gameLaunched = true;
-
-
         roomMaster.generateRooms(STARTING_ROWS, STARTING_COLS, STARTING_THRESHOLD);
-
-
     }
 
     /**
@@ -116,9 +108,13 @@ public class MainActivity extends AppCompatActivity {
      */
     @Override
     protected void onPause(){
-        Game.isPaused = true;
-        pauseMenu.disable(false);
         super.onPause();
+        Game currentGame = gameCallBack.getGame();
+        if (currentGame == null) return;
+        synchronized (currentGame) {
+            currentGame.pause();
+            pauseMenu.disable(false);
+        }
     }
 
     /**
@@ -127,43 +123,54 @@ public class MainActivity extends AppCompatActivity {
      */
     @Override
     protected void onResume(){
-        Game.isPaused = false;
-        pauseMenu.disable(true);
         super.onResume();
+        Game currentGame = gameCallBack.getGame();
+        if (currentGame == null) return;
+        synchronized (currentGame) {
+            currentGame.resume();
+            pauseMenu.disable(true);
+        }
     }
 
     @Override
     protected void onDestroy(){
         super.onDestroy();
-        System.out.println("DESTROYED GAME");
+        endGame();
         pauseMenu.setVisibility(View.GONE);
     }
 
     public void onUserResume(View v){
-        System.out.println("Resumed");
-        Game.userPaused = false;
-        pauseMenu.disable(true);
-        pauseButton.setVisibility(VISIBLE);
-        miniMapButton.setVisibility(VISIBLE);
-        System.out.println("Resumed");
-        game.disableArrows(false);
+        Game currentGame = gameCallBack.getGame();
+        if (currentGame == null) return;
+        synchronized (currentGame) {
+            currentGame.resume();
+            currentGame.disableArrows(false);
+            pauseMenu.disable(true);
+            pauseButton.setVisibility(VISIBLE);
+            miniMapButton.setVisibility(VISIBLE);
+        }
     }
     public void onUserPause(View v){
-        Game.userPaused = true;
-        pauseMenu.disable(false);
-        pauseButton.setVisibility(INVISIBLE);
-        miniMapButton.setVisibility(INVISIBLE);
-        Game.showMiniMap = false;
-        System.out.println("Paused");
-        game.disableArrows(true);
+        Game currentGame = gameCallBack.getGame();
+        if (currentGame == null) return;
+        synchronized (currentGame) {
+            currentGame.pause();
+            currentGame.showMiniMap = false;
+            currentGame.disableArrows(true);
+            pauseMenu.disable(false);
+            pauseButton.setVisibility(INVISIBLE);
+            miniMapButton.setVisibility(INVISIBLE);
+        }
     }
 
     public void onQuit(View v){
+        endGame();
         Intent intent = new Intent(this, MainMenu.class);
         startActivity(intent);
     }
 
     public void restartGame(View v){
+        endGame();
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
@@ -173,18 +180,23 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void setRoomMasterGame(Game game) {
-        roomMaster.setGame(game);
-    }
-
     public void mapButton(View v){
-        Game.showMiniMap = !Game.showMiniMap;
-
-        game.disableArrows(Game.showMiniMap);
+        Game currentGame = gameCallBack.getGame();
+        if (currentGame == null) return;
+        synchronized (currentGame) {
+            currentGame.showMiniMap = !currentGame.showMiniMap;
+            currentGame.disableArrows(currentGame.showMiniMap);
+        }
     }
 
-    public void setGame(Game game) {
-        this.game = game;
+    private void endGame(){
+        Game currentGame = gameCallBack.getGame();
+        if (currentGame == null) return;
+        synchronized (currentGame) {
+            currentGame.doGameLoop = false;
+        }
+        gameCallBack = null;
+        gameView = null;
     }
 
 }
