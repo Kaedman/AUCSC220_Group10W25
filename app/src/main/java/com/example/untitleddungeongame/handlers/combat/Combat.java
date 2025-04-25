@@ -35,23 +35,12 @@ public class Combat {
          presentor.setAttackBar(player.getAttacks());
      }
 
-     public void run(Room room) {
+     public void run(Room room, boolean isPaused) {
          inCombat = room.getEnemy() != null && !room.getRoomCleared();
-         if (!inCombat) {
-             if (!isDisabled) {
-                 activity.runOnUiThread(() -> {
-                     presentor.itemAttackButton.disable(true);
-                     presentor.attackBar.disable(true);
-                     presentor.itemBar.disable(true);
-                 });
-                    isDisabled = true;
-             } else {
-                 isDisabled = false;
-             }
-             controller.reset();
+         if (!inCombat || isPaused) {
+             disableButtons();
              return;
          }
-
          controller.run(room);
          activity.runOnUiThread(() -> {
             presentor.updateHotBars();
@@ -68,6 +57,16 @@ public class Combat {
     private void itemsButtonPressed(View button) {
         if (!inCombat) return;
         presentor.switchItems();
+    }
+    private void disableButtons() {
+        if (isDisabled) return;
+        isDisabled = true;
+        activity.runOnUiThread(() -> {
+            presentor.itemAttackButton.disable(true);
+            presentor.attackBar.disable(true);
+            presentor.itemBar.disable(true);
+        });
+        controller.reset();
     }
 
     public boolean isInCombat() {

@@ -145,6 +145,9 @@ public class PixelButton  extends FrameLayout implements TextureView.SurfaceText
         textView.setTypeface(style);
     }
 
+    public void disable(boolean disable) {
+        rootElement.setVisibility(disable ? View.VISIBLE : View.GONE);
+    }
 
     @Override
     public void onSurfaceTextureAvailable(@NonNull SurfaceTexture surface, int width, int height) {
