@@ -115,20 +115,6 @@ public class Arrows extends androidx.constraintlayout.widget.ConstraintLayout {
         this.roomMaster = roomMaster;
     }
 
-    public void hideArrows() {
-        setArrowVisible(leftArrow, false);
-        setArrowVisible(rightArrow, false);
-        setArrowVisible(upArrow, false);
-        setArrowVisible(downArrow, false);
-    }
-
-    public void showArrows() {
-        setArrowVisible(leftArrow, true);
-        setArrowVisible(rightArrow, true);
-        setArrowVisible(upArrow, true);
-        setArrowVisible(downArrow, true);
-    }
-
     public void disable(boolean state) {
         if (roomMaster == null) return;
         if (isDisabled == state) return;
