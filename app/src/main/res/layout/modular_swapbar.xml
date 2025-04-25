@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/item_bar_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
+
+    <com.example.untitleddungeongame.ui.swapbar.SwapBarOption
+        android:id="@+id/item_bar_1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight=".25" />
+
+    <com.example.untitleddungeongame.ui.swapbar.SwapBarOption
+        android:id="@+id/item_bar_2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight=".25" />
+
+    <com.example.untitleddungeongame.ui.swapbar.SwapBarOption
+        android:id="@+id/item_bar_3"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight=".25" />
+
+    <com.example.untitleddungeongame.ui.swapbar.SwapBarOption
+        android:id="@+id/item_bar_4"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight=".25" />
+
+</LinearLayout>

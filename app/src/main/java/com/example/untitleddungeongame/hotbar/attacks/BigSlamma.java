@@ -7,7 +7,7 @@ import com.example.untitleddungeongame.stats.Stat;
 public class BigSlamma extends Attack {
 
     public BigSlamma() {
-        super("Big Slamma", 5);
+        super("Big Slamma", 10);
     }
 
     public Pair<Integer, Stat> use() {

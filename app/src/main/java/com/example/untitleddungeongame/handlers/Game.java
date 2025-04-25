@@ -12,7 +12,6 @@ import android.view.SurfaceView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.view.View;
-import android.widget.TextView;
 
 import com.example.untitleddungeongame.Assets;
 import com.example.untitleddungeongame.GameTouchListener;
@@ -29,16 +28,17 @@ import com.example.untitleddungeongame.floors.Encounter;
 import com.example.untitleddungeongame.floors.Rest;
 import com.example.untitleddungeongame.floors.Room;
 import com.example.untitleddungeongame.floors.RoomMaster;
+import com.example.untitleddungeongame.floors.Shop;
 import com.example.untitleddungeongame.handlers.combat.Combat;
 import com.example.untitleddungeongame.handlers.combat.Controller;
 import com.example.untitleddungeongame.hotbar.attacks.QuickAttack;
+import com.example.untitleddungeongame.hotbar.items.Item;
 import com.example.untitleddungeongame.hotbar.items.heals.Apple;
 import com.example.untitleddungeongame.hotbar.items.heals.Potion;
 import com.example.untitleddungeongame.misc.ElapseTime;
 import com.example.untitleddungeongame.ui.Arrows;
 import com.example.untitleddungeongame.ui.CustomDialog;
 import com.example.untitleddungeongame.misc.OutputText;
-import com.example.untitleddungeongame.ui.DeathScreen;
 import com.example.untitleddungeongame.ui.MiniMap;
 import com.example.untitleddungeongame.ui.ParticleSystem;
 import com.example.untitleddungeongame.ui.RoomVisual;
@@ -71,6 +71,8 @@ public class Game extends SurfaceView implements Runnable {
     Combat combat;
     public RoomVisual roomVisual;
     private RoomMaster roomMaster;
+
+    private MainActivity mainActivity;
 //    private DrawInstructions playerDrawInstructions;
     private final Arrows arrows;
     Enemy enemyToDraw = new Goblin("Jerry", 30);
@@ -96,7 +98,10 @@ public class Game extends SurfaceView implements Runnable {
 
     private ParticleSystem playerHit;
     private boolean confirmExitToScreen = false;
+    private AnimatedSprite shopKeeper;
     private ElapseTime frameTime = new ElapseTime();
+    private Paint moneyPaint;
+    private Sprite moneySymbol;
 
     @SuppressLint("SetTextI18n")
 
@@ -104,6 +109,13 @@ public class Game extends SurfaceView implements Runnable {
         super(activity);
         this.activity = activity;
         this.surfaceHolder = surfaceHolder;
+
+        mainActivity = ((MainActivity) activity);
+
+        mainActivity.getShopBar().setOnClick(this::buyItem);
+        mainActivity.getSwapBar().setOnClick(this::swapItem);
+
+
         //Screen and UI
         fps = 1000/60;
 
@@ -160,10 +172,10 @@ public class Game extends SurfaceView implements Runnable {
         QuickAttack quickAttack = new QuickAttack();
         Player player = roomMaster.getPlayer();
         player.addAttack(quickAttack);
-        for (int i = 0; i < 5; i++){
+        /*for (int i = 0; i < 3; i++){
             player.addItem(apple);
         }
-        player.addItem(potion);
+        player.addItem(potion);*/
     }
 
     public void prepMiniMap(){
@@ -184,6 +196,13 @@ public class Game extends SurfaceView implements Runnable {
         restBench = new AnimatedSprite(new Sprite(Assets.AssetID.BENCH, 64, 32, 1));
         restBench.addAnimation(new Animation("Static", 0, 0, new int[] {0}));
         restBench.setCurrentAnimation("Static");
+    }
+
+    private void prepShop() {
+        shopKeeper = new AnimatedSprite(new Sprite(Assets.AssetID.GHASTLY_SHOPKEEPER, 32, 32, 4));
+        shopKeeper.addAnimation(new Animation("Idle", 0, 3, new int[] {400, 84, 400, 84}));
+        shopKeeper.setCurrentAnimation("Idle");
+        shopKeeper.setCurrentRepeat(true);
     }
 
     private boolean hasPlayerMoved(){
@@ -261,6 +280,10 @@ public class Game extends SurfaceView implements Runnable {
 
         prepRestRoom();
 
+        prepShop();
+        
+        prepMoney();
+
         //GameLoop happens Here
         while (doGameLoop){
             if (OutputText.isNewText()) {
@@ -281,6 +304,14 @@ public class Game extends SurfaceView implements Runnable {
         activity.runOnUiThread(() ->{
             ((MainActivity)activity).onQuit(findViewById(R.id.quit_button));
         });
+    }
+
+    private void prepMoney() {
+        moneyPaint = new Paint();
+        moneyPaint.setColor(Color.WHITE);
+        moneyPaint.setTextSize(150);
+
+        moneySymbol = new Sprite(Assets.AssetID.MONEY_ICON, 32, 32, 1);
     }
 
     public void setDoGameLoop(boolean state){
@@ -334,7 +365,9 @@ public class Game extends SurfaceView implements Runnable {
         }
 
         drawBench(canvas);
+        drawShopKeeper(canvas);
         playerHit.drawAllParticles(canvas);
+
         //Entity Drawing
         DrawInstructions.drawAll(canvas);
 
@@ -346,6 +379,8 @@ public class Game extends SurfaceView implements Runnable {
             miniMap.drawToCanvas(canvas, 200, 1000);
 
         //Final Image updates
+        canvas.drawText(String.valueOf(roomMaster.getPlayer().getMoney()), 180, 450, moneyPaint);
+        moneySymbol.drawScaled(canvas,20, 335, Sprite.universalSpriteScale / 2, Sprite.universalSpriteScale / 2);
 
         surfaceHolder.unlockCanvasAndPost(canvas); //update the surface
     }
@@ -426,6 +461,13 @@ public class Game extends SurfaceView implements Runnable {
         }
     }
 
+    private void drawShopKeeper(Canvas canvas) {
+        if (roomMaster.getCurrentRoom() instanceof Shop) {
+            shopKeeper.updateCurrentAnimation();
+            shopKeeper.drawAnimation(canvas, 550, 800, Sprite.universalSpriteScale, Sprite.universalSpriteScale);
+        }
+    }
+
     public void disableArrows(Boolean visibility) {
         Room room = roomMaster.getCurrentRoom();
         if (!visibility) { // Before turning them on
@@ -433,7 +475,6 @@ public class Game extends SurfaceView implements Runnable {
             if (room instanceof Rest && !room.getRoomCleared()) return;
         }
         arrows.disable(visibility);
-
     }
 
     private void combatEventListener(Controller.CombatEventEnum event) {
@@ -473,6 +514,7 @@ public class Game extends SurfaceView implements Runnable {
                         resetEntities();
                     });
                 }
+                roomMaster.getPlayer().setMoney(roomMaster.getPlayer().getMoney() + 5);
                 break;
             }
             case PARRY_WINDOW_OPEN: {
@@ -524,7 +566,7 @@ public class Game extends SurfaceView implements Runnable {
         canvas.drawText("Tap Anywhere to return to main menu", 200, 1600, text);
         surfaceHolder.unlockCanvasAndPost(canvas);
 
-        arrows.hideArrows();
+        arrows.disable(true);
 
         while (!confirmExitToScreen){
 
@@ -532,6 +574,39 @@ public class Game extends SurfaceView implements Runnable {
 
     }
 
+    public void buyItem(int index, Item item) {
+        if (roomMaster.getPlayer().getMoney() >= 5) {
+            if (item instanceof Potion) {
+                roomMaster.getPlayer().addItem(new Potion());
+            } else if (item instanceof Apple) {
+                roomMaster.getPlayer().addItem(new Apple());
+            }
+            //roomMaster.getPlayer().addItem();
+
+            ((Shop) roomMaster.getCurrentRoom()).removeItem(index);
+            roomMaster.getPlayer().setMoney(roomMaster.getPlayer().getMoney() - 5);
+            mainActivity.getShopBar().set(((Shop) roomMaster.getCurrentRoom()).getShopItems());
+            mainActivity.getShopBar().updateUi();
+            //Log.d("player", String.valueOf(roomMaster.getPlayer().getEquipped().getInfo()));
+        }
+    }
+
+    public void swapItem(int index, Item item) {
+        /*Log.d("player", String.valueOf(roomMaster.getPlayer().getEquipped()[1].getInfo()));
+        /*if (item instanceof Potion) {
+            roomMaster.getPlayer().addItem(new Potion());
+        } else if (item instanceof Apple) {
+            roomMaster.getPlayer().addItem(new Apple());
+        }
+        roomMaster.getPlayer().addItem(item);
+
+        ((Shop) roomMaster.getCurrentRoom()).removeItem(index);
+        //TODO: remove money
+        mainActivity.getShopBar().set(((Shop) roomMaster.getCurrentRoom()).getShopItems());
+        mainActivity.getShopBar().updateUi();
+        //Log.d("player", String.valueOf(roomMaster.getPlayer().getEquipped().getInfo()));
+        Log.d("player", String.valueOf(roomMaster.getPlayer().getEquipped()[1].getInfo()));*/
+    }
 
     public void pause() {
         isPaused = true;

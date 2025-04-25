@@ -1,4 +1,4 @@
-package com.example.untitleddungeongame.ui.shop;
+package com.example.untitleddungeongame.ui.swapbar;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -9,47 +9,48 @@ import androidx.annotation.Nullable;
 
 import com.example.untitleddungeongame.R;
 import com.example.untitleddungeongame.hotbar.HotBarInfo;
-import com.example.untitleddungeongame.ui.hotbar.HotBarOption;
+import com.example.untitleddungeongame.hotbar.items.Item;
+import com.example.untitleddungeongame.ui.swapbar.SwapBarOption;
 
-public class ShopBar<T extends HotBarInfo> extends LinearLayout {
+public class SwapBar<T extends Item> extends LinearLayout {
     public interface OnClick {
-        void run(int pos);
+        void run(int index, Item item);
     }
     private LinearLayout rootView;
-    private final ShopBarOption<T>[] shopBarOptions = new ShopBarOption[4];
+    private final SwapBarOption<T>[] swapBarOptions = new SwapBarOption[4];
     private OnClick onClick;
-    T[] listOfElements;
+    private T[] listOfElements;
 
 
-    public ShopBar(Context context) {
+    public SwapBar(Context context) {
         super(context);
         init(context);
     }
 
-    public ShopBar(Context context, @Nullable AttributeSet attrs) {
+    public SwapBar(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         init(context);
     }
 
     private void init(Context context) {
-        LayoutInflater.from(context).inflate(R.layout.modular_hotbar, this, true);
+        LayoutInflater.from(context).inflate(R.layout.modular_swapbar, this, true);
         rootView = findViewById(R.id.item_bar_root);
         getButtons();
 
-        for (int i = 0; i < shopBarOptions.length; i++) {
+        for (int i = 0; i < swapBarOptions.length; i++) {
             int finalI = i;
-            shopBarOptions[i].setOnClick(() -> {
+            swapBarOptions[i].setOnClick(v -> {
                 if (onClick != null) {
-                    onClick.run(finalI);
+                    onClick.run(finalI, (Item) listOfElements[finalI]);
                 }
             });
         }
     }
     private void getButtons() {
-        shopBarOptions[0] = rootView.findViewById(R.id.item_bar_1);
-        shopBarOptions[1] = rootView.findViewById(R.id.item_bar_2);
-        shopBarOptions[2] = rootView.findViewById(R.id.item_bar_3);
-        shopBarOptions[3] = rootView.findViewById(R.id.item_bar_4);
+        swapBarOptions[0] = rootView.findViewById(R.id.item_bar_1);
+        swapBarOptions[1] = rootView.findViewById(R.id.item_bar_2);
+        swapBarOptions[2] = rootView.findViewById(R.id.item_bar_3);
+        swapBarOptions[3] = rootView.findViewById(R.id.item_bar_4);
     }
     public void setOnClick(OnClick onClick) {
         this.onClick = onClick;
@@ -61,8 +62,8 @@ public class ShopBar<T extends HotBarInfo> extends LinearLayout {
         if (listOfElements == null) {
             return;
         }
-        for (int i = 0; i < shopBarOptions.length; i++) {
-            shopBarOptions[i].setItem(listOfElements[i]);
+        for (int i = 0; i < swapBarOptions.length; i++) {
+            swapBarOptions[i].setItem(listOfElements[i]);
         }
     }
 

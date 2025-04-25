@@ -34,9 +34,14 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.untitleddungeongame.floors.RoomMaster;
 import com.example.untitleddungeongame.entity.Player;
 import com.example.untitleddungeongame.handlers.Game;
+import com.example.untitleddungeongame.hotbar.HotBarInfo;
+import com.example.untitleddungeongame.hotbar.items.Item;
 import com.example.untitleddungeongame.ui.ConfirmCancelMenu;
 import com.example.untitleddungeongame.ui.PauseMenu;
 import com.example.untitleddungeongame.ui.PixelButton;
+import com.example.untitleddungeongame.ui.hotbar.HotBar;
+import com.example.untitleddungeongame.ui.shopbar.ShopBar;
+import com.example.untitleddungeongame.ui.swapbar.SwapBar;
 
 import org.w3c.dom.Text;
 
@@ -51,12 +56,15 @@ public class MainActivity extends AppCompatActivity {
     private ConfirmCancelMenu confirmCancel;
     private Player player;
     private MyCallBack gameCallBack;
+    private Game game;
 
     //HashMap<AssetID, Bitmap> assets;
     RoomMaster roomMaster;
     final int STARTING_ROWS = 5;
     final int STARTING_COLS = 5;
     final int STARTING_THRESHOLD = (int) (STARTING_ROWS * STARTING_COLS * 0.6);
+    private ShopBar<Item> shopBar;
+    private SwapBar<Item> swapBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,14 +76,18 @@ public class MainActivity extends AppCompatActivity {
         pauseMenu = findViewById(R.id.pause_menu);
         miniMapButton = findViewById(R.id.map_button);
         confirmCancel = findViewById(R.id.confirm_cancel);
+        shopBar = findViewById(R.id.shop_bar);
+        swapBar = findViewById(R.id.swap_bar);
 
-        player = new Player(20, 10, 5, 10);
+        player = new Player(20, 6, 5, 10);
         roomMaster = new RoomMaster(player);
 
         confirmCancel.setRoomMaster(roomMaster);
         confirmCancel.hide();
 
         roomMaster.setConfirmCancel(confirmCancel);
+        roomMaster.setShopBar(shopBar);
+        roomMaster.setSwapBar(swapBar);
         gameCallBack = new MyCallBack(this, gameView, roomMaster);
         EdgeToEdge.enable(this);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
@@ -100,6 +112,7 @@ public class MainActivity extends AppCompatActivity {
 
         gameView.getHolder().addCallback(gameCallBack);
         gameLaunched = true;
+
         roomMaster.generateRooms(STARTING_ROWS, STARTING_COLS, STARTING_THRESHOLD);
     }
 
@@ -199,4 +212,11 @@ public class MainActivity extends AppCompatActivity {
         gameView = null;
     }
 
+    public ShopBar<Item> getShopBar() {
+        return shopBar;
+    }
+
+    public SwapBar<Item> getSwapBar() {
+        return swapBar;
+    }
 }

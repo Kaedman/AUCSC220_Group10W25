@@ -19,6 +19,7 @@ public class ConfirmCancelMenu extends ConstraintLayout {
     private ConstraintLayout rootView;
     private PixelButton confirmButton;
     private PixelButton cancelButton;
+    public boolean isHidden = true;
 
     public ConfirmCancelMenu(Context context, AttributeSet attrs) {
         super(context, attrs);

@@ -5,12 +5,15 @@ import com.example.untitleddungeongame.animations.AnimatedSprite;
 import com.example.untitleddungeongame.animations.Animation;
 import com.example.untitleddungeongame.animations.Sprite;
 import com.example.untitleddungeongame.handlers.DrawInstructions;
+import com.example.untitleddungeongame.hotbar.attacks.BigSlamma;
+import com.example.untitleddungeongame.hotbar.attacks.QuickAttack;
 
 public class Big_Goblin extends Enemy{
     private static Sprite sprite = new Sprite(Assets.AssetID.ENEMY_BIG_GOBLIN, 64, 64, 4);
     public Big_Goblin(String name, int hp, int attack, int defense, int speed){
         super(name, hp, attack, defense, speed);
         setUpAnimation();
+        attacks[0] = new BigSlamma();
     }
     public Big_Goblin(String name, int hp){
         super(name, hp, 3, 1, 1);

@@ -5,6 +5,7 @@ import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.untitleddungeongame.floors.Room;
+import com.example.untitleddungeongame.floors.Shop;
 import com.example.untitleddungeongame.misc.ElapseTime;
 import com.example.untitleddungeongame.misc.OutputText;
 import com.example.untitleddungeongame.entity.Enemy;
@@ -43,6 +44,9 @@ public class Combat {
          inCombat = room.getEnemy() != null && !room.getRoomCleared();
          if (!inCombat || isPaused) {
              disableButtons();
+             if (!(room instanceof Shop)) {
+                 disableHotBars();
+             }
              return;
          }
          if (combatUITimer.hasTimeElapsed(fps)) {
@@ -74,6 +78,14 @@ public class Combat {
             presentor.itemBar.disable(true);
         });
         controller.reset();
+    }
+
+    private void disableHotBars() {
+        if (isDisabled) return;
+        activity.runOnUiThread(() -> {
+            presentor.attackBar.disable(true);
+            presentor.itemBar.disable(true);
+        });
     }
 
     public boolean isInCombat() {

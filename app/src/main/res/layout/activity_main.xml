@@ -38,6 +38,28 @@
         tools:visibility="gone" />
 
 
+    <com.example.untitleddungeongame.ui.shopbar.ShopBar
+        android:id="@+id/shop_bar"
+        android:layout_width="334dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/pause_menu"
+        app:layout_constraintDimensionRatio="16:4"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <com.example.untitleddungeongame.ui.swapbar.SwapBar
+        android:id="@+id/swap_bar"
+        android:layout_width="334dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/itemAttackButton"
+        app:layout_constraintDimensionRatio="16:4"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.506"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <com.example.untitleddungeongame.ui.hotbar.HotBar
         android:id="@+id/attack_bar"
         android:layout_width="334dp"
@@ -128,6 +150,7 @@
         android:text="You Died"
         android:visibility="invisible"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="invisible"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

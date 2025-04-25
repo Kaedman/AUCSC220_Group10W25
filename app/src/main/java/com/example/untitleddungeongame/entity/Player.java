@@ -6,13 +6,14 @@ import com.example.untitleddungeongame.hotbar.items.Item;
 public class Player extends Entity {
 
     Item[] inventory = new Item[10];
-
+    int money;
 
     public Player(int health) {
         super("Player", health, 10, 10, 10);
     }
     public Player(int health, int attack, int defense, int speed) {
         super("Player", health, attack, defense, speed);
+        this.money = 0;
     }
 
     public boolean addItem(Item item) {
@@ -23,7 +24,12 @@ public class Player extends Entity {
                 equipped[i] = item;
                 break;
             } else if (equipped[i].getName().equals(item.getName())) {
-                itemEquipped = item.add(1);
+                if (equipped[i].getInfo() < 5) {
+                    // Fixed a bug where inventory was not equipping the item
+                    itemEquipped = item.add(1);
+                    item.add(1);
+                    equipped[i] = item;
+                }
                 break;
             }
         }
@@ -59,6 +65,18 @@ public class Player extends Entity {
     public int calculateReceivedDamage(int initialDamage){
         //Imma just yoink terraria's defense stats. Cry about it
         return initialDamage - defense/2;
+    }
+
+    public int getMoney() {
+        return money;
+    }
+
+    public void setMoney(int money) {
+        if (money <= 0) {
+            this.money = 0;
+            return;
+        }
+        this.money = money;
     }
 }
 

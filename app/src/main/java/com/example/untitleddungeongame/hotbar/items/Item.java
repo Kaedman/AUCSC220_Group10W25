@@ -3,7 +3,7 @@ package com.example.untitleddungeongame.hotbar.items;
 import com.example.untitleddungeongame.entity.Entity;
 import com.example.untitleddungeongame.hotbar.HotBarInfo;
 
-public abstract class Item extends HotBarInfo {
+public abstract class Item extends HotBarInfo{
     private final String name;
     protected int count;
     private final int maxCount;
@@ -47,4 +47,7 @@ public abstract class Item extends HotBarInfo {
         return this.name.equals(name) && this.count == count;
     }
 
+    public void setCount(int amount) {
+        count = amount;
+    }
 }
