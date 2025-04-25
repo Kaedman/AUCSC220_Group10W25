@@ -7,6 +7,8 @@ import com.example.untitleddungeongame.handlers.combat.Combat;
 
 public class Encounter extends Room {
     private Combat combat;
+
+
     private Player player;
 
     public Encounter(int roomId, Enemy enemy, Player player) {

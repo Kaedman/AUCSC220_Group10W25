@@ -337,15 +337,6 @@ public class RoomMaster {
         return floorMap;
     }
 
-    public static int[] getStartPositionIndexs(int[][] floorMap){
-        for (int y = 0; y < floorMap.length; y ++){
-            for (int x = 0; x < floorMap[y].length; x ++){
-                if (floorMap[y][x] == 1)
-                    return new int[]{x, y};
-            }
-        }
-        return new int[]{-1,-1};
-    }
 
     public Player getPlayer() {
         return player;
@@ -381,5 +372,9 @@ public class RoomMaster {
 
     public void showArrows() {
         game.disableArrows(false);
+    }
+
+    public void setCurrentFloor(int floor){
+        currentFloor = floor;
     }
 }

@@ -23,6 +23,7 @@ import com.example.untitleddungeongame.animations.Sprite;
 import com.example.untitleddungeongame.entity.Enemy;
 import com.example.untitleddungeongame.entity.Goblin;
 import com.example.untitleddungeongame.entity.Player;
+import com.example.untitleddungeongame.floors.Boss;
 import com.example.untitleddungeongame.floors.Rest;
 import com.example.untitleddungeongame.floors.Room;
 import com.example.untitleddungeongame.floors.RoomMaster;
@@ -168,7 +169,7 @@ public class Game extends SurfaceView implements Runnable {
     public void prepMiniMap(){
 
         miniMap = new MiniMap(roomMaster.getFloorMap(), 1000, 1000);
-        int[] playerPos = RoomMaster.getStartPositionIndexs(roomMaster.getFloorMap());
+        int[] playerPos = {roomMaster.getCurrentRoom().getRoomId() % 100, roomMaster.getCurrentRoom().getRoomId() /100};
 
         MiniMap.playerX = playerPos[0];
         MiniMap.playerY = playerPos[1];
@@ -462,6 +463,20 @@ public class Game extends SurfaceView implements Runnable {
             case ENEMY_DEATH: {
                 Log.d("Game", "Enemy Died");
                 roomMaster.getCurrentRoom().setRoomCleared(true);
+                //Generate new floor after boss is defeated
+                if (roomMaster.getCurrentRoom() instanceof Boss){
+                    roomMaster.setCurrentFloor(roomMaster.getCurrentFloor() + 1);
+                    activity.runOnUiThread(() -> {
+                        roomMaster.generateRooms(5, 5, 10);
+                        roomMaster.moveToRoom(roomMaster.getCurrentRoom());
+                        prepMiniMap();
+                        mapUpdate();
+                        arrows.setArrows();
+                    });
+
+
+                }
+                arrows.setArrows();
                 break;
             }
             default:{
