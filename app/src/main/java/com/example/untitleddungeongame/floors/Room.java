@@ -14,6 +14,7 @@ public class Room {
     private Room right;
     private Room up;
     private Room down;
+
     protected Enemy enemy;
     //Room ids are a 4 digit numbers, the first 2 digits are the row number, the last 2 digits are
     //the column numbers.
@@ -65,9 +66,7 @@ public class Room {
         return roomCleared;
     }
 
-    public void setRoomCleared(boolean cleared){
-        this.roomCleared = cleared;
-    }
+
 
 
     //Setters
@@ -86,6 +85,10 @@ public class Room {
     public void setRoomId (int id){
         this.roomId = id;
     }
+    public void setRoomCleared(boolean cleared){
+        this.roomCleared = cleared;
+    }
+
 
 
     public void setUpAllLooks() {
@@ -117,6 +120,8 @@ public class Room {
     public boolean isAdjacent(Room checkedRoom) {
         for (Room room : this.getAllAdjacent()) {
             if (checkedRoom == room) {
+                return true;
+            } else if (checkedRoom == this){
                 return true;
             }
         }
