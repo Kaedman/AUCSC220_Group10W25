@@ -276,10 +276,11 @@ public class Game extends SurfaceView implements Runnable {
         }
 
 //        deathScreen();
+        while (!confirmExitToScreen){}
 
-//        activity.runOnUiThread(() ->{
-//            ((MainActivity)activity).onQuit(findViewById(R.id.quit_button));
-//        });
+        activity.runOnUiThread(() ->{
+            ((MainActivity)activity).onQuit(findViewById(R.id.quit_button));
+        });
     }
 
     public void setDoGameLoop(boolean state){
