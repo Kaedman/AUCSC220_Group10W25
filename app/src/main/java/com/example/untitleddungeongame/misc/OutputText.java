@@ -23,6 +23,7 @@ public class OutputText {
     public static void setOutputText(String text) {
         outputText = text;
         newText = true;
+        inDialog = true;
         for (DialogEventListener event : events) {
             event.run(DialogEvent.NEW_TEXT);
         }
@@ -62,10 +63,10 @@ public class OutputText {
         return inDialog;
     }
     public static void setInDialog(boolean inDialog) {
+        OutputText.inDialog = inDialog;
         if (!inDialog) {
             dialogClosed();
         }
-        OutputText.inDialog = inDialog;
     }
 
     public static void addDialogEventListener(DialogEventListener event) {

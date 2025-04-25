@@ -122,6 +122,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause(){
         super.onPause();
+        if (gameCallBack == null) return;
         Game currentGame = gameCallBack.getGame();
         if (currentGame == null) return;
         synchronized (currentGame) {
@@ -137,6 +138,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume(){
         super.onResume();
+        if (gameCallBack == null) return;
         Game currentGame = gameCallBack.getGame();
         if (currentGame == null) return;
         synchronized (currentGame) {
@@ -153,6 +155,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onUserResume(View v){
+        if (gameCallBack == null) return;
         Game currentGame = gameCallBack.getGame();
         if (currentGame == null) return;
         synchronized (currentGame) {
@@ -164,6 +167,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
     public void onUserPause(View v){
+        if (gameCallBack == null) return;
         Game currentGame = gameCallBack.getGame();
         if (currentGame == null) return;
         synchronized (currentGame) {
@@ -194,6 +198,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void mapButton(View v){
+        if (gameCallBack == null) return;
         Game currentGame = gameCallBack.getGame();
         if (currentGame == null) return;
         synchronized (currentGame) {
@@ -208,8 +213,6 @@ public class MainActivity extends AppCompatActivity {
         synchronized (currentGame) {
             currentGame.doGameLoop = false;
         }
-        gameCallBack = null;
-        gameView = null;
     }
 
     public ShopBar<Item> getShopBar() {

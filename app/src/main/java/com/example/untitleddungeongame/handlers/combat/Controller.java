@@ -25,6 +25,7 @@ public class Controller {
     boolean isReadyToParry = false;
     boolean shouldCancelParry = false;
     boolean canParry = true;
+    boolean messageAlreadyDisplayed = false;
 
     public enum CombatEventEnum {
         PLAYER_ATTACK,
@@ -50,6 +51,7 @@ public class Controller {
     public Controller(Player player) {
         this.player = player;
 
+        //Set up the combat state callbacks
         combatState.setStateCallback(CombatState.State.WAITING, this::runWaitingState);
         combatState.setStateCallback(CombatState.State.TURN_START, this::handleTurn);
         combatState.setStateCallback(CombatState.State.ATTACK, this::attacking);
@@ -60,8 +62,9 @@ public class Controller {
     }
 
     public void run(Room room) {
+        // Must have an event listener for the game to work
         if (eventListener == null) throw new NullPointerException("Event Listener is null");
-        if (room.getEnemy() == null) return;
+        if (room.getEnemy() == null) return; // No enemy in the room
         enemy = room.getEnemy();
         currentRoom = room;
         if (OutputText.isInDialog()) return;
@@ -107,25 +110,27 @@ public class Controller {
     }
     private void attacking() {
         if (combatState.currentTurn() == CombatTurn.State.ENEMY && canParry) {
+            if (!isReadyToParry && !parried && !shouldCancelParry) {
+                if (!elapseTime.hasTimeElapsed(250)) return; // This is the time before the parry window opens
+                isReadyToParry = true;
+                eventListener.run(CombatEventEnum.PARRY_WINDOW_OPEN);
+                return;
+            }
             if (!parried && !shouldCancelParry) {
-                if (!isReadyToParry) {
-                    if (!elapseTime.hasTimeElapsed(400)) return; // This is the time before the parry window opens
-                    isReadyToParry = true;
-                    eventListener.run(CombatEventEnum.PARRY_WINDOW_OPEN);
-                    return;
-                }
                 if (parryController.isTryingToParry() && isReadyToParry) {
                     System.out.println("Parry Attempted");
                     parried = true;
                 }
-                if (!elapseTime.hasTimeElapsed(500)) return; // This effects the parry window time
-                eventListener.run(CombatEventEnum.PARRY_WINDOW_CLOSE);
-                canParry = false;
             }
-            if (parried && !shouldCancelParry && parryController.isTryingToParry()) {
-                parried = false;
-                shouldCancelParry = true;
+            if (parried && !shouldCancelParry) {
+                if (parryController.isTryingToParry()) {
+                    parried = false;
+                    shouldCancelParry = true;
+                }
             }
+            if (!elapseTime.hasTimeElapsed(750)) return; // This effects the parry window time
+            eventListener.run(CombatEventEnum.PARRY_WINDOW_CLOSE);
+            canParry = false;
         }
         if (!elapseTime.hasTimeElapsed(250)) return;
         Entity source = combatEvent.getSource();
@@ -195,21 +200,20 @@ public class Controller {
         canParry = true;
     }
 
-    public void ending() {
+    private void ending() {
         combatState.combatTurn.reset();
         combatOption = null;
         canParry = true;
         shouldCancelParry = false;
         if (enemy.isDead()) {
-            if (!elapseTime.hasTimeElapsed(100)) return;
             eventListener.run(CombatEventEnum.ENEMY_DEATH);
-            OutputText.setOutputText("Enemy Defeated");
             currentRoom.setRoomCleared(true);
         } else if (player.isDead()) {
+//            OutputText.setOutputText("You died.");
             if (!elapseTime.hasTimeElapsed(100)) return;
             eventListener.run(CombatEventEnum.PLAYER_DEATH);
-            OutputText.setOutputText("Player Defeated");
         }
+        messageAlreadyDisplayed = false;
         combatState.switchState(CombatState.State.READY);
     }
 

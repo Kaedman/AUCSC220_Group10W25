@@ -100,6 +100,7 @@ public class Game extends SurfaceView implements Runnable {
     private boolean confirmExitToScreen = false;
     private AnimatedSprite shopKeeper;
     private ElapseTime frameTime = new ElapseTime();
+    private boolean bossDefeated = false;
     private Paint moneyPaint;
     private Sprite moneySymbol;
 
@@ -281,7 +282,7 @@ public class Game extends SurfaceView implements Runnable {
         prepRestRoom();
 
         prepShop();
-        
+
         prepMoney();
 
         //GameLoop happens Here
@@ -399,7 +400,6 @@ public class Game extends SurfaceView implements Runnable {
 
     public void setDialogText(String text) {
         dialogBox.setText(text);
-        OutputText.setInDialog(true);
     }
 
     /**
@@ -471,8 +471,11 @@ public class Game extends SurfaceView implements Runnable {
     public void disableArrows(Boolean visibility) {
         Room room = roomMaster.getCurrentRoom();
         if (!visibility) { // Before turning them on
+            System.out.println("Arrows are enabled");
             if ((room instanceof Encounter || room instanceof Boss) && combat.isInCombat()) return;
             if (room instanceof Rest && !room.getRoomCleared()) return;
+            System.out.println("Is in dialog: " + OutputText.isInDialog());
+            if (OutputText.isInDialog()) return;
         }
         arrows.disable(visibility);
     }
@@ -501,18 +504,13 @@ public class Game extends SurfaceView implements Runnable {
             }
             case ENEMY_DEATH: {
                 Log.d("Game", "Enemy Died");
-                roomMaster.getCurrentRoom().setRoomCleared(true);
                 //Generate new floor after boss is defeated
-                if (roomMaster.getCurrentRoom() instanceof Boss){
-                    roomMaster.setCurrentFloor(roomMaster.getCurrentFloor() + 1);
-                    activity.runOnUiThread(() -> {
-                        roomMaster.generateRooms(5, 5, 10);
-                        roomMaster.moveToRoom(roomMaster.getCurrentRoom());
-                        prepMiniMap();
-                        mapUpdate();
-                        arrows.setArrows();
-                        resetEntities();
-                    });
+
+                if (roomMaster.getCurrentRoom() instanceof Boss ){
+                    OutputText.setOutputText("Moving to next floor");
+                    bossDefeated = true;
+                } else if (roomMaster.getCurrentRoom() instanceof Encounter) {
+                    OutputText.setOutputText("Enemy Defeated");
                 }
                 roomMaster.getPlayer().setMoney(roomMaster.getPlayer().getMoney() + 5);
                 break;
@@ -530,11 +528,29 @@ public class Game extends SurfaceView implements Runnable {
             }
         }
     }
+    private void remakeFloor() {
+        roomMaster.setCurrentFloor(roomMaster.getCurrentFloor() + 1);
+        activity.runOnUiThread(() -> {
+            roomMaster.generateRooms(5, 5, 10);
+            roomMaster.moveToRoom(roomMaster.getCurrentRoom());
+            prepMiniMap();
+            mapUpdate();
+            arrows.setArrows();
+            resetEntities();
+        });
+        bossDefeated = false;
+    }
 
     private void dialogEventListener(OutputText.DialogEvent event) {
         switch (event) {
             case CLOSED: {
+                System.out.println("Dialog Closed");
                 disableArrows(false);
+                if (bossDefeated) {
+                    isPaused = true;
+                    remakeFloor();
+                    isPaused = false;
+                }
                 break;
             }
             default: {

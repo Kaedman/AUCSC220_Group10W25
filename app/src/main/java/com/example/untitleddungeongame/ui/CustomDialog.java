@@ -95,40 +95,6 @@ public class CustomDialog extends LinearLayout {
         handler.postDelayed(wordAdder, delay);
     }
 
-    private void animateText(String target) {
-
-    }
-
-    public Runnable updateText() {
-        if (!isTextSet) return null;
-        if (length == 0) {
-            elapseTime.reset();
-            return null;
-        }
-
-
-
-        if (current.length() == length) {
-            elapseTime.reset();
-            return null;
-        }
-
-        if (!elapseTime.hasTimeElapsed(10)) return null;
-
-        String currentWord = currentText.get(currantWordIndex);
-        String newText = String.format("%s %s", current, currentWord);
-        OutputText.textUpdating();
-        textView.setText(newText);
-        if (newText.length() < length) {
-            currantWordIndex++;
-        } else {
-            length = 0;
-            isTextSet = false;
-            OutputText.textFinished();
-        }
-        return null;
-    }
-
     public void closeDialog() {
         textView.setText("");
         rootView.setVisibility(GONE);
