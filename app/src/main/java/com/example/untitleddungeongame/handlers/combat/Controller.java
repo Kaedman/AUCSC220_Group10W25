@@ -23,6 +23,7 @@ public class Controller {
 
     boolean parried = false;
     boolean isReadyToParry = false;
+    boolean shouldCancelParry = false;
     boolean canParry = true;
 
     public enum CombatEventEnum {
@@ -37,6 +38,8 @@ public class Controller {
         PLAYER_DEATH,
         ENEMY_DEATH,
         PLAYER_PARRY,
+        PARRY_WINDOW_OPEN,
+        PARRY_WINDOW_CLOSE
 
     }
     public interface CombatEventListener {
@@ -104,24 +107,26 @@ public class Controller {
     }
     private void attacking() {
         if (combatState.currentTurn() == CombatTurn.State.ENEMY) {
-            if (canParry && !parried) {
-                if (!elapseTime.hasTimeElapsed(250)) return;
+            if (canParry && !parried && !shouldCancelParry) {
                 if (!isReadyToParry) {
+                    if (!elapseTime.hasTimeElapsed(400)) return; // This is the time before the parry window opens
                     isReadyToParry = true;
+                    eventListener.run(CombatEventEnum.PARRY_WINDOW_OPEN);
                     return;
                 }
-                System.out.println("Parry is ready");
-                if (parryController.isTryingToParry() && isReadyToParry && !parried) {
-                    System.out.println("Parry is set");
+                if (parryController.isTryingToParry() && isReadyToParry) {
                     parried = true;
                 }
-                if (!elapseTime.hasTimeElapsed(500)) return;
+                if (!elapseTime.hasTimeElapsed(500)) return; // This effects the parry window time
                 canParry = false;
+                eventListener.run(CombatEventEnum.PARRY_WINDOW_CLOSE);
             }
-            if (!elapseTime.hasTimeElapsed(500)) return;
-        } else {
-            if (!elapseTime.hasTimeElapsed(250)) return;
+            if (parried && !shouldCancelParry && parryController.isTryingToParry()) {
+                parried = false;
+                shouldCancelParry = true;
+            }
         }
+        if (!elapseTime.hasTimeElapsed(250)) return;
         Entity source = combatEvent.getSource();
         Entity target = combatEvent.getTarget();
         Attack attack = source.getAttacks()[combatEvent.getPosition()];
@@ -193,6 +198,7 @@ public class Controller {
         combatState.combatTurn.reset();
         combatOption = null;
         canParry = true;
+        shouldCancelParry = false;
         if (enemy.isDead()) {
             if (!elapseTime.hasTimeElapsed(100)) return;
             eventListener.run(CombatEventEnum.ENEMY_DEATH);

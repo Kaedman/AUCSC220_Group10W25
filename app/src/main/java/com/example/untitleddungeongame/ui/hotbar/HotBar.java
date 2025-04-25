@@ -36,7 +36,7 @@ public class HotBar<T extends HotBarInfo> extends LinearLayout {
 
         for (int i = 0; i < hotBarOptions.length; i++) {
             int finalI = i;
-            hotBarOptions[i].setOnClick(() -> {
+            hotBarOptions[i].setOnClick(_v -> {
                 if (onClick != null) {
                     onClick.run(finalI);
                 }
