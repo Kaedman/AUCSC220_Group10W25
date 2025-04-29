@@ -45,6 +45,9 @@ import com.example.untitleddungeongame.ui.RoomVisual;
 
 @SuppressLint("ViewConstructor")
 public class Game extends SurfaceView implements Runnable {
+    final int STARTING_ROWS = 5;
+    final int STARTING_COLS = 5;
+    final int STARTING_THRESHOLD = (int) (STARTING_ROWS * STARTING_COLS * 0.6);
     //Refering to this tutorial: https://gamecodeschool.com/android/coding-a-snake-game-for-android/
 
     //Game Control
@@ -103,6 +106,7 @@ public class Game extends SurfaceView implements Runnable {
     private boolean bossDefeated = false;
     private Paint moneyPaint;
     private Sprite moneySymbol;
+    private Player player;
 
     @SuppressLint("SetTextI18n")
 
@@ -115,7 +119,6 @@ public class Game extends SurfaceView implements Runnable {
 
         mainActivity.getShopBar().setOnClick(this::buyItem);
         mainActivity.getSwapBar().setOnClick(this::swapItem);
-
 
         //Screen and UI
         fps = 1000/60;
@@ -135,8 +138,6 @@ public class Game extends SurfaceView implements Runnable {
         fill.setStyle(Paint.Style.FILL);
         fill.setColor(Color.BLACK);
 
-        arrows = activity.findViewById(R.id.arrows);
-
         touchListener = new GameTouchListener(this);
         gameView.setOnTouchListener(touchListener);
 
@@ -149,11 +150,27 @@ public class Game extends SurfaceView implements Runnable {
         userPaused = false; //Pausing controlled by pause button
         showMiniMap = false;
 
-        playerSprite = new AnimatedSprite(new Sprite(Assets.AssetID.PLAYER, 32, 32, 4));
+        // Player
+        player = new Player(20, 6, 5, 10);
+        playerSprite = new AnimatedSprite(new Sprite(Assets.AssetID.PLAYER, 32,
+                32, 4));
+
+        // Rooms
+        roomMaster = new RoomMaster(player);
+        roomMaster.setGame(this);
+        roomMaster.generateRooms(STARTING_ROWS, STARTING_COLS, STARTING_THRESHOLD);
+        setRoomVisual(roomMaster.getCurrentRoom().getLooks());
+
+        arrows = activity.findViewById(R.id.arrows);
+        arrows.setRoomMaster(roomMaster);
+        arrows.setArrows();
+
+        // Combat
+        combat = new Combat(activity, roomMaster.getPlayer(), fps);
+        combat.setEventListener(this::combatEventListener);
 
         doGameLoop = true;
         OutputText.addDialogEventListener(this::dialogEventListener);
-
     }
 
 
@@ -236,8 +253,6 @@ public class Game extends SurfaceView implements Runnable {
         playerHit.createAllParticles();
         for (int i = 0; i < 200; i ++)
             playerHit.updateParticles(); //Hide inital particles
-
-
     }
     private void attackFXSetup(){
         Sprite up = new Sprite(Assets.AssetID.SlASH_UP,32, 32, 9);
@@ -265,7 +280,6 @@ public class Game extends SurfaceView implements Runnable {
 
 
         parryInstruct = new DrawInstructions(575, 1200, parry, Sprite.universalSpriteScale, Sprite.universalSpriteScale);
-
     }
 
     @Override
@@ -284,6 +298,8 @@ public class Game extends SurfaceView implements Runnable {
         prepShop();
 
         prepMoney();
+
+        resetEntities();
 
         //GameLoop happens Here
         while (doGameLoop){
@@ -353,7 +369,8 @@ public class Game extends SurfaceView implements Runnable {
         canvas.drawPaint(fill); //Refresh the canvas
         if (roomVisual != null) //Room Drawing
             roomVisual.draw(canvas, (int)(-RoomVisual.getScaleX() * RoomVisual.getTilePixelWidth() * 0.5), 0);
-            //Enemy Drawings
+
+        //Enemy Drawings
         enemyToDraw = currentRoom.getEnemy();
 
         if (enemyToDraw != null) {
@@ -442,15 +459,6 @@ public class Game extends SurfaceView implements Runnable {
         this.roomVisual = roomVisual;
     }
 
-    public void setRoomMaster(RoomMaster roomMaster) {
-        this.roomMaster = roomMaster;
-        arrows.setRoomMaster(roomMaster);
-        arrows.setArrows();
-        combat = new Combat(activity, roomMaster.getPlayer(), fps);
-        combat.setEventListener(this::combatEventListener);
-        System.out.println(roomMaster);
-    }
-
     public Canvas getCanvas() {
         return canvas;
     }
@@ -512,7 +520,8 @@ public class Game extends SurfaceView implements Runnable {
                 } else if (roomMaster.getCurrentRoom() instanceof Encounter) {
                     OutputText.setOutputText("Enemy Defeated");
                 }
-                roomMaster.getPlayer().setMoney(roomMaster.getPlayer().getMoney() + 5);
+                roomMaster.getPlayer().setMoney(roomMaster.getPlayer().getMoney() +
+                        roomMaster.getCurrentRoom().getEnemy().sumStats() / 4);
                 break;
             }
             case PARRY_WINDOW_OPEN: {
@@ -559,7 +568,7 @@ public class Game extends SurfaceView implements Runnable {
         }
     }
 
-    private void resetEntities(){
+    public void resetEntities(){
         DrawInstructions.thingsToDraw.clear();
 
         DrawInstructions.thingsToDraw.add(playerDrawInstructions);
@@ -591,7 +600,7 @@ public class Game extends SurfaceView implements Runnable {
     }
 
     public void buyItem(int index, Item item) {
-        if (roomMaster.getPlayer().getMoney() >= 5) {
+        if (roomMaster.getPlayer().getMoney() >= item.getCost()) {
             if (item instanceof Potion) {
                 roomMaster.getPlayer().addItem(new Potion());
             } else if (item instanceof Apple) {
@@ -600,7 +609,7 @@ public class Game extends SurfaceView implements Runnable {
             //roomMaster.getPlayer().addItem();
 
             ((Shop) roomMaster.getCurrentRoom()).removeItem(index);
-            roomMaster.getPlayer().setMoney(roomMaster.getPlayer().getMoney() - 5);
+            roomMaster.getPlayer().setMoney(roomMaster.getPlayer().getMoney() - item.getCost());
             mainActivity.getShopBar().set(((Shop) roomMaster.getCurrentRoom()).getShopItems());
             mainActivity.getShopBar().updateUi();
             //Log.d("player", String.valueOf(roomMaster.getPlayer().getEquipped().getInfo()));
@@ -634,6 +643,39 @@ public class Game extends SurfaceView implements Runnable {
 
     public void endGame() {
         doGameLoop = false;
+    }
+
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
+
+    public RoomMaster getRoomMaster() {
+        return roomMaster;
+    }
+
+    public void hideRoomElements() {
+        mainActivity.getConfirmCancel().hide();
+        mainActivity.getShopBar().disable(true);
+        mainActivity.getSwapBar().disable(true);
+    }
+
+    public void onMove() {
+        hideRoomElements();
+
+        setRoomVisual(roomMaster.getCurrentRoom().getLooks());
+    }
+
+    public void showConfirmCancel() {
+        mainActivity.getConfirmCancel().show();
+    }
+
+    public void setShopUI(Shop currentRoom) {
+        mainActivity.getShopBar().set(currentRoom.getShopItems());
+        mainActivity.getShopBar().updateUi();
+        mainActivity.getShopBar().disable(false);
+        //swapBar.set(player.getEquipped().clone());
+        mainActivity.getSwapBar().updateUi();
+        mainActivity.getSwapBar().disable(false);
     }
 }
 

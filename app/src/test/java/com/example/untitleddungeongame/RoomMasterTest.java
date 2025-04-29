@@ -47,7 +47,7 @@ public class RoomMasterTest {
     @Test
     public void testFindEmptyPathLastEmpty() {
         RoomMaster roomMaster = new RoomMaster(new Player(60));
-        roomMaster.setFloorMap(new int[][] {{0, 6, 3, 5},
+        roomMaster.setFloorMap(new int[][] {{0, 6, , 5},
                                             {0, 5, 3, 4},
                                             {0, 0, 1, 5},
                                             {0, 0, 0, 2}});

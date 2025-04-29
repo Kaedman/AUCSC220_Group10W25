@@ -116,4 +116,7 @@ public class Entity {
     public boolean isDead() {
         return health <= 0;
     }
+    public int sumStats() {
+        return maxHealth + attack + defense + speed;
+    }
 }

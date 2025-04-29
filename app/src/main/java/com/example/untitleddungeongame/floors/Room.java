@@ -21,7 +21,7 @@ public class Room {
     private int roomId;
 
     private boolean roomCleared;
-    public static int[] currentTileGen = {15, 13, 14};
+    public static int[] currentTileGen = {15, 13, 14, 12};
     private RoomVisual looks; //The visual itself
 
     public Room(int roomId, Enemy enemy) {
@@ -141,13 +141,5 @@ public class Room {
 
     public Enemy getEnemy() {
         return this.enemy;
-    }
-
-    public void showVisuals(Game game) {
-        return;
-    }
-
-    public void hideVisuals(Game game) {
-        return;
     }
 }

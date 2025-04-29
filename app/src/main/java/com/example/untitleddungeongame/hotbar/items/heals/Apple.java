@@ -5,7 +5,7 @@ import com.example.untitleddungeongame.hotbar.items.Item;
 
 public class Apple extends Item {
     public Apple() {
-        super("Apple", 5);
+        super("Apple", 5, 5);
     }
 
     public boolean use(int position, Entity character) {

@@ -7,11 +7,13 @@ public abstract class Item extends HotBarInfo{
     private final String name;
     protected int count;
     private final int maxCount;
+    private int cost;
 
-    public Item(String name, int maxCount) {
+    public Item(String name, int maxCount, int cost) {
         super(name);
         this.maxCount = maxCount;
         this.name = name;
+        this.cost = cost;
     }
 
     abstract public boolean use(int position, Entity character);
@@ -49,5 +51,9 @@ public abstract class Item extends HotBarInfo{
 
     public void setCount(int amount) {
         count = amount;
+    }
+
+    public int getCost() {
+        return cost;
     }
 }

@@ -12,34 +12,22 @@ package com.example.untitleddungeongame;
 import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.res.Resources;
-import android.graphics.BitmapFactory;
-import android.graphics.Point;
 import android.os.Bundle;
-import android.view.Display;
 import android.view.SurfaceView;
 import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.example.untitleddungeongame.floors.RoomMaster;
-import com.example.untitleddungeongame.entity.Player;
 import com.example.untitleddungeongame.handlers.Game;
-import com.example.untitleddungeongame.hotbar.HotBarInfo;
 import com.example.untitleddungeongame.hotbar.items.Item;
 import com.example.untitleddungeongame.ui.ConfirmCancelMenu;
 import com.example.untitleddungeongame.ui.PauseMenu;
 import com.example.untitleddungeongame.ui.PixelButton;
-import com.example.untitleddungeongame.ui.hotbar.HotBar;
 import com.example.untitleddungeongame.ui.shopbar.ShopBar;
 import com.example.untitleddungeongame.ui.swapbar.SwapBar;
 
@@ -54,15 +42,10 @@ public class MainActivity extends AppCompatActivity {
     private PixelButton miniMapButton;
     private PauseMenu pauseMenu;
     private ConfirmCancelMenu confirmCancel;
-    private Player player;
     private MyCallBack gameCallBack;
     private Game game;
 
     //HashMap<AssetID, Bitmap> assets;
-    RoomMaster roomMaster;
-    final int STARTING_ROWS = 5;
-    final int STARTING_COLS = 5;
-    final int STARTING_THRESHOLD = (int) (STARTING_ROWS * STARTING_COLS * 0.6);
     private ShopBar<Item> shopBar;
     private SwapBar<Item> swapBar;
 
@@ -79,16 +62,9 @@ public class MainActivity extends AppCompatActivity {
         shopBar = findViewById(R.id.shop_bar);
         swapBar = findViewById(R.id.swap_bar);
 
-        player = new Player(20, 6, 5, 10);
-        roomMaster = new RoomMaster(player);
-
-        confirmCancel.setRoomMaster(roomMaster);
         confirmCancel.hide();
 
-        roomMaster.setConfirmCancel(confirmCancel);
-        roomMaster.setShopBar(shopBar);
-        roomMaster.setSwapBar(swapBar);
-        gameCallBack = new MyCallBack(this, gameView, roomMaster);
+        gameCallBack = new MyCallBack(this, gameView);
         EdgeToEdge.enable(this);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -103,7 +79,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart(){
         super.onStart();
 
-
         pauseButton.setOnClickListener(this::onUserPause);
         pauseMenu.setOnQuitClickListener(this::onQuit);
         pauseMenu.setOnResumeClickListener(this::onUserResume);
@@ -112,8 +87,6 @@ public class MainActivity extends AppCompatActivity {
 
         gameView.getHolder().addCallback(gameCallBack);
         gameLaunched = true;
-
-        roomMaster.generateRooms(STARTING_ROWS, STARTING_COLS, STARTING_THRESHOLD);
     }
 
     /**
@@ -221,5 +194,9 @@ public class MainActivity extends AppCompatActivity {
 
     public SwapBar<Item> getSwapBar() {
         return swapBar;
+    }
+
+    public ConfirmCancelMenu getConfirmCancel() {
+        return confirmCancel;
     }
 }

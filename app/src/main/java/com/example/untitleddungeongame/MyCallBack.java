@@ -18,12 +18,10 @@ public class MyCallBack implements SurfaceHolder.Callback {
     private SurfaceView gameView;
     private AppCompatActivity activity;
     Thread gameThread;
-    private RoomMaster roomMaster;
 
-    public MyCallBack(AppCompatActivity activity, SurfaceView gameView, RoomMaster roomMaster) {
+    public MyCallBack(AppCompatActivity activity, SurfaceView gameView) {
         this.gameView = gameView;
         this.activity = activity;
-        this.roomMaster = roomMaster;
     }
 
     @Override
@@ -37,10 +35,7 @@ public class MyCallBack implements SurfaceHolder.Callback {
             System.out.printf("Is Surface Valid: %b\n", holder.getSurface().isValid());
 
             game = new Game(activity, holder, size, gameView);
-            roomMaster.setGame(game);
-            game.setRoomMaster(roomMaster);
             game.setDoGameLoop(true);
-            game.setRoomVisual(roomMaster.getCurrentRoom().getLooks());
 
             gameThread = new Thread(game);
             gameThread.start();

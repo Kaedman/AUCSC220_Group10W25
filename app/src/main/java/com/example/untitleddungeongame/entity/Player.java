@@ -4,8 +4,6 @@ import com.example.untitleddungeongame.hotbar.attacks.Attack;
 import com.example.untitleddungeongame.hotbar.items.Item;
 
 public class Player extends Entity {
-
-    Item[] inventory = new Item[10];
     int money;
 
     public Player(int health) {
@@ -30,17 +28,6 @@ public class Player extends Entity {
                     item.add(1);
                     equipped[i] = item;
                 }
-                break;
-            }
-        }
-        if (itemEquipped) return true;
-        for (int i = 0; i < inventory.length; i++) {
-            if (inventory[i] == null) {
-                itemEquipped = item.add(1);
-                inventory[i] = item;
-                break;
-            } else if (inventory[i].getName().equals(item.getName())) {
-                itemEquipped = item.add(1);
                 break;
             }
         }

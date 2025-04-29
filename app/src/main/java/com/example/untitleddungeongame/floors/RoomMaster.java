@@ -10,12 +10,10 @@ import com.example.untitleddungeongame.entity.Slime;
 import com.example.untitleddungeongame.handlers.Game;
 import com.example.untitleddungeongame.ui.ConfirmCancelMenu;
 import com.example.untitleddungeongame.hotbar.items.Item;
-import com.example.untitleddungeongame.ui.hotbar.HotBar;
 import com.example.untitleddungeongame.ui.shopbar.ShopBar;
 import com.example.untitleddungeongame.ui.swapbar.SwapBar;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class RoomMaster {
     private Room headRoom = null;
@@ -135,7 +133,6 @@ public class RoomMaster {
             currentLoc = new int[]{currentLoc[0] + randomPath[0], currentLoc[1] + randomPath[1]};
             path.add(0, currentLoc);
 
-
             // Set the location in the array to a random room
             floorMap[currentLoc[0]][currentLoc[1]] =
                     roomIntList[(int) (Math.random() * roomIntList.length)];
@@ -153,27 +150,22 @@ public class RoomMaster {
      */
     public void moveToRoom(Room destination) {
         if (destination.isAdjacent(currentRoom)) {
-            confirmCancel.hide();
-            shopBar.disable(true);
-            swapBar.disable(true);
             currentRoom = destination;
             Log.d("floorMap", toString());
             Log.d("currentId", getCurrentRoom().toString());
-            game.setRoomVisual(currentRoom.getLooks());
 
-            if (currentRoom instanceof Rest && !((Rest) currentRoom).usedRest()) {
-                hideArrows();
-                confirmCancel.show();
-                currentRoom.setRoomCleared(false);
+            game.onMove();
+
+            if (currentRoom instanceof Rest) {
+                if (!((Rest) currentRoom).usedRest()) {
+                    hideArrows();
+                    game.showConfirmCancel();
+                    currentRoom.setRoomCleared(false);
+                }
             } else if (!currentRoom.getRoomCleared() && currentRoom.getEnemy() != null) {
                 hideArrows();
             } else if (currentRoom instanceof Shop) {
-                shopBar.set(((Shop) currentRoom).getShopItems());
-                shopBar.updateUi();
-                shopBar.disable(false);
-                //swapBar.set(player.getEquipped().clone());
-                swapBar.updateUi();
-                swapBar.disable(false);
+                game.setShopUI((Shop) currentRoom);
             }
         } else {
             throw new java.lang.RuntimeException("Room destination is not adjacent to current room");
@@ -192,7 +184,7 @@ public class RoomMaster {
                 break;
 
             case 2: //
-                enemy = new Big_Goblin("Ooga Booga", 20, 8, 5, 9);
+                enemy = new Big_Goblin("Ooga Booga", 20, 5, 5, 5);
 
                 newRoom = new Boss(((row * 100) + (col)), enemy);
                 break;
@@ -385,10 +377,6 @@ public class RoomMaster {
          */
     }
 
-    public void setConfirmCancel(ConfirmCancelMenu confirmCancel) {
-        this.confirmCancel = confirmCancel;
-    }
-
     public void hideArrows() {
         game.disableArrows(true);
     }
@@ -399,13 +387,5 @@ public class RoomMaster {
 
     public void setCurrentFloor(int floor){
         currentFloor = floor;
-    }
-
-    public void setShopBar(ShopBar<Item> shopBar) {
-        this.shopBar = shopBar;
-    }
-
-    public void setSwapBar(SwapBar<Item> swapBar) {
-        this.swapBar = swapBar;
     }
 }

@@ -47,7 +47,6 @@ public class Shop extends Room {
                 newItem.add(((int) (Math.random() * 3)) + 1);
 
                 shopItems[i] = newItem;
-                //TODO: verify works
             }
 
             addedList.add(randItem);
