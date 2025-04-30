@@ -199,4 +199,13 @@ public class MainActivity extends AppCompatActivity {
     public ConfirmCancelMenu getConfirmCancel() {
         return confirmCancel;
     }
+
+    public void setGame(Game game) {
+        this.game = game;
+        confirmCancel.setGame(game);
+    }
+
+    public Game getGame() {
+        return game;
+    }
 }

@@ -26,8 +26,6 @@ public class RoomMaster {
     private Player player;
     private Game game;
 
-    private ConfirmCancelMenu confirmCancel;
-
     // 0 is no room, 1 is origin, 2 is boss, 3 is encounter, 4 is rest, 5 is shop
     // This array simply indicates which rooms can be randomly chosen from during room generation
     // (where the origin and boss rooms are reserved)
@@ -356,10 +354,10 @@ public class RoomMaster {
         double random = Math.random() * FLOOR1ENEMIES;
 
         if (random <= 1) {
-            return new Slime("Slime", 12 * currentFloor, 7 * currentFloor,
+            return new Slime("Slime", 12 * currentFloor, 2 * currentFloor,
                     6 * currentFloor, 6);
         } else if (random <= 2) {
-            return new Goblin("Goblin", 11 * currentFloor, 8 * currentFloor,
+            return new Goblin("Goblin", 8 * currentFloor, 4 * currentFloor,
                     8 * currentFloor, 12);
         } else {
             return new Slime("King Slime", 20 * currentFloor);

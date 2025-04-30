@@ -13,9 +13,10 @@ import com.example.untitleddungeongame.floors.Boss;
 import com.example.untitleddungeongame.floors.Rest;
 import com.example.untitleddungeongame.floors.RoomMaster;
 import com.example.untitleddungeongame.R;
+import com.example.untitleddungeongame.handlers.Game;
 
 public class ConfirmCancelMenu extends ConstraintLayout {
-    private RoomMaster roomMaster;
+    private Game game;
     private ConstraintLayout rootView;
     private PixelButton confirmButton;
     private PixelButton cancelButton;
@@ -42,13 +43,12 @@ public class ConfirmCancelMenu extends ConstraintLayout {
     }
 
     public void onConfirm(View v) {
-        if (roomMaster.getCurrentRoom() instanceof Rest) {
-            ((Rest) roomMaster.getCurrentRoom()).useRest(roomMaster.getPlayer());
-            roomMaster.getCurrentRoom().setRoomCleared(true);
-            roomMaster.showArrows();
-        } else if (roomMaster.getCurrentRoom() instanceof Boss) {
+        if (game.getRoomMaster().getCurrentRoom() instanceof Rest) {
+            ((Rest) game.getRoomMaster().getCurrentRoom()).useRest(game.getPlayer());
+            game.getRoomMaster().getCurrentRoom().setRoomCleared(true);
+            game.getRoomMaster().showArrows();
+        } else if (game.getRoomMaster().getCurrentRoom() instanceof Boss) {
             // TODO: GO TO NEXT ROOM, not necessary for prototype
-
         }
 
         hide();
@@ -56,9 +56,9 @@ public class ConfirmCancelMenu extends ConstraintLayout {
 
     public void onCancel(View v) {
         hide();
-        if (roomMaster.getCurrentRoom() instanceof Rest) {
-            roomMaster.getCurrentRoom().setRoomCleared(true);
-            roomMaster.showArrows();
+        if (game.getRoomMaster().getCurrentRoom() instanceof Rest) {
+            game.getRoomMaster().getCurrentRoom().setRoomCleared(true);
+            game.getRoomMaster().showArrows();
         }
     }
 
@@ -77,7 +77,7 @@ public class ConfirmCancelMenu extends ConstraintLayout {
         rootView.setVisibility(GONE);
     }
 
-    public void setRoomMaster(RoomMaster roomMaster) {
-        this.roomMaster = roomMaster;
+    public void setGame(Game game) {
+        this.game = game;
     }
 }

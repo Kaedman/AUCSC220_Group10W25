@@ -76,6 +76,7 @@ public class Game extends SurfaceView implements Runnable {
     private RoomMaster roomMaster;
 
     private MainActivity mainActivity;
+
 //    private DrawInstructions playerDrawInstructions;
     private final Arrows arrows;
     Enemy enemyToDraw = new Goblin("Jerry", 30);
@@ -107,6 +108,8 @@ public class Game extends SurfaceView implements Runnable {
     private Paint moneyPaint;
     private Sprite moneySymbol;
     private Player player;
+    private AnimatedSprite parryIndicator;
+    private boolean showParry;
 
     @SuppressLint("SetTextI18n")
 
@@ -116,6 +119,7 @@ public class Game extends SurfaceView implements Runnable {
         this.surfaceHolder = surfaceHolder;
 
         mainActivity = ((MainActivity) activity);
+        mainActivity.setGame(this);
 
         mainActivity.getShopBar().setOnClick(this::buyItem);
         mainActivity.getSwapBar().setOnClick(this::swapItem);
@@ -223,6 +227,12 @@ public class Game extends SurfaceView implements Runnable {
         shopKeeper.setCurrentRepeat(true);
     }
 
+    private void prepParryIndicator() {
+        parryIndicator = new AnimatedSprite(new Sprite(Assets.AssetID.EXCLAMATION_POINT, 32, 32, 1));
+        parryIndicator.addAnimation(new Animation("Static", 0, 0, new int[] {0}));
+        parryIndicator.setCurrentAnimation("Static");
+    }
+
     private boolean hasPlayerMoved(){
         return oldX != MiniMap.playerX || oldY != MiniMap.playerY;
     }
@@ -297,6 +307,8 @@ public class Game extends SurfaceView implements Runnable {
 
         prepShop();
 
+        prepParryIndicator();
+
         prepMoney();
 
         resetEntities();
@@ -314,8 +326,9 @@ public class Game extends SurfaceView implements Runnable {
             draw();
             playerHit.updateParticles();
         }
-
-        deathScreen();
+        if (player.isDead()) {
+            deathScreen();
+        }
 //        while (!confirmExitToScreen){}
 
         activity.runOnUiThread(() ->{
@@ -396,9 +409,14 @@ public class Game extends SurfaceView implements Runnable {
         if (showMiniMap)
             miniMap.drawToCanvas(canvas, 200, 1000);
 
-        //Final Image updates
+        if (showParry) {
+            parryIndicator.drawAnimation(canvas, 550, 600, Sprite.universalSpriteScale, Sprite.universalSpriteScale);
+        }
+
         canvas.drawText(String.valueOf(roomMaster.getPlayer().getMoney()), 180, 450, moneyPaint);
         moneySymbol.drawScaled(canvas,20, 335, Sprite.universalSpriteScale / 2, Sprite.universalSpriteScale / 2);
+
+        //Final Image updates
 
         surfaceHolder.unlockCanvasAndPost(canvas); //update the surface
     }
@@ -515,7 +533,7 @@ public class Game extends SurfaceView implements Runnable {
                 //Generate new floor after boss is defeated
 
                 if (roomMaster.getCurrentRoom() instanceof Boss ){
-                    OutputText.setOutputText("Moving to next floor");
+                    OutputText.setOutputText("Moving to next floor...");
                     bossDefeated = true;
                 } else if (roomMaster.getCurrentRoom() instanceof Encounter) {
                     OutputText.setOutputText("Enemy Defeated");
@@ -526,10 +544,12 @@ public class Game extends SurfaceView implements Runnable {
             }
             case PARRY_WINDOW_OPEN: {
                 System.out.println("Parry Window Open");
+                showParry = true;
                 break;
             }
             case PARRY_WINDOW_CLOSE: {
                 System.out.println("Parry Window Closed");
+                showParry = false;
                 break;
             }
             default:{
@@ -539,13 +559,15 @@ public class Game extends SurfaceView implements Runnable {
     }
     private void remakeFloor() {
         roomMaster.setCurrentFloor(roomMaster.getCurrentFloor() + 1);
+        resetEntities();
         activity.runOnUiThread(() -> {
+            resetEntities();
             roomMaster.generateRooms(5, 5, 10);
+            resetEntities();
             roomMaster.moveToRoom(roomMaster.getCurrentRoom());
             prepMiniMap();
             mapUpdate();
             arrows.setArrows();
-            resetEntities();
         });
         bossDefeated = false;
     }
@@ -553,6 +575,7 @@ public class Game extends SurfaceView implements Runnable {
     private void dialogEventListener(OutputText.DialogEvent event) {
         switch (event) {
             case CLOSED: {
+                resetEntities();
                 System.out.println("Dialog Closed");
                 disableArrows(false);
                 if (bossDefeated) {
@@ -676,6 +699,10 @@ public class Game extends SurfaceView implements Runnable {
         //swapBar.set(player.getEquipped().clone());
         mainActivity.getSwapBar().updateUi();
         mainActivity.getSwapBar().disable(false);
+    }
+
+    public Player getPlayer() {
+        return player;
     }
 }
 

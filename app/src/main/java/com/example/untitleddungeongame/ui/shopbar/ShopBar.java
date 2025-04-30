@@ -10,7 +10,7 @@ import androidx.annotation.Nullable;
 import com.example.untitleddungeongame.R;
 import com.example.untitleddungeongame.hotbar.HotBarInfo;
 import com.example.untitleddungeongame.hotbar.items.Item;
-
+//TODO: hide when map
 public class ShopBar<T extends Item> extends LinearLayout {
     public interface OnClick {
         void run(int index, Item item);
